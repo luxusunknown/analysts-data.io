@@ -103,13 +103,13 @@
   // ---- rendering: leaderboard table -----------------------------------
   const COLUMNS = [
     { key: 'analyst', label: 'Analyst' },
-    { key: 'trades', label: 'Trades' },
-    { key: 'winRate', label: 'Win Rate', tip: 'Wins ÷ total calls' },
-    { key: 'profitFactor', label: 'Profit Factor', tip: 'Gross $ won ÷ gross $ lost. Above 1 = net profitable.' },
+    { key: 'trades', label: 'Trades', tip: 'Distinct positions, not raw posted calls — if the same ticker gets re-posted at the same entry price within 10 days (a trim of an existing position), it counts once, not once per trim.' },
+    { key: 'winRate', label: 'Win Rate', tip: 'Winning positions ÷ total positions (see "Trades" — trims of one position are judged on that position\'s net result, not each trim separately).' },
+    { key: 'profitFactor', label: 'Profit Factor', tip: 'Gross $ won ÷ gross $ lost, by position net result. Above 1 = net profitable.' },
     { key: 'totalProfit', label: 'Total Profit' },
-    { key: 'avgPerTrade', label: 'Avg $ / Trade', tip: 'Total profit ÷ priced trades — the blended expected outcome of one call, wins and losses combined.' },
-    { key: 'maxLoss', label: 'Worst Loss' },
-    { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 — roughly what one contract costs to open.' },
+    { key: 'avgPerTrade', label: 'Avg $ / Trade', tip: 'Total profit ÷ priced positions — the blended expected outcome of one position, wins and losses combined.' },
+    { key: 'maxLoss', label: 'Worst Loss', tip: 'Worst net result of any single position — if a position was trimmed at a loss but the remaining trims turned it net positive, it\'s not counted here as a loss.' },
+    { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 across distinct positions — roughly what one contract costs to open.' },
     { key: 'daysActive', label: 'Days Active' }
   ];
 
@@ -316,17 +316,32 @@
     const a = state.selectedAnalyst;
     const color = css(state.colorMap[a] || '--series-1');
     const rows = trades.filter(t => t.analyst === a).sort((x,y)=> y.date.localeCompare(x.date));
+
+    // Tag rows that are one trim of a multi-day position (see COLUMNS tip
+    // on "Trades") so it's visible in the raw call list, not just baked
+    // silently into the leaderboard math.
+    const trimInfo = new Map();
+    MordyParser.groupPositions(trades).forEach(p => {
+      if (p.trimCount > 1) p.trims.forEach((t, i) => trimInfo.set(t, { i: i + 1, n: p.trimCount, net: p.netDollar }));
+    });
+
     document.getElementById('detailTitle').innerHTML = `<span class="dot" style="background:${color}"></span>${a} — ${rows.length} calls in range`;
-    document.getElementById('detailBody').innerHTML = rows.map(t => `
+    document.getElementById('detailBody').innerHTML = rows.map(t => {
+      const info = trimInfo.get(t);
+      const trimTag = info
+        ? ` <span class="trim-tag" title="Part of one position held across ${info.n} trims, net ${fmtMoney(info.net)} — counted once in the leaderboard, not ${info.n} times">trim ${info.i}/${info.n}</span>`
+        : '';
+      return `
       <tr>
         <td class="name-cell">${t.date}</td>
-        <td>$${t.ticker}</td>
+        <td>$${t.ticker}${trimTag}</td>
         <td class="${t.win ? 'pos' : 'neg'}">${t.win ? 'WIN' : 'LOSS'}</td>
         <td>${t.entry != null ? t.entry.toFixed(2) : '—'}</td>
         <td>${t.exit != null ? t.exit.toFixed(2) : '—'}</td>
         <td class="${t.pct >= 0 ? 'pos':'neg'}">${fmtPct(t.pct)}</td>
         <td class="${(t.dollar||0) >= 0 ? 'pos':'neg'}">${t.dollar != null ? fmtMoney(t.dollar) : '—'}</td>
-      </tr>`).join('');
+      </tr>`;
+    }).join('');
   }
 
   // ---- master render ---------------------------------------------------
@@ -340,7 +355,7 @@
     renderLineChart(trades, stats);
     renderDetail(trades);
     const rangeLabel = state.rangeDays ? `last ${state.rangeDays} days` : 'all tracked days';
-    document.getElementById('rangeNote').textContent = `Showing ${rangeLabel} · ${fmtNum(trades.length)} calls · updated through ${maxDate(state.trades) || '—'}`;
+    document.getElementById('rangeNote').textContent = `Showing ${rangeLabel} · ${fmtNum(trades.length)} calls posted (${fmtNum(stats.reduce((s,x)=>s+x.trades,0))} distinct trades — see "Trades" tooltip) · updated through ${maxDate(state.trades) || '—'}`;
   }
 
   window.addEventListener('resize', () => { renderBarChart(MordyParser.computeStats(filteredTrades())); renderLineChart(filteredTrades(), MordyParser.computeStats(filteredTrades())); });

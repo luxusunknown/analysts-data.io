@@ -175,30 +175,97 @@
     return [t.date, t.analyst, t.ticker, t.entry, t.exit, t.pct, t.dollar].join('|');
   }
 
-  function computeStats(trades) {
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  function dateNum(iso) { return Date.parse(iso + 'T00:00:00Z'); }
+
+  // Collapses raw posted call-lines into logical *positions*, so a single
+  // trade that gets trimmed across multiple days' recaps (same analyst,
+  // same ticker, same entry price posted again within a short window)
+  // counts once instead of once per trim. Without this, an analyst who
+  // scales out of a winner over 3 days shows up as "3 wins" instead of
+  // "1 winning trade" -- which inflates both trade count and win rate.
+  //
+  // Matching rule: same analyst + ticker + entry price, where each repeat
+  // falls within `maxGapDays` calendar days of the previous one in that
+  // chain. A gap bigger than that starts a brand-new position instead of
+  // extending the old one -- e.g. reusing a common round entry price weeks
+  // later is treated as a fresh, unrelated trade, not a stale trim.
+  // Older bare-format lines with no entry price can't be matched this way
+  // and are always counted as their own single-trim position.
+  function groupPositions(trades, maxGapDays) {
+    const gap = maxGapDays == null ? 10 : maxGapDays;
+    const byKey = {};
+    const singletons = [];
+
+    trades.forEach((t, idx) => {
+      if (typeof t.entry !== 'number' || isNaN(t.entry)) {
+        singletons.push(t);
+        return;
+      }
+      const key = t.analyst + '|' + t.ticker + '|' + t.entry.toFixed(4);
+      (byKey[key] || (byKey[key] = [])).push({ t, idx });
+    });
+
+    const chains = [];
+    Object.values(byKey).forEach((group) => {
+      group.sort((a, b) => (a.t.date < b.t.date ? -1 : a.t.date > b.t.date ? 1 : a.idx - b.idx));
+      let current = null;
+      let lastDateNum = null;
+      group.forEach(({ t }) => {
+        const dNum = dateNum(t.date);
+        if (current && lastDateNum != null && (dNum - lastDateNum) / DAY_MS <= gap) {
+          current.trims.push(t);
+        } else {
+          current = { analyst: t.analyst, ticker: t.ticker, entry: t.entry, trims: [t] };
+          chains.push(current);
+        }
+        lastDateNum = dNum;
+      });
+    });
+    singletons.forEach((t) => {
+      chains.push({ analyst: t.analyst, ticker: t.ticker, entry: t.entry, trims: [t] });
+    });
+
+    return chains.map((p) => {
+      const trims = p.trims.slice().sort((a, b) => a.date.localeCompare(b.date));
+      const dollars = trims.map((t) => t.dollar).filter((d) => typeof d === 'number' && !isNaN(d));
+      const netDollar = dollars.length ? dollars.reduce((s, d) => s + d, 0) : null;
+      const win = netDollar != null ? netDollar >= 0 : trims.filter((t) => t.win).length >= trims.length / 2;
+      return {
+        analyst: p.analyst, ticker: p.ticker, entry: p.entry,
+        trims, trimCount: trims.length,
+        firstDate: trims[0].date, lastDate: trims[trims.length - 1].date,
+        netDollar, win
+      };
+    });
+  }
+
+  function computeStats(trades, opts) {
+    const maxGapDays = (opts && opts.maxGapDays) != null ? opts.maxGapDays : 10;
+    const positions = groupPositions(trades, maxGapDays);
     const byAnalyst = {};
-    for (const t of trades) {
-      if (!byAnalyst[t.analyst]) {
-        byAnalyst[t.analyst] = {
-          analyst: t.analyst, trades: 0, wins: 0, losses: 0,
+    for (const p of positions) {
+      if (!byAnalyst[p.analyst]) {
+        byAnalyst[p.analyst] = {
+          analyst: p.analyst, trades: 0, wins: 0, losses: 0,
           grossWin: 0, grossLoss: 0, totalProfit: 0,
           pricedTrades: 0, entrySum: 0, entryCount: 0,
           maxWin: -Infinity, maxLoss: Infinity, days: new Set()
         };
       }
-      const a = byAnalyst[t.analyst];
+      const a = byAnalyst[p.analyst];
       a.trades += 1;
-      a.days.add(t.date);
-      if (t.win) a.wins += 1; else a.losses += 1;
-      if (typeof t.dollar === 'number' && !isNaN(t.dollar)) {
-        a.totalProfit += t.dollar;
+      p.trims.forEach((t) => a.days.add(t.date));
+      if (p.win) a.wins += 1; else a.losses += 1;
+      if (typeof p.netDollar === 'number' && !isNaN(p.netDollar)) {
+        a.totalProfit += p.netDollar;
         a.pricedTrades += 1;
-        if (t.dollar >= 0) a.grossWin += t.dollar; else a.grossLoss += -t.dollar;
-        if (t.dollar > a.maxWin) a.maxWin = t.dollar;
-        if (t.dollar < a.maxLoss) a.maxLoss = t.dollar;
+        if (p.netDollar >= 0) a.grossWin += p.netDollar; else a.grossLoss += -p.netDollar;
+        if (p.netDollar > a.maxWin) a.maxWin = p.netDollar;
+        if (p.netDollar < a.maxLoss) a.maxLoss = p.netDollar;
       }
-      if (typeof t.entry === 'number' && !isNaN(t.entry)) {
-        a.entrySum += t.entry;
+      if (typeof p.entry === 'number' && !isNaN(p.entry)) {
+        a.entrySum += p.entry;
         a.entryCount += 1;
       }
     }
@@ -227,5 +294,5 @@
     return out;
   }
 
-  global.MordyParser = { parseRecapText, computeStats, dedupeKey, toFlatText };
+  global.MordyParser = { parseRecapText, computeStats, groupPositions, dedupeKey, toFlatText };
 })(typeof window !== 'undefined' ? window : globalThis);

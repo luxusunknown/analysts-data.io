@@ -198,6 +198,11 @@ tbody tr.selected td { background: color-mix(in srgb, var(--series-1) 10%, trans
 .pos { color: var(--good); }
 .neg { color: var(--status-crit); }
 .muted-cell { color: var(--text-muted); }
+.trim-tag {
+  display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: .01em;
+  color: var(--text-muted); background: var(--page-plane); border: 1px solid var(--border);
+  border-radius: 5px; padding: 1px 5px; margin-left: 6px; cursor: help; vertical-align: 1px;
+}
 
 /* stat tiles */
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
