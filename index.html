@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trade With Mordy — Analyst Tracker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="row">
+      <div>
+        <h1>Trade With Mordy — Analyst Tracker</h1>
+        <div class="sub" id="rangeNote">Loading…</div>
+      </div>
+      <div class="top-actions">
+        <button id="adminOpenBtn" class="ghost admin-toggle">Admin</button>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="filters" id="filters"></div>
+    <div class="hint" style="margin:-6px 0 14px">Ranges count the last N days the channel actually posted a recap — weekends/off days don't count against the window.</div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Leaderboard</h2>
+    <div class="table-scroll">
+      <table>
+        <thead id="tableHead"></thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div class="hint">Click a column to sort · click a row to see every call. "Avg $/Trade" blends wins and losses together — see tooltip. Small sample sizes (few trades, few days) are noisy; don't over-read them.</div>
+  </section>
+
+  <section id="detailPanel">
+    <div class="detail-head">
+      <h3 id="detailTitle"></h3>
+      <button class="ghost" onclick="document.getElementById('detailPanel').classList.remove('open')">Close</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr>
+          <th>Date</th><th>Ticker</th><th>Result</th><th>Entry</th><th>Exit</th><th>%</th><th>$</th>
+        </tr></thead>
+        <tbody id="detailBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Total profit by analyst</h2>
+    <div class="chart-card">
+      <div id="barChart"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Cumulative profit over time</h2>
+    <div class="chart-card chart-wrap">
+      <div id="lineChart"></div>
+      <div class="tooltip-box" id="lineTooltip"></div>
+      <div class="legend" id="lineLegend"></div>
+    </div>
+    <div class="hint">Click a name in the legend to hide/show that analyst's line.</div>
+  </section>
+
+  <footer class="site">
+    Data parsed directly from the #recaps channel's own posted calls (win/loss markers and $ figures as posted).
+    Historical performance only — not financial advice, not a guarantee of future results. Options can lose their
+    full value; size accordingly. This is an independent community tracker, not affiliated with or endorsed by
+    the analysts named above.
+  </footer>
+</div>
+
+<!-- Admin login (real server-side check, see functions/api/login.js) -->
+<div id="adminGateModal">
+  <div class="modal-card">
+    <button class="ghost close-x" id="gateCloseBtn">✕</button>
+    <h3>Admin login</h3>
+    <label>Username</label>
+    <input type="text" id="gateUsername" placeholder="Username" autocomplete="username">
+    <label style="display:block;margin-top:10px">Password</label>
+    <input type="password" id="gatePassword" placeholder="Password" autocomplete="current-password">
+    <div class="error-text" id="gateError"></div>
+    <div class="modal-actions">
+      <button class="primary" id="gateSubmit">Log in</button>
+    </div>
+    <p class="hint" style="margin-top:16px">
+      Checked server-side against the <code>ADMIN_USERNAME</code> / <code>ADMIN_PASSWORD_HASH</code> environment
+      variables set in your Cloudflare Pages project — nothing password-related ships in this page's code.
+      See README.md to set those up.
+    </p>
+  </div>
+</div>
+
+<!-- Admin panel -->
+<div id="adminModal">
+  <div class="modal-card">
+    <button class="ghost close-x" id="adminCloseBtn">✕</button>
+    <h3>Add a new recap <button class="ghost" id="logoutBtn" style="font-size:12px;margin-left:8px">Log out</button></h3>
+    <p class="hint">Paste the raw HTML (or plain text) of one or more new #recaps days below — the same kind of
+      export you'd save from Discord. It's parsed entirely in your browser; nothing is sent anywhere.</p>
+    <textarea id="pasteArea" placeholder="Paste recap HTML or text here…"></textarea>
+    <div class="modal-actions">
+      <button class="primary" id="parseBtn">Parse</button>
+    </div>
+    <div id="parseMsg"></div>
+    <div class="preview-list" id="previewList"></div>
+    <div class="modal-actions">
+      <button id="mergeBtn" disabled>Merge into page</button>
+      <button id="downloadBtn">Download data.json</button>
+    </div>
+    <p class="hint">After merging, download <code>data.json</code> and commit/push it to your GitHub repo
+      (overwriting the old one) to publish the update for everyone. See README.md for the full workflow.</p>
+  </div>
+</div>
+
+<script src="parser.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
