@@ -152,12 +152,19 @@ Each day, once the new recap posts in Discord:
    You get a preview of what it found and how many are genuinely new (it
    skips anything already in `data.json`, so it's safe to re-upload
    overlapping content if you're not sure exactly where you left off).
-4. Click **Merge into page** — updates the dashboard in your browser.
+4. Click **Merge into page** — updates the dashboard in your browser so you
+   can sanity-check it before it goes live.
 5. Click **Publish to GitHub** — commits the updated `data.json` straight
    to your repo. Cloudflare auto-redeploys in under a minute and the public
    site shows the new day for everyone. (No GitHub setup from step 5 yet?
    Use **Download data.json instead** and commit it by hand, same as
    before.)
+
+   Forgot to click "Merge into page" before hitting Publish? It's fine —
+   Publish (and Download) now fold in anything you parsed but didn't merge
+   yet automatically, and the confirmation message tells you how many new
+   calls it swept in. The publish confirmation always shows the total trade
+   count that just went out, so you can eyeball that it's more than before.
 
 You can drop in multiple days at once (catching up after a few days away)
 — it splits on each day's recap header automatically.

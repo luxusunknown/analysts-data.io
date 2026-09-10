@@ -8,8 +8,8 @@
    "win": true,
    "entry": 1.9,
    "exit": 4.94,
-   "pct": 160,
-   "dollar": 304
+   "pct": 160.0,
+   "dollar": 304.0
   },
   {
    "id": 2,
@@ -19,7 +19,7 @@
    "win": false,
    "entry": 6.93,
    "exit": 5.2,
-   "pct": -25,
+   "pct": -25.0,
    "dollar": -173.25
   },
   {
@@ -29,9 +29,9 @@
    "ticker": "HIMS",
    "win": true,
    "entry": 2.98,
-   "exit": 5,
+   "exit": 5.0,
    "pct": 67.79,
-   "dollar": 202
+   "dollar": 202.0
   },
   {
    "id": 4,
@@ -41,8 +41,8 @@
    "win": false,
    "entry": 2.45,
    "exit": 1.47,
-   "pct": -40,
-   "dollar": -98
+   "pct": -40.0,
+   "dollar": -98.0
   },
   {
    "id": 5,
@@ -52,8 +52,8 @@
    "win": false,
    "entry": 1.7,
    "exit": 0.85,
-   "pct": -50,
-   "dollar": -85
+   "pct": -50.0,
+   "dollar": -85.0
   },
   {
    "id": 6,
@@ -64,7 +64,7 @@
    "entry": 4.1,
    "exit": 12.1,
    "pct": 195.12,
-   "dollar": 800
+   "dollar": 800.0
   },
   {
    "id": 7,
@@ -74,8 +74,8 @@
    "win": true,
    "entry": 1.3,
    "exit": 3.12,
-   "pct": 140,
-   "dollar": 182
+   "pct": 140.0,
+   "dollar": 182.0
   },
   {
    "id": 8,
@@ -86,7 +86,7 @@
    "entry": 11.4,
    "exit": 22.55,
    "pct": 97.81,
-   "dollar": 1115
+   "dollar": 1115.0
   },
   {
    "id": 9,
@@ -97,7 +97,7 @@
    "entry": 1.74,
    "exit": 2.7,
    "pct": 55.17,
-   "dollar": 96
+   "dollar": 96.0
   },
   {
    "id": 10,
@@ -108,7 +108,7 @@
    "entry": 6.9,
    "exit": 8.7,
    "pct": 26.09,
-   "dollar": 180
+   "dollar": 180.0
   },
   {
    "id": 11,
@@ -118,8 +118,8 @@
    "win": false,
    "entry": 2.8,
    "exit": 2.38,
-   "pct": -15,
-   "dollar": -42
+   "pct": -15.0,
+   "dollar": -42.0
   },
   {
    "id": 12,
@@ -130,7 +130,7 @@
    "entry": 9.7,
    "exit": 15.5,
    "pct": 59.79,
-   "dollar": 580
+   "dollar": 580.0
   },
   {
    "id": 13,
@@ -140,7 +140,7 @@
    "win": false,
    "entry": 2.45,
    "exit": 2.23,
-   "pct": -9,
+   "pct": -9.0,
    "dollar": -22.05
   },
   {
@@ -151,7 +151,7 @@
    "win": false,
    "entry": 2.47,
    "exit": 1.24,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -123.5
   },
   {
@@ -162,7 +162,7 @@
    "win": true,
    "entry": 0.28,
    "exit": 0.39,
-   "pct": 40,
+   "pct": 40.0,
    "dollar": 11.2
   },
   {
@@ -173,7 +173,7 @@
    "win": true,
    "entry": 7.5,
    "exit": 14.63,
-   "pct": 95,
+   "pct": 95.0,
    "dollar": 712.5
   },
   {
@@ -184,8 +184,8 @@
    "win": true,
    "entry": 4.4,
    "exit": 6.16,
-   "pct": 40,
-   "dollar": 176
+   "pct": 40.0,
+   "dollar": 176.0
   },
   {
    "id": 18,
@@ -195,7 +195,7 @@
    "win": true,
    "entry": 0.82,
    "exit": 1.07,
-   "pct": 30,
+   "pct": 30.0,
    "dollar": 24.6
   },
   {
@@ -207,7 +207,7 @@
    "entry": 5.9,
    "exit": 8.6,
    "pct": 45.76,
-   "dollar": 270
+   "dollar": 270.0
   },
   {
    "id": 20,
@@ -218,7 +218,7 @@
    "entry": 5.22,
    "exit": 7.5,
    "pct": 43.68,
-   "dollar": 228
+   "dollar": 228.0
   },
   {
    "id": 21,
@@ -226,10 +226,10 @@
    "analyst": "BISHOP",
    "ticker": "EBAY",
    "win": true,
-   "entry": 3,
+   "entry": 3.0,
    "exit": 4.15,
    "pct": 38.33,
-   "dollar": 115
+   "dollar": 115.0
   },
   {
    "id": 22,
@@ -240,7 +240,7 @@
    "entry": 4.3,
    "exit": 5.85,
    "pct": 36.05,
-   "dollar": 155
+   "dollar": 155.0
   },
   {
    "id": 23,
@@ -250,8 +250,8 @@
    "win": true,
    "entry": 4.4,
    "exit": 5.5,
-   "pct": 25,
-   "dollar": 110
+   "pct": 25.0,
+   "dollar": 110.0
   },
   {
    "id": 24,
@@ -259,10 +259,10 @@
    "analyst": "LUXE",
    "ticker": "VRAX",
    "win": true,
-   "entry": 9,
-   "exit": 12,
+   "entry": 9.0,
+   "exit": 12.0,
    "pct": 33.33,
-   "dollar": 3
+   "dollar": 3.0
   },
   {
    "id": 25,
@@ -270,10 +270,10 @@
    "analyst": "BISHOP",
    "ticker": "META",
    "win": true,
-   "entry": 13,
-   "exit": 36,
+   "entry": 13.0,
+   "exit": 36.0,
    "pct": 176.92,
-   "dollar": 2300
+   "dollar": 2300.0
   },
   {
    "id": 26,
@@ -283,7 +283,7 @@
    "win": true,
    "entry": 0.47,
    "exit": 0.73,
-   "pct": 55,
+   "pct": 55.0,
    "dollar": 25.85
   },
   {
@@ -294,8 +294,8 @@
    "win": true,
    "entry": 1.6,
    "exit": 1.92,
-   "pct": 20,
-   "dollar": 32
+   "pct": 20.0,
+   "dollar": 32.0
   },
   {
    "id": 28,
@@ -305,8 +305,8 @@
    "win": false,
    "entry": 4.5,
    "exit": 3.6,
-   "pct": -20,
-   "dollar": -90
+   "pct": -20.0,
+   "dollar": -90.0
   },
   {
    "id": 29,
@@ -317,7 +317,7 @@
    "entry": 1.55,
    "exit": 2.9,
    "pct": 87.1,
-   "dollar": 135
+   "dollar": 135.0
   },
   {
    "id": 30,
@@ -328,7 +328,7 @@
    "entry": 1.28,
    "exit": 2.3,
    "pct": 79.69,
-   "dollar": 102
+   "dollar": 102.0
   },
   {
    "id": 31,
@@ -338,7 +338,7 @@
    "win": true,
    "entry": 1.55,
    "exit": 2.33,
-   "pct": 50,
+   "pct": 50.0,
    "dollar": 77.5
   },
   {
@@ -350,7 +350,7 @@
    "entry": 0.59,
    "exit": 1.3,
    "pct": 120.34,
-   "dollar": 71
+   "dollar": 71.0
   },
   {
    "id": 33,
@@ -360,7 +360,7 @@
    "win": false,
    "entry": 6.1,
    "exit": 5.25,
-   "pct": -14,
+   "pct": -14.0,
    "dollar": -85.4
   },
   {
@@ -371,7 +371,7 @@
    "win": false,
    "entry": 1.24,
    "exit": 0.99,
-   "pct": -20,
+   "pct": -20.0,
    "dollar": -24.8
   },
   {
@@ -382,7 +382,7 @@
    "win": true,
    "entry": 0.95,
    "exit": 1.24,
-   "pct": 30,
+   "pct": 30.0,
    "dollar": 28.5
   },
   {
@@ -393,7 +393,7 @@
    "win": false,
    "entry": 3.84,
    "exit": 3.15,
-   "pct": -18,
+   "pct": -18.0,
    "dollar": -69.18
   },
   {
@@ -404,8 +404,8 @@
    "win": false,
    "entry": 4.9,
    "exit": 3.92,
-   "pct": -20,
-   "dollar": -98
+   "pct": -20.0,
+   "dollar": -98.0
   },
   {
    "id": 38,
@@ -415,8 +415,8 @@
    "win": false,
    "entry": 4.9,
    "exit": 3.43,
-   "pct": -30,
-   "dollar": -147
+   "pct": -30.0,
+   "dollar": -147.0
   },
   {
    "id": 39,
@@ -426,8 +426,8 @@
    "win": false,
    "entry": 7.4,
    "exit": 5.55,
-   "pct": -25,
-   "dollar": -185
+   "pct": -25.0,
+   "dollar": -185.0
   },
   {
    "id": 40,
@@ -438,7 +438,7 @@
    "entry": 1.55,
    "exit": 8.15,
    "pct": 425.81,
-   "dollar": 660
+   "dollar": 660.0
   },
   {
    "id": 41,
@@ -447,9 +447,9 @@
    "ticker": "CRWD",
    "win": true,
    "entry": 7.9,
-   "exit": 11,
+   "exit": 11.0,
    "pct": 39.24,
-   "dollar": 310
+   "dollar": 310.0
   },
   {
    "id": 42,
@@ -460,7 +460,7 @@
    "entry": 4.8,
    "exit": 5.4,
    "pct": 12.5,
-   "dollar": 60
+   "dollar": 60.0
   },
   {
    "id": 43,
@@ -469,9 +469,9 @@
    "ticker": "GOOGL",
    "win": true,
    "entry": 4.5,
-   "exit": 9,
-   "pct": 100,
-   "dollar": 450
+   "exit": 9.0,
+   "pct": 100.0,
+   "dollar": 450.0
   },
   {
    "id": 44,
@@ -481,8 +481,8 @@
    "win": false,
    "entry": 6.2,
    "exit": 5.27,
-   "pct": -15,
-   "dollar": -93
+   "pct": -15.0,
+   "dollar": -93.0
   },
   {
    "id": 45,
@@ -492,8 +492,8 @@
    "win": false,
    "entry": 4.5,
    "exit": 2.25,
-   "pct": -50,
-   "dollar": -225
+   "pct": -50.0,
+   "dollar": -225.0
   },
   {
    "id": 46,
@@ -515,7 +515,7 @@
    "entry": 0.59,
    "exit": 0.65,
    "pct": 10.17,
-   "dollar": 6
+   "dollar": 6.0
   },
   {
    "id": 48,
@@ -526,7 +526,7 @@
    "entry": 6.8,
    "exit": 5.9,
    "pct": -13.24,
-   "dollar": -90
+   "dollar": -90.0
   },
   {
    "id": 49,
@@ -536,8 +536,8 @@
    "win": false,
    "entry": 5.2,
    "exit": 3.9,
-   "pct": -25,
-   "dollar": -130
+   "pct": -25.0,
+   "dollar": -130.0
   },
   {
    "id": 50,
@@ -545,10 +545,10 @@
    "analyst": "BISHOP",
    "ticker": "META",
    "win": false,
-   "entry": 13,
+   "entry": 13.0,
    "exit": 9.5,
    "pct": -26.92,
-   "dollar": -350
+   "dollar": -350.0
   },
   {
    "id": 51,
@@ -558,7 +558,7 @@
    "win": false,
    "entry": 0.69,
    "exit": 0.34,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -34.5
   },
   {
@@ -567,7 +567,7 @@
    "analyst": "LUXE",
    "ticker": "RUBI",
    "win": true,
-   "entry": 6,
+   "entry": 6.0,
    "exit": 6.5,
    "pct": 8.33,
    "dollar": 0.5
@@ -581,7 +581,7 @@
    "entry": 2.15,
    "exit": 0.94,
    "pct": -56.28,
-   "dollar": -121
+   "dollar": -121.0
   },
   {
    "id": 54,
@@ -592,7 +592,7 @@
    "entry": 1.55,
    "exit": 9.8,
    "pct": 532.26,
-   "dollar": 825
+   "dollar": 825.0
   },
   {
    "id": 55,
@@ -600,10 +600,10 @@
    "analyst": "BISHOP",
    "ticker": "NBIS",
    "win": true,
-   "entry": 2,
-   "exit": 7,
-   "pct": 250,
-   "dollar": 500
+   "entry": 2.0,
+   "exit": 7.0,
+   "pct": 250.0,
+   "dollar": 500.0
   },
   {
    "id": 56,
@@ -612,9 +612,9 @@
    "ticker": "SHELL",
    "win": true,
    "entry": 1.28,
-   "exit": 4,
+   "exit": 4.0,
    "pct": 212.5,
-   "dollar": 272
+   "dollar": 272.0
   },
   {
    "id": 57,
@@ -625,7 +625,7 @@
    "entry": 1.44,
    "exit": 2.2,
    "pct": 52.78,
-   "dollar": 76
+   "dollar": 76.0
   },
   {
    "id": 58,
@@ -636,7 +636,7 @@
    "entry": 3.8,
    "exit": 5.4,
    "pct": 42.11,
-   "dollar": 160
+   "dollar": 160.0
   },
   {
    "id": 59,
@@ -646,8 +646,8 @@
    "win": false,
    "entry": 1.54,
    "exit": 0.77,
-   "pct": -50,
-   "dollar": -77
+   "pct": -50.0,
+   "dollar": -77.0
   },
   {
    "id": 60,
@@ -656,8 +656,8 @@
    "ticker": "INTU",
    "win": false,
    "entry": 2.01,
-   "exit": 1,
-   "pct": -50,
+   "exit": 1.0,
+   "pct": -50.0,
    "dollar": -100.5
   },
   {
@@ -668,7 +668,7 @@
    "win": false,
    "entry": 3.35,
    "exit": 1.68,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -167.5
   },
   {
@@ -679,8 +679,8 @@
    "win": false,
    "entry": 5.7,
    "exit": 2.85,
-   "pct": -50,
-   "dollar": -285
+   "pct": -50.0,
+   "dollar": -285.0
   },
   {
    "id": 63,
@@ -690,8 +690,8 @@
    "win": true,
    "entry": 1.58,
    "exit": 2.37,
-   "pct": 50,
-   "dollar": 79
+   "pct": 50.0,
+   "dollar": 79.0
   },
   {
    "id": 64,
@@ -701,8 +701,8 @@
    "win": true,
    "entry": 3.6,
    "exit": 4.86,
-   "pct": 35,
-   "dollar": 126
+   "pct": 35.0,
+   "dollar": 126.0
   },
   {
    "id": 65,
@@ -712,8 +712,8 @@
    "win": false,
    "entry": 2.52,
    "exit": 1.26,
-   "pct": -50,
-   "dollar": -126
+   "pct": -50.0,
+   "dollar": -126.0
   },
   {
    "id": 66,
@@ -723,7 +723,7 @@
    "win": false,
    "entry": 2.75,
    "exit": 1.38,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -137.5
   },
   {
@@ -734,8 +734,8 @@
    "win": false,
    "entry": 5.9,
    "exit": 2.95,
-   "pct": -50,
-   "dollar": -295
+   "pct": -50.0,
+   "dollar": -295.0
   },
   {
    "id": 68,
@@ -745,8 +745,8 @@
    "win": false,
    "entry": 10.5,
    "exit": 5.25,
-   "pct": -50,
-   "dollar": -525
+   "pct": -50.0,
+   "dollar": -525.0
   },
   {
    "id": 69,
@@ -754,10 +754,10 @@
    "analyst": "SHOWTIME",
    "ticker": "AAOI",
    "win": false,
-   "entry": 9,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -900
+   "entry": 9.0,
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -900.0
   },
   {
    "id": 70,
@@ -766,9 +766,9 @@
    "ticker": "IREN",
    "win": false,
    "entry": 2.35,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -235
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -235.0
   },
   {
    "id": 71,
@@ -779,7 +779,7 @@
    "entry": 0.51,
    "exit": 0.01,
    "pct": 98.04,
-   "dollar": 50
+   "dollar": 50.0
   },
   {
    "id": 72,
@@ -789,7 +789,7 @@
    "win": true,
    "entry": 1.02,
    "exit": 0.2,
-   "pct": 80,
+   "pct": 80.0,
    "dollar": 81.6
   },
   {
@@ -798,9 +798,9 @@
    "analyst": "LUXE",
    "ticker": "ZYBT",
    "win": true,
-   "entry": 2,
+   "entry": 2.0,
    "exit": 2.4,
-   "pct": 20,
+   "pct": 20.0,
    "dollar": 0.4
   },
   {
@@ -820,7 +820,7 @@
    "analyst": "LUXE",
    "ticker": "ZYBT",
    "win": false,
-   "entry": 2,
+   "entry": 2.0,
    "exit": 1.91,
    "pct": -4.5,
    "dollar": -0.09
@@ -834,7 +834,7 @@
    "entry": 6.05,
    "exit": 5.3,
    "pct": -12.4,
-   "dollar": -75
+   "dollar": -75.0
   },
   {
    "id": 77,
@@ -845,7 +845,7 @@
    "entry": 3.6,
    "exit": 5.6,
    "pct": 55.56,
-   "dollar": 200
+   "dollar": 200.0
   },
   {
    "id": 78,
@@ -854,7 +854,7 @@
    "ticker": "CPHI",
    "win": true,
    "entry": 2.2,
-   "exit": 3,
+   "exit": 3.0,
    "pct": 36.36,
    "dollar": 0.8
   },
@@ -867,7 +867,7 @@
    "entry": 10.25,
    "exit": 12.5,
    "pct": 21.95,
-   "dollar": 225
+   "dollar": 225.0
   },
   {
    "id": 80,
@@ -878,7 +878,7 @@
    "entry": 7.05,
    "exit": 8.35,
    "pct": 18.44,
-   "dollar": 130
+   "dollar": 130.0
   },
   {
    "id": 81,
@@ -886,10 +886,10 @@
    "analyst": "BISHOP",
    "ticker": "IBB",
    "win": false,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 3.4,
-   "pct": -15,
-   "dollar": -60
+   "pct": -15.0,
+   "dollar": -60.0
   },
   {
    "id": 82,
@@ -899,7 +899,7 @@
    "win": false,
    "entry": 0.84,
    "exit": 0.68,
-   "pct": -19,
+   "pct": -19.0,
    "dollar": -15.96
   },
   {
@@ -910,7 +910,7 @@
    "win": false,
    "entry": 2.04,
    "exit": 1.63,
-   "pct": -20,
+   "pct": -20.0,
    "dollar": -40.8
   },
   {
@@ -919,10 +919,10 @@
    "analyst": "MORDY",
    "ticker": "NBIS",
    "win": true,
-   "entry": 175,
-   "exit": 211,
+   "entry": 175.0,
+   "exit": 211.0,
    "pct": 20.57,
-   "dollar": 36
+   "dollar": 36.0
   },
   {
    "id": 85,
@@ -930,10 +930,10 @@
    "analyst": "MORDY",
    "ticker": "BE",
    "win": true,
-   "entry": 205,
-   "exit": 228,
+   "entry": 205.0,
+   "exit": 228.0,
    "pct": 11.22,
-   "dollar": 23
+   "dollar": 23.0
   },
   {
    "id": 86,
@@ -944,7 +944,7 @@
    "entry": 3.6,
    "exit": 7.25,
    "pct": 101.39,
-   "dollar": 365
+   "dollar": 365.0
   },
   {
    "id": 87,
@@ -954,7 +954,7 @@
    "win": true,
    "entry": 1.58,
    "exit": 0.47,
-   "pct": 70,
+   "pct": 70.0,
    "dollar": 110.6
   },
   {
@@ -966,7 +966,7 @@
    "entry": 7.05,
    "exit": 11.4,
    "pct": 61.7,
-   "dollar": 435
+   "dollar": 435.0
   },
   {
    "id": 89,
@@ -977,7 +977,7 @@
    "entry": 2.2,
    "exit": 3.25,
    "pct": 47.73,
-   "dollar": 105
+   "dollar": 105.0
   },
   {
    "id": 90,
@@ -987,8 +987,8 @@
    "win": true,
    "entry": 0.35,
    "exit": 0.49,
-   "pct": 40,
-   "dollar": 14
+   "pct": 40.0,
+   "dollar": 14.0
   },
   {
    "id": 91,
@@ -998,7 +998,7 @@
    "win": false,
    "entry": 7.3,
    "exit": 5.99,
-   "pct": -18,
+   "pct": -18.0,
    "dollar": -131.4
   },
   {
@@ -1009,7 +1009,7 @@
    "win": false,
    "entry": 9.2,
    "exit": 6.62,
-   "pct": -28,
+   "pct": -28.0,
    "dollar": -257.6
   },
   {
@@ -1021,7 +1021,7 @@
    "entry": 3.6,
    "exit": 10.6,
    "pct": 194.44,
-   "dollar": 700
+   "dollar": 700.0
   },
   {
    "id": 94,
@@ -1030,9 +1030,9 @@
    "ticker": "SPY",
    "win": true,
    "entry": 1.58,
-   "exit": 0,
-   "pct": 100,
-   "dollar": 158
+   "exit": 0.0,
+   "pct": 100.0,
+   "dollar": 158.0
   },
   {
    "id": 95,
@@ -1042,8 +1042,8 @@
    "win": true,
    "entry": 2.2,
    "exit": 3.52,
-   "pct": 60,
-   "dollar": 132
+   "pct": 60.0,
+   "dollar": 132.0
   },
   {
    "id": 96,
@@ -1054,7 +1054,7 @@
    "entry": 2.52,
    "exit": 3.85,
    "pct": 52.78,
-   "dollar": 133
+   "dollar": 133.0
   },
   {
    "id": 97,
@@ -1064,8 +1064,8 @@
    "win": true,
    "entry": 1.4,
    "exit": 0.91,
-   "pct": 35,
-   "dollar": 49
+   "pct": 35.0,
+   "dollar": 49.0
   },
   {
    "id": 98,
@@ -1075,7 +1075,7 @@
    "win": false,
    "entry": 4.6,
    "exit": 3.82,
-   "pct": -17,
+   "pct": -17.0,
    "dollar": -78.2
   },
   {
@@ -1087,7 +1087,7 @@
    "entry": 2.2,
    "exit": 4.5,
    "pct": 104.55,
-   "dollar": 230
+   "dollar": 230.0
   },
   {
    "id": 100,
@@ -1096,9 +1096,9 @@
    "ticker": "FANG",
    "win": true,
    "entry": 7.05,
-   "exit": 14,
+   "exit": 14.0,
    "pct": 98.58,
-   "dollar": 695
+   "dollar": 695.0
   },
   {
    "id": 101,
@@ -1108,8 +1108,8 @@
    "win": true,
    "entry": 3.6,
    "exit": 6.3,
-   "pct": 75,
-   "dollar": 270
+   "pct": 75.0,
+   "dollar": 270.0
   },
   {
    "id": 102,
@@ -1120,7 +1120,7 @@
    "entry": 2.2,
    "exit": 3.35,
    "pct": 52.27,
-   "dollar": 115
+   "dollar": 115.0
   },
   {
    "id": 103,
@@ -1131,7 +1131,7 @@
    "entry": 3.5,
    "exit": 4.6,
    "pct": 31.43,
-   "dollar": 110
+   "dollar": 110.0
   },
   {
    "id": 104,
@@ -1141,7 +1141,7 @@
    "win": false,
    "entry": 4.15,
    "exit": 3.57,
-   "pct": -14,
+   "pct": -14.0,
    "dollar": -58.1
   },
   {
@@ -1153,7 +1153,7 @@
    "entry": 1.22,
    "exit": 0.33,
    "pct": 72.95,
-   "dollar": 89
+   "dollar": 89.0
   },
   {
    "id": 106,
@@ -1163,8 +1163,8 @@
    "win": true,
    "entry": 1.2,
    "exit": 0.6,
-   "pct": 50,
-   "dollar": 60
+   "pct": 50.0,
+   "dollar": 60.0
   },
   {
    "id": 107,
@@ -1173,9 +1173,9 @@
    "ticker": "AMD",
    "win": true,
    "entry": 5.45,
-   "exit": 17,
+   "exit": 17.0,
    "pct": 211.93,
-   "dollar": 1155
+   "dollar": 1155.0
   },
   {
    "id": 108,
@@ -1186,7 +1186,7 @@
    "entry": 5.45,
    "exit": 7.7,
    "pct": 41.28,
-   "dollar": 225
+   "dollar": 225.0
   },
   {
    "id": 109,
@@ -1197,7 +1197,7 @@
    "entry": 1.9,
    "exit": 2.4,
    "pct": 26.32,
-   "dollar": 50
+   "dollar": 50.0
   },
   {
    "id": 110,
@@ -1208,7 +1208,7 @@
    "entry": 4.2,
    "exit": 5.2,
    "pct": 23.81,
-   "dollar": 100
+   "dollar": 100.0
   },
   {
    "id": 111,
@@ -1219,7 +1219,7 @@
    "entry": 3.15,
    "exit": 3.8,
    "pct": 20.63,
-   "dollar": 65
+   "dollar": 65.0
   },
   {
    "id": 112,
@@ -1230,7 +1230,7 @@
    "entry": 2.25,
    "exit": 1.75,
    "pct": -22.22,
-   "dollar": -50
+   "dollar": -50.0
   },
   {
    "id": 113,
@@ -1240,8 +1240,8 @@
    "win": false,
    "entry": 4.3,
    "exit": 2.15,
-   "pct": -50,
-   "dollar": -215
+   "pct": -50.0,
+   "dollar": -215.0
   },
   {
    "id": 114,
@@ -1251,7 +1251,7 @@
    "win": false,
    "entry": 3.85,
    "exit": 1.93,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -192.5
   },
   {
@@ -1262,8 +1262,8 @@
    "win": false,
    "entry": 0.82,
    "exit": 0.41,
-   "pct": -50,
-   "dollar": -41
+   "pct": -50.0,
+   "dollar": -41.0
   },
   {
    "id": 116,
@@ -1273,7 +1273,7 @@
    "win": false,
    "entry": 1.75,
    "exit": 0.88,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -87.5
   },
   {
@@ -1282,10 +1282,10 @@
    "analyst": "BISHOP",
    "ticker": "UNH",
    "win": false,
-   "entry": 9,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -900
+   "entry": 9.0,
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -900.0
   },
   {
    "id": 118,
@@ -1296,7 +1296,7 @@
    "entry": 1.19,
    "exit": 0.34,
    "pct": 71.43,
-   "dollar": 85
+   "dollar": 85.0
   },
   {
    "id": 119,
@@ -1306,7 +1306,7 @@
    "win": true,
    "entry": 2.52,
    "exit": 4.28,
-   "pct": 70,
+   "pct": 70.0,
    "dollar": 176.4
   },
   {
@@ -1317,7 +1317,7 @@
    "win": true,
    "entry": 2.52,
    "exit": 5.54,
-   "pct": 120,
+   "pct": 120.0,
    "dollar": 302.4
   },
   {
@@ -1329,7 +1329,7 @@
    "entry": 4.1,
    "exit": 8.1,
    "pct": 97.56,
-   "dollar": 400
+   "dollar": 400.0
   },
   {
    "id": 122,
@@ -1339,7 +1339,7 @@
    "win": false,
    "entry": 4.1,
    "exit": 2.66,
-   "pct": -35,
+   "pct": -35.0,
    "dollar": -143.52
   },
   {
@@ -1350,7 +1350,7 @@
    "win": false,
    "entry": 4.9,
    "exit": 2.69,
-   "pct": -45,
+   "pct": -45.0,
    "dollar": -220.5
   },
   {
@@ -1373,7 +1373,7 @@
    "entry": 1.85,
    "exit": 0.04,
    "pct": 97.84,
-   "dollar": 181
+   "dollar": 181.0
   },
   {
    "id": 126,
@@ -1384,7 +1384,7 @@
    "entry": 7.48,
    "exit": 4.38,
    "pct": 41.44,
-   "dollar": 310
+   "dollar": 310.0
   },
   {
    "id": 127,
@@ -1394,8 +1394,8 @@
    "win": true,
    "entry": 1.65,
    "exit": 4.95,
-   "pct": 200,
-   "dollar": 330
+   "pct": 200.0,
+   "dollar": 330.0
   },
   {
    "id": 128,
@@ -1405,7 +1405,7 @@
    "win": false,
    "entry": 0.33,
    "exit": 0.3,
-   "pct": -10,
+   "pct": -10.0,
    "dollar": -0.03
   },
   {
@@ -1416,8 +1416,8 @@
    "win": true,
    "entry": 3.25,
    "exit": 6.5,
-   "pct": 100,
-   "dollar": 325
+   "pct": 100.0,
+   "dollar": 325.0
   },
   {
    "id": 130,
@@ -1425,10 +1425,10 @@
    "analyst": "SCOTT",
    "ticker": "NVDA",
    "win": true,
-   "entry": 5,
+   "entry": 5.0,
    "exit": 6.25,
-   "pct": 25,
-   "dollar": 125
+   "pct": 25.0,
+   "dollar": 125.0
   },
   {
    "id": 131,
@@ -1438,8 +1438,8 @@
    "win": true,
    "entry": 1.7,
    "exit": 3.4,
-   "pct": 100,
-   "dollar": 170
+   "pct": 100.0,
+   "dollar": 170.0
   },
   {
    "id": 132,
@@ -1449,8 +1449,8 @@
    "win": false,
    "entry": 1.6,
    "exit": 0.8,
-   "pct": -50,
-   "dollar": -80
+   "pct": -50.0,
+   "dollar": -80.0
   },
   {
    "id": 133,
@@ -1461,7 +1461,7 @@
    "entry": 1.17,
    "exit": 0.15,
    "pct": 87.18,
-   "dollar": 102
+   "dollar": 102.0
   },
   {
    "id": 134,
@@ -1472,7 +1472,7 @@
    "entry": 14.1,
    "exit": 7.38,
    "pct": 47.66,
-   "dollar": 672
+   "dollar": 672.0
   },
   {
    "id": 135,
@@ -1483,7 +1483,7 @@
    "entry": 13.55,
    "exit": 7.2,
    "pct": 46.86,
-   "dollar": 635
+   "dollar": 635.0
   },
   {
    "id": 136,
@@ -1492,9 +1492,9 @@
    "ticker": "NBIS",
    "win": true,
    "entry": 10.6,
-   "exit": 6,
+   "exit": 6.0,
    "pct": 43.4,
-   "dollar": 460
+   "dollar": 460.0
   },
   {
    "id": 137,
@@ -1504,7 +1504,7 @@
    "win": false,
    "entry": 1.69,
    "exit": 1.01,
-   "pct": -40,
+   "pct": -40.0,
    "dollar": -67.6
   },
   {
@@ -1516,7 +1516,7 @@
    "entry": 1.55,
    "exit": 3.5,
    "pct": 125.81,
-   "dollar": 195
+   "dollar": 195.0
   },
   {
    "id": 139,
@@ -1526,8 +1526,8 @@
    "win": false,
    "entry": 1.6,
    "exit": 0.8,
-   "pct": -50,
-   "dollar": -80
+   "pct": -50.0,
+   "dollar": -80.0
   },
   {
    "id": 140,
@@ -1535,7 +1535,7 @@
    "analyst": "LUXE",
    "ticker": "FCUV",
    "win": true,
-   "entry": 14,
+   "entry": 14.0,
    "exit": 17.59,
    "pct": 25.64,
    "dollar": 3.59
@@ -1548,7 +1548,7 @@
    "win": true,
    "entry": 0.49,
    "exit": 3.6,
-   "pct": 635,
+   "pct": 635.0,
    "dollar": 311.15
   },
   {
@@ -1559,8 +1559,8 @@
    "win": true,
    "entry": 3.9,
    "exit": 7.8,
-   "pct": 100,
-   "dollar": 390
+   "pct": 100.0,
+   "dollar": 390.0
   },
   {
    "id": 143,
@@ -1570,7 +1570,7 @@
    "win": true,
    "entry": 5.65,
    "exit": 10.73,
-   "pct": 90,
+   "pct": 90.0,
    "dollar": 508.5
   },
   {
@@ -1579,10 +1579,10 @@
    "analyst": "SCOTT",
    "ticker": "NVDA",
    "win": true,
-   "entry": 4,
-   "exit": 6,
-   "pct": 50,
-   "dollar": 200
+   "entry": 4.0,
+   "exit": 6.0,
+   "pct": 50.0,
+   "dollar": 200.0
   },
   {
    "id": 145,
@@ -1592,7 +1592,7 @@
    "win": true,
    "entry": 2.75,
    "exit": 4.13,
-   "pct": 50,
+   "pct": 50.0,
    "dollar": 137.5
   },
   {
@@ -1603,7 +1603,7 @@
    "win": true,
    "entry": 0.37,
    "exit": 0.44,
-   "pct": 20,
+   "pct": 20.0,
    "dollar": 7.4
   },
   {
@@ -1615,7 +1615,7 @@
    "entry": 19.03,
    "exit": 8.77,
    "pct": 53.91,
-   "dollar": 1026
+   "dollar": 1026.0
   },
   {
    "id": 148,
@@ -1626,7 +1626,7 @@
    "entry": 13.95,
    "exit": 9.05,
    "pct": 35.13,
-   "dollar": 490
+   "dollar": 490.0
   },
   {
    "id": 149,
@@ -1634,7 +1634,7 @@
    "analyst": "SHOWTIME",
    "ticker": "SOXL",
    "win": false,
-   "entry": 160,
+   "entry": 160.0,
    "exit": 115.46,
    "pct": -27.84,
    "dollar": -44.54
@@ -1648,7 +1648,7 @@
    "entry": 3.6,
    "exit": 5.2,
    "pct": 44.44,
-   "dollar": 160
+   "dollar": 160.0
   },
   {
    "id": 151,
@@ -1658,8 +1658,8 @@
    "win": false,
    "entry": 0.9,
    "exit": 0.45,
-   "pct": -50,
-   "dollar": -45
+   "pct": -50.0,
+   "dollar": -45.0
   },
   {
    "id": 152,
@@ -1667,7 +1667,7 @@
    "analyst": "LUXE",
    "ticker": "DFNS",
    "win": true,
-   "entry": 53,
+   "entry": 53.0,
    "exit": 70.78,
    "pct": 33.55,
    "dollar": 17.78
@@ -1681,7 +1681,7 @@
    "entry": 4.05,
    "exit": 16.55,
    "pct": 308.64,
-   "dollar": 1250
+   "dollar": 1250.0
   },
   {
    "id": 154,
@@ -1691,7 +1691,7 @@
    "win": true,
    "entry": 5.65,
    "exit": 22.32,
-   "pct": 295,
+   "pct": 295.0,
    "dollar": 1666.75
   },
   {
@@ -1702,7 +1702,7 @@
    "win": true,
    "entry": 2.75,
    "exit": 8.53,
-   "pct": 210,
+   "pct": 210.0,
    "dollar": 577.5
   },
   {
@@ -1713,7 +1713,7 @@
    "win": true,
    "entry": 0.37,
    "exit": 0.83,
-   "pct": 125,
+   "pct": 125.0,
    "dollar": 46.25
   },
   {
@@ -1724,7 +1724,7 @@
    "win": true,
    "entry": 5.39,
    "exit": 8.09,
-   "pct": 50,
+   "pct": 50.0,
    "dollar": 269.5
   },
   {
@@ -1734,9 +1734,9 @@
    "ticker": "MU",
    "win": true,
    "entry": 32.9,
-   "exit": 13,
+   "exit": 13.0,
    "pct": 60.49,
-   "dollar": 1990
+   "dollar": 1990.0
   },
   {
    "id": 159,
@@ -1747,7 +1747,7 @@
    "entry": 6.25,
    "exit": 2.76,
    "pct": 55.84,
-   "dollar": 349
+   "dollar": 349.0
   },
   {
    "id": 160,
@@ -1758,7 +1758,7 @@
    "entry": 3.4,
    "exit": 2.5,
    "pct": 26.47,
-   "dollar": 90
+   "dollar": 90.0
   },
   {
    "id": 161,
@@ -1769,7 +1769,7 @@
    "entry": 3.4,
    "exit": 2.5,
    "pct": 26.47,
-   "dollar": 90
+   "dollar": 90.0
   },
   {
    "id": 162,
@@ -1791,7 +1791,7 @@
    "entry": 1.05,
    "exit": 1.3,
    "pct": 23.81,
-   "dollar": 25
+   "dollar": 25.0
   },
   {
    "id": 164,
@@ -1801,7 +1801,7 @@
    "win": false,
    "entry": 1.05,
    "exit": 0.53,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -52.5
   },
   {
@@ -1813,7 +1813,7 @@
    "entry": 3.05,
    "exit": 11.5,
    "pct": 277.05,
-   "dollar": 845
+   "dollar": 845.0
   },
   {
    "id": 166,
@@ -1821,10 +1821,10 @@
    "analyst": "SCOTT",
    "ticker": "NVDA",
    "win": true,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 14.4,
-   "pct": 260,
-   "dollar": 1040
+   "pct": 260.0,
+   "dollar": 1040.0
   },
   {
    "id": 167,
@@ -1835,7 +1835,7 @@
    "entry": 2.75,
    "exit": 9.05,
    "pct": 229.09,
-   "dollar": 630
+   "dollar": 630.0
   },
   {
    "id": 168,
@@ -1845,8 +1845,8 @@
    "win": true,
    "entry": 3.9,
    "exit": 8.19,
-   "pct": 110,
-   "dollar": 429
+   "pct": 110.0,
+   "dollar": 429.0
   },
   {
    "id": 169,
@@ -1856,8 +1856,8 @@
    "win": true,
    "entry": 4.7,
    "exit": 5.64,
-   "pct": 20,
-   "dollar": 94
+   "pct": 20.0,
+   "dollar": 94.0
   },
   {
    "id": 170,
@@ -1867,7 +1867,7 @@
    "win": false,
    "entry": 0.77,
    "exit": 0.39,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -38.5
   },
   {
@@ -1878,8 +1878,8 @@
    "win": true,
    "entry": 1.6,
    "exit": 0.88,
-   "pct": 45,
-   "dollar": 72
+   "pct": 45.0,
+   "dollar": 72.0
   },
   {
    "id": 172,
@@ -1887,10 +1887,10 @@
    "analyst": "LUXE",
    "ticker": "JLHL",
    "win": true,
-   "entry": 14,
-   "exit": 16,
+   "entry": 14.0,
+   "exit": 16.0,
    "pct": 14.29,
-   "dollar": 2
+   "dollar": 2.0
   },
   {
    "id": 173,
@@ -1898,7 +1898,7 @@
    "analyst": "LUXE",
    "ticker": "JLHL",
    "win": false,
-   "entry": 14,
+   "entry": 14.0,
    "exit": 12.5,
    "pct": -10.71,
    "dollar": -1.5
@@ -1911,8 +1911,8 @@
    "win": false,
    "entry": 1.4,
    "exit": 0.7,
-   "pct": -50,
-   "dollar": -70
+   "pct": -50.0,
+   "dollar": -70.0
   },
   {
    "id": 175,
@@ -1920,10 +1920,10 @@
    "analyst": "SCOTT",
    "ticker": "NVDA",
    "win": true,
-   "entry": 4,
-   "exit": 16,
-   "pct": 300,
-   "dollar": 1200
+   "entry": 4.0,
+   "exit": 16.0,
+   "pct": 300.0,
+   "dollar": 1200.0
   },
   {
    "id": 176,
@@ -1933,7 +1933,7 @@
    "win": false,
    "entry": 6.4,
    "exit": 7.1,
-   "pct": -11,
+   "pct": -11.0,
    "dollar": -70.4
   },
   {
@@ -1945,7 +1945,7 @@
    "entry": 0.37,
    "exit": 0.02,
    "pct": 94.59,
-   "dollar": 35
+   "dollar": 35.0
   },
   {
    "id": 178,
@@ -1956,7 +1956,7 @@
    "entry": 5.2,
    "exit": 7.4,
    "pct": 42.31,
-   "dollar": 220
+   "dollar": 220.0
   },
   {
    "id": 179,
@@ -1966,7 +1966,7 @@
    "win": false,
    "entry": 8.5,
    "exit": 7.22,
-   "pct": -15,
+   "pct": -15.0,
    "dollar": -127.5
   },
   {
@@ -1975,10 +1975,10 @@
    "analyst": "WAXUI",
    "ticker": "SPX",
    "win": true,
-   "entry": 6,
+   "entry": 6.0,
    "exit": 8.3,
    "pct": 38.33,
-   "dollar": 230
+   "dollar": 230.0
   },
   {
    "id": 181,
@@ -1988,7 +1988,7 @@
    "win": false,
    "entry": 2.85,
    "exit": 1.43,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -142.5
   },
   {
@@ -2000,7 +2000,7 @@
    "entry": 1.89,
    "exit": 7.2,
    "pct": 280.95,
-   "dollar": 531
+   "dollar": 531.0
   },
   {
    "id": 183,
@@ -2009,9 +2009,9 @@
    "ticker": "ADBE",
    "win": true,
    "entry": 6.35,
-   "exit": 9,
+   "exit": 9.0,
    "pct": 41.73,
-   "dollar": 265
+   "dollar": 265.0
   },
   {
    "id": 184,
@@ -2021,7 +2021,7 @@
    "win": false,
    "entry": 2.3,
    "exit": 1.5,
-   "pct": -35,
+   "pct": -35.0,
    "dollar": -80.5
   },
   {
@@ -2032,8 +2032,8 @@
    "win": true,
    "entry": 1.5,
    "exit": 2.7,
-   "pct": 80,
-   "dollar": 120
+   "pct": 80.0,
+   "dollar": 120.0
   },
   {
    "id": 186,
@@ -2043,8 +2043,8 @@
    "win": true,
    "entry": 0.8,
    "exit": 0.2,
-   "pct": 75,
-   "dollar": 60
+   "pct": 75.0,
+   "dollar": 60.0
   },
   {
    "id": 187,
@@ -2055,7 +2055,7 @@
    "entry": 5.77,
    "exit": 2.3,
    "pct": 60.14,
-   "dollar": 347
+   "dollar": 347.0
   },
   {
    "id": 188,
@@ -2066,7 +2066,7 @@
    "entry": 3.7,
    "exit": 1.95,
    "pct": 47.3,
-   "dollar": 175
+   "dollar": 175.0
   },
   {
    "id": 189,
@@ -2074,10 +2074,10 @@
    "analyst": "SCOTT",
    "ticker": "NOW",
    "win": true,
-   "entry": 6,
+   "entry": 6.0,
    "exit": 7.5,
-   "pct": 25,
-   "dollar": 150
+   "pct": 25.0,
+   "dollar": 150.0
   },
   {
    "id": 190,
@@ -2088,7 +2088,7 @@
    "entry": 0.46,
    "exit": 0.24,
    "pct": 47.83,
-   "dollar": 22
+   "dollar": 22.0
   },
   {
    "id": 191,
@@ -2110,7 +2110,7 @@
    "entry": 4.4,
    "exit": 6.2,
    "pct": 40.91,
-   "dollar": 180
+   "dollar": 180.0
   },
   {
    "id": 193,
@@ -2120,7 +2120,7 @@
    "win": false,
    "entry": 4.75,
    "exit": 2.38,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -237.5
   },
   {
@@ -2131,8 +2131,8 @@
    "win": false,
    "entry": 1.3,
    "exit": 0.65,
-   "pct": -50,
-   "dollar": -65
+   "pct": -50.0,
+   "dollar": -65.0
   },
   {
    "id": 195,
@@ -2142,8 +2142,8 @@
    "win": false,
    "entry": 2.4,
    "exit": 2.04,
-   "pct": -15,
-   "dollar": -36
+   "pct": -15.0,
+   "dollar": -36.0
   },
   {
    "id": 196,
@@ -2152,9 +2152,9 @@
    "ticker": "AAPL",
    "win": false,
    "entry": 4.15,
-   "exit": 2,
+   "exit": 2.0,
    "pct": -51.81,
-   "dollar": -215
+   "dollar": -215.0
   },
   {
    "id": 197,
@@ -2164,7 +2164,7 @@
    "win": false,
    "entry": null,
    "exit": null,
-   "pct": -15,
+   "pct": -15.0,
    "dollar": null
   },
   {
@@ -2175,8 +2175,8 @@
    "win": false,
    "entry": 0.8,
    "exit": 0.64,
-   "pct": -20,
-   "dollar": -16
+   "pct": -20.0,
+   "dollar": -16.0
   },
   {
    "id": 199,
@@ -2186,7 +2186,7 @@
    "win": false,
    "entry": null,
    "exit": null,
-   "pct": -55,
+   "pct": -55.0,
    "dollar": null
   },
   {
@@ -2198,7 +2198,7 @@
    "entry": 0.62,
    "exit": 1.61,
    "pct": 159.68,
-   "dollar": 99
+   "dollar": 99.0
   },
   {
    "id": 201,
@@ -2209,7 +2209,7 @@
    "entry": 1.07,
    "exit": 0.21,
    "pct": 80.37,
-   "dollar": 86
+   "dollar": 86.0
   },
   {
    "id": 202,
@@ -2218,9 +2218,9 @@
    "ticker": "SPX",
    "win": true,
    "entry": 4.2,
-   "exit": 6,
+   "exit": 6.0,
    "pct": 42.86,
-   "dollar": 180
+   "dollar": 180.0
   },
   {
    "id": 203,
@@ -2231,7 +2231,7 @@
    "entry": 1.1,
    "exit": 1.35,
    "pct": 22.73,
-   "dollar": 25
+   "dollar": 25.0
   },
   {
    "id": 204,
@@ -2263,8 +2263,8 @@
    "win": false,
    "entry": 6.5,
    "exit": 5.07,
-   "pct": -22,
-   "dollar": -143
+   "pct": -22.0,
+   "dollar": -143.0
   },
   {
    "id": 207,
@@ -2274,7 +2274,7 @@
    "win": false,
    "entry": 5.8,
    "exit": 4.52,
-   "pct": -22,
+   "pct": -22.0,
    "dollar": -127.6
   },
   {
@@ -2283,10 +2283,10 @@
    "analyst": "BISHOP",
    "ticker": "BABA",
    "win": false,
-   "entry": 5,
+   "entry": 5.0,
    "exit": 3.25,
-   "pct": -35,
-   "dollar": -175
+   "pct": -35.0,
+   "dollar": -175.0
   },
   {
    "id": 209,
@@ -2296,8 +2296,8 @@
    "win": false,
    "entry": 7.8,
    "exit": 3.9,
-   "pct": -50,
-   "dollar": -390
+   "pct": -50.0,
+   "dollar": -390.0
   },
   {
    "id": 210,
@@ -2308,7 +2308,7 @@
    "entry": 9.9,
    "exit": 45.29,
    "pct": 357.47,
-   "dollar": 3539
+   "dollar": 3539.0
   },
   {
    "id": 211,
@@ -2319,7 +2319,7 @@
    "entry": 5.8,
    "exit": 11.8,
    "pct": 103.45,
-   "dollar": 600
+   "dollar": 600.0
   },
   {
    "id": 212,
@@ -2330,7 +2330,7 @@
    "entry": 1.11,
    "exit": 1.55,
    "pct": 39.64,
-   "dollar": 44
+   "dollar": 44.0
   },
   {
    "id": 213,
@@ -2340,8 +2340,8 @@
    "win": false,
    "entry": 1.8,
    "exit": 0.9,
-   "pct": -50,
-   "dollar": -90
+   "pct": -50.0,
+   "dollar": -90.0
   },
   {
    "id": 214,
@@ -2352,7 +2352,7 @@
    "entry": 10.51,
    "exit": 1.75,
    "pct": 83.35,
-   "dollar": 876
+   "dollar": 876.0
   },
   {
    "id": 215,
@@ -2363,7 +2363,7 @@
    "entry": 2.94,
    "exit": 2.26,
    "pct": -23.13,
-   "dollar": -68
+   "dollar": -68.0
   },
   {
    "id": 216,
@@ -2373,7 +2373,7 @@
    "win": true,
    "entry": 1.63,
    "exit": 2.93,
-   "pct": 80,
+   "pct": 80.0,
    "dollar": 130.4
   },
   {
@@ -2384,8 +2384,8 @@
    "win": false,
    "entry": 1.2,
    "exit": 0.6,
-   "pct": -50,
-   "dollar": -60
+   "pct": -50.0,
+   "dollar": -60.0
   },
   {
    "id": 218,
@@ -2395,8 +2395,8 @@
    "win": false,
    "entry": 1.4,
    "exit": 0.7,
-   "pct": -50,
-   "dollar": -70
+   "pct": -50.0,
+   "dollar": -70.0
   },
   {
    "id": 219,
@@ -2406,8 +2406,8 @@
    "win": true,
    "entry": 5.65,
    "exit": 24.86,
-   "pct": 340,
-   "dollar": 1921
+   "pct": 340.0,
+   "dollar": 1921.0
   },
   {
    "id": 220,
@@ -2416,9 +2416,9 @@
    "ticker": "IGV",
    "win": true,
    "entry": 2.75,
-   "exit": 11,
-   "pct": 300,
-   "dollar": 825
+   "exit": 11.0,
+   "pct": 300.0,
+   "dollar": 825.0
   },
   {
    "id": 221,
@@ -2428,7 +2428,7 @@
    "win": true,
    "entry": 1.63,
    "exit": 5.13,
-   "pct": 215,
+   "pct": 215.0,
    "dollar": 350.45
   },
   {
@@ -2439,8 +2439,8 @@
    "win": true,
    "entry": 5.6,
    "exit": 8.4,
-   "pct": 50,
-   "dollar": 280
+   "pct": 50.0,
+   "dollar": 280.0
   },
   {
    "id": 223,
@@ -2461,7 +2461,7 @@
    "win": false,
    "entry": 3.15,
    "exit": 1.73,
-   "pct": -45,
+   "pct": -45.0,
    "dollar": -141.75
   },
   {
@@ -2472,8 +2472,8 @@
    "win": false,
    "entry": 3.8,
    "exit": 2.09,
-   "pct": -45,
-   "dollar": -171
+   "pct": -45.0,
+   "dollar": -171.0
   },
   {
    "id": 226,
@@ -2483,7 +2483,7 @@
    "win": true,
    "entry": null,
    "exit": null,
-   "pct": 50,
+   "pct": 50.0,
    "dollar": null
   },
   {
@@ -2493,9 +2493,9 @@
    "ticker": "SKHY",
    "win": true,
    "entry": 5.8,
-   "exit": 21,
+   "exit": 21.0,
    "pct": 262.07,
-   "dollar": 1520
+   "dollar": 1520.0
   },
   {
    "id": 228,
@@ -2506,7 +2506,7 @@
    "entry": 2.9,
    "exit": 5.2,
    "pct": 79.31,
-   "dollar": 230
+   "dollar": 230.0
   },
   {
    "id": 229,
@@ -2517,7 +2517,7 @@
    "entry": 19.2,
    "exit": 33.5,
    "pct": 74.48,
-   "dollar": 1430
+   "dollar": 1430.0
   },
   {
    "id": 230,
@@ -2528,7 +2528,7 @@
    "entry": 1.07,
    "exit": 2.8,
    "pct": 161.68,
-   "dollar": -173
+   "dollar": -173.0
   },
   {
    "id": 231,
@@ -2539,7 +2539,7 @@
    "entry": 3.3,
    "exit": 0.23,
    "pct": 93.03,
-   "dollar": 307
+   "dollar": 307.0
   },
   {
    "id": 232,
@@ -2550,7 +2550,7 @@
    "entry": 0.74,
    "exit": 0.34,
    "pct": 54.05,
-   "dollar": 40
+   "dollar": 40.0
   },
   {
    "id": 233,
@@ -2558,7 +2558,7 @@
    "analyst": "LUXE",
    "ticker": "XHG",
    "win": true,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 7.23,
    "pct": 80.75,
    "dollar": 3.23
@@ -2569,10 +2569,10 @@
    "analyst": "MORDY",
    "ticker": "NBIS",
    "win": true,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 5.2,
-   "pct": 30,
-   "dollar": 120
+   "pct": 30.0,
+   "dollar": 120.0
   },
   {
    "id": 235,
@@ -2581,9 +2581,9 @@
    "ticker": "SKHY",
    "win": true,
    "entry": 5.8,
-   "exit": 24,
+   "exit": 24.0,
    "pct": 313.79,
-   "dollar": 1820
+   "dollar": 1820.0
   },
   {
    "id": 236,
@@ -2594,7 +2594,7 @@
    "entry": 1.42,
    "exit": 1.75,
    "pct": 23.24,
-   "dollar": 33
+   "dollar": 33.0
   },
   {
    "id": 237,
@@ -2603,9 +2603,9 @@
    "ticker": "NBIS",
    "win": false,
    "entry": 4.25,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -425
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -425.0
   },
   {
    "id": 238,
@@ -2613,10 +2613,10 @@
    "analyst": "COBAIN",
    "ticker": "TSLA",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 2.26,
-   "pct": 126,
-   "dollar": 126
+   "pct": 126.0,
+   "dollar": 126.0
   },
   {
    "id": 239,
@@ -2626,8 +2626,8 @@
    "win": true,
    "entry": 0.28,
    "exit": 0.56,
-   "pct": 100,
-   "dollar": 28
+   "pct": 100.0,
+   "dollar": 28.0
   },
   {
    "id": 240,
@@ -2636,9 +2636,9 @@
    "ticker": "TSLA",
    "win": false,
    "entry": 0.55,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -55
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -55.0
   },
   {
    "id": 241,
@@ -2646,10 +2646,10 @@
    "analyst": "SCOTT",
    "ticker": "SPCX",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 1.4,
-   "pct": 40,
-   "dollar": 40
+   "pct": 40.0,
+   "dollar": 40.0
   },
   {
    "id": 242,
@@ -2659,7 +2659,7 @@
    "win": true,
    "entry": 1.5,
    "exit": 2.02,
-   "pct": 35,
+   "pct": 35.0,
    "dollar": 52.5
   },
   {
@@ -2670,7 +2670,7 @@
    "win": true,
    "entry": 0.88,
    "exit": 1.14,
-   "pct": 30,
+   "pct": 30.0,
    "dollar": 26.4
   },
   {
@@ -2681,8 +2681,8 @@
    "win": true,
    "entry": 4.7,
    "exit": 5.64,
-   "pct": 20,
-   "dollar": 94
+   "pct": 20.0,
+   "dollar": 94.0
   },
   {
    "id": 245,
@@ -2693,7 +2693,7 @@
    "entry": 4.82,
    "exit": 3.05,
    "pct": 36.72,
-   "dollar": 177
+   "dollar": 177.0
   },
   {
    "id": 246,
@@ -2704,7 +2704,7 @@
    "entry": 5.6,
    "exit": 5.9,
    "pct": 5.36,
-   "dollar": 30
+   "dollar": 30.0
   },
   {
    "id": 247,
@@ -2715,7 +2715,7 @@
    "entry": 3.45,
    "exit": 3.15,
    "pct": -8.7,
-   "dollar": -30
+   "dollar": -30.0
   },
   {
    "id": 248,
@@ -2724,9 +2724,9 @@
    "ticker": "SKHY",
    "win": true,
    "entry": 5.8,
-   "exit": 28,
+   "exit": 28.0,
    "pct": 382.76,
-   "dollar": 2220
+   "dollar": 2220.0
   },
   {
    "id": 249,
@@ -2736,7 +2736,7 @@
    "win": false,
    "entry": 3.9,
    "exit": 3.28,
-   "pct": -16,
+   "pct": -16.0,
    "dollar": -62.4
   },
   {
@@ -2745,10 +2745,10 @@
    "analyst": "BISHOP",
    "ticker": "AMD",
    "win": false,
-   "entry": 16,
+   "entry": 16.0,
    "exit": 10.4,
-   "pct": -35,
-   "dollar": -560
+   "pct": -35.0,
+   "dollar": -560.0
   },
   {
    "id": 251,
@@ -2759,7 +2759,7 @@
    "entry": 3.25,
    "exit": 7.6,
    "pct": 133.85,
-   "dollar": 435
+   "dollar": 435.0
   },
   {
    "id": 252,
@@ -2769,8 +2769,8 @@
    "win": true,
    "entry": 0.87,
    "exit": 1.74,
-   "pct": 100,
-   "dollar": 87
+   "pct": 100.0,
+   "dollar": 87.0
   },
   {
    "id": 253,
@@ -2780,7 +2780,7 @@
    "win": true,
    "entry": 140.85,
    "exit": 183.1,
-   "pct": 30,
+   "pct": 30.0,
    "dollar": 42.25
   },
   {
@@ -2789,10 +2789,10 @@
    "analyst": "MR. SWINGER",
    "ticker": "QQQ",
    "win": false,
-   "entry": 2,
+   "entry": 2.0,
    "exit": 1.8,
-   "pct": -10,
-   "dollar": -20
+   "pct": -10.0,
+   "dollar": -20.0
   },
   {
    "id": 255,
@@ -2802,7 +2802,7 @@
    "win": false,
    "entry": 0.57,
    "exit": 0.28,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -28.5
   },
   {
@@ -2813,7 +2813,7 @@
    "win": true,
    "entry": 1.05,
    "exit": 2.15,
-   "pct": 105,
+   "pct": 105.0,
    "dollar": 110.25
   },
   {
@@ -2824,7 +2824,7 @@
    "win": true,
    "entry": 1.65,
    "exit": 2.06,
-   "pct": 25,
+   "pct": 25.0,
    "dollar": 41.25
   },
   {
@@ -2833,10 +2833,10 @@
    "analyst": "SCOTT",
    "ticker": "HOOD",
    "win": false,
-   "entry": 5,
+   "entry": 5.0,
    "exit": 3.75,
-   "pct": -25,
-   "dollar": -125
+   "pct": -25.0,
+   "dollar": -125.0
   },
   {
    "id": 259,
@@ -2846,7 +2846,7 @@
    "win": false,
    "entry": 10.75,
    "exit": 4.84,
-   "pct": -55,
+   "pct": -55.0,
    "dollar": -591.25
   },
   {
@@ -2858,7 +2858,7 @@
    "entry": 1.05,
    "exit": 1.75,
    "pct": 66.67,
-   "dollar": 70
+   "dollar": 70.0
   },
   {
    "id": 261,
@@ -2866,10 +2866,10 @@
    "analyst": "WAXUI",
    "ticker": "SPY",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 1.25,
-   "pct": 25,
-   "dollar": 25
+   "pct": 25.0,
+   "dollar": 25.0
   },
   {
    "id": 262,
@@ -2880,7 +2880,7 @@
    "entry": 1.51,
    "exit": 2.4,
    "pct": 58.94,
-   "dollar": 89
+   "dollar": 89.0
   },
   {
    "id": 263,
@@ -2889,9 +2889,9 @@
    "ticker": "MU",
    "win": true,
    "entry": 7.95,
-   "exit": 9,
+   "exit": 9.0,
    "pct": 13.21,
-   "dollar": 105
+   "dollar": 105.0
   },
   {
    "id": 264,
@@ -2901,7 +2901,7 @@
    "win": false,
    "entry": 5.8,
    "exit": 4.41,
-   "pct": -24,
+   "pct": -24.0,
    "dollar": -139.2
   },
   {
@@ -2913,7 +2913,7 @@
    "entry": 0.99,
    "exit": 1.2,
    "pct": 21.21,
-   "dollar": 21
+   "dollar": 21.0
   },
   {
    "id": 266,
@@ -2923,8 +2923,8 @@
    "win": false,
    "entry": 4.9,
    "exit": 2.45,
-   "pct": -50,
-   "dollar": -245
+   "pct": -50.0,
+   "dollar": -245.0
   },
   {
    "id": 267,
@@ -2933,9 +2933,9 @@
    "ticker": "JNJ",
    "win": true,
    "entry": 0.28,
-   "exit": 1,
+   "exit": 1.0,
    "pct": 257.14,
-   "dollar": 72
+   "dollar": 72.0
   },
   {
    "id": 268,
@@ -2945,8 +2945,8 @@
    "win": true,
    "entry": 1.2,
    "exit": 2.7,
-   "pct": 125,
-   "dollar": 150
+   "pct": 125.0,
+   "dollar": 150.0
   },
   {
    "id": 269,
@@ -2954,10 +2954,10 @@
    "analyst": "WAXUI",
    "ticker": "SPY",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 2.05,
-   "pct": 105,
-   "dollar": 105
+   "pct": 105.0,
+   "dollar": 105.0
   },
   {
    "id": 270,
@@ -2968,7 +2968,7 @@
    "entry": 1.3,
    "exit": 2.2,
    "pct": 69.23,
-   "dollar": 90
+   "dollar": 90.0
   },
   {
    "id": 271,
@@ -2978,8 +2978,8 @@
    "win": false,
    "entry": 1.75,
    "exit": 1.33,
-   "pct": -24,
-   "dollar": -42
+   "pct": -24.0,
+   "dollar": -42.0
   },
   {
    "id": 272,
@@ -2987,10 +2987,10 @@
    "analyst": "BISHOP",
    "ticker": "GE",
    "win": false,
-   "entry": 7,
+   "entry": 7.0,
    "exit": 3.5,
-   "pct": -50,
-   "dollar": -350
+   "pct": -50.0,
+   "dollar": -350.0
   },
   {
    "id": 273,
@@ -3000,8 +3000,8 @@
    "win": false,
    "entry": 7.1,
    "exit": 3.55,
-   "pct": -50,
-   "dollar": -355
+   "pct": -50.0,
+   "dollar": -355.0
   },
   {
    "id": 274,
@@ -3011,7 +3011,7 @@
    "win": true,
    "entry": 3.55,
    "exit": 5.33,
-   "pct": 50,
+   "pct": 50.0,
    "dollar": 177.5
   },
   {
@@ -3022,8 +3022,8 @@
    "win": true,
    "entry": 0.74,
    "exit": 1.11,
-   "pct": 50,
-   "dollar": 37
+   "pct": 50.0,
+   "dollar": 37.0
   },
   {
    "id": 276,
@@ -3033,8 +3033,8 @@
    "win": true,
    "entry": 1.1,
    "exit": 1.32,
-   "pct": 20,
-   "dollar": 22
+   "pct": 20.0,
+   "dollar": 22.0
   },
   {
    "id": 277,
@@ -3045,7 +3045,7 @@
    "entry": 5.28,
    "exit": 3.6,
    "pct": -31.82,
-   "dollar": -168
+   "dollar": -168.0
   },
   {
    "id": 278,
@@ -3055,7 +3055,7 @@
    "win": true,
    "entry": 0.87,
    "exit": 2.17,
-   "pct": 150,
+   "pct": 150.0,
    "dollar": 130.5
   },
   {
@@ -3066,7 +3066,7 @@
    "win": true,
    "entry": 1.74,
    "exit": 2.44,
-   "pct": 40,
+   "pct": 40.0,
    "dollar": 69.6
   },
   {
@@ -3078,7 +3078,7 @@
    "entry": 1.3,
    "exit": 2.45,
    "pct": 88.46,
-   "dollar": 115
+   "dollar": 115.0
   },
   {
    "id": 281,
@@ -3089,7 +3089,7 @@
    "entry": 2.3,
    "exit": 3.3,
    "pct": 43.48,
-   "dollar": 100
+   "dollar": 100.0
   },
   {
    "id": 282,
@@ -3100,7 +3100,7 @@
    "entry": 1.35,
    "exit": 1.65,
    "pct": 22.22,
-   "dollar": 30
+   "dollar": 30.0
   },
   {
    "id": 283,
@@ -3110,7 +3110,7 @@
    "win": false,
    "entry": 5.2,
    "exit": 4.32,
-   "pct": -17,
+   "pct": -17.0,
    "dollar": -88.4
   },
   {
@@ -3121,7 +3121,7 @@
    "win": false,
    "entry": 4.85,
    "exit": 3.54,
-   "pct": -27,
+   "pct": -27.0,
    "dollar": -130.95
   },
   {
@@ -3133,7 +3133,7 @@
    "entry": 8.75,
    "exit": 6.1,
    "pct": -30.29,
-   "dollar": -265
+   "dollar": -265.0
   },
   {
    "id": 286,
@@ -3143,8 +3143,8 @@
    "win": false,
    "entry": 5.4,
    "exit": 2.7,
-   "pct": -50,
-   "dollar": -270
+   "pct": -50.0,
+   "dollar": -270.0
   },
   {
    "id": 287,
@@ -3155,7 +3155,7 @@
    "entry": 1.66,
    "exit": 2.7,
    "pct": 62.65,
-   "dollar": 104
+   "dollar": 104.0
   },
   {
    "id": 288,
@@ -3166,7 +3166,7 @@
    "entry": 0.95,
    "exit": 1.35,
    "pct": 42.11,
-   "dollar": 40
+   "dollar": 40.0
   },
   {
    "id": 289,
@@ -3176,7 +3176,7 @@
    "win": true,
    "entry": 1.98,
    "exit": 2.77,
-   "pct": 40,
+   "pct": 40.0,
    "dollar": 79.2
   },
   {
@@ -3187,7 +3187,7 @@
    "win": true,
    "entry": 0.92,
    "exit": 1.1,
-   "pct": 20,
+   "pct": 20.0,
    "dollar": 18.4
   },
   {
@@ -3198,8 +3198,8 @@
    "win": false,
    "entry": 2.25,
    "exit": 1.8,
-   "pct": -20,
-   "dollar": -45
+   "pct": -20.0,
+   "dollar": -45.0
   },
   {
    "id": 292,
@@ -3209,7 +3209,7 @@
    "win": false,
    "entry": 0.82,
    "exit": 0.57,
-   "pct": -30,
+   "pct": -30.0,
    "dollar": -24.6
   },
   {
@@ -3220,8 +3220,8 @@
    "win": false,
    "entry": 5.2,
    "exit": 3.12,
-   "pct": -40,
-   "dollar": -208
+   "pct": -40.0,
+   "dollar": -208.0
   },
   {
    "id": 294,
@@ -3231,7 +3231,7 @@
    "win": false,
    "entry": 0.85,
    "exit": 0.42,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -42.5
   },
   {
@@ -3242,7 +3242,7 @@
    "win": false,
    "entry": 2.57,
    "exit": 0.64,
-   "pct": -75,
+   "pct": -75.0,
    "dollar": -192.75
   },
   {
@@ -3254,7 +3254,7 @@
    "entry": 0.93,
    "exit": 3.02,
    "pct": 224.73,
-   "dollar": 209
+   "dollar": 209.0
   },
   {
    "id": 297,
@@ -3262,10 +3262,10 @@
    "analyst": "MR. SWINGER",
    "ticker": "QQQ",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 2.6,
-   "pct": 160,
-   "dollar": 160
+   "pct": 160.0,
+   "dollar": 160.0
   },
   {
    "id": 298,
@@ -3275,8 +3275,8 @@
    "win": true,
    "entry": 0.28,
    "exit": 0.84,
-   "pct": 200,
-   "dollar": 56
+   "pct": 200.0,
+   "dollar": 56.0
   },
   {
    "id": 299,
@@ -3285,9 +3285,9 @@
    "ticker": "MCD",
    "win": false,
    "entry": 0.39,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -39
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -39.0
   },
   {
    "id": 300,
@@ -3298,7 +3298,7 @@
    "entry": 0.77,
    "exit": 2.08,
    "pct": 170.13,
-   "dollar": 131
+   "dollar": 131.0
   },
   {
    "id": 301,
@@ -3308,8 +3308,8 @@
    "win": true,
    "entry": 4.3,
    "exit": 10.75,
-   "pct": 150,
-   "dollar": 645
+   "pct": 150.0,
+   "dollar": 645.0
   },
   {
    "id": 302,
@@ -3319,7 +3319,7 @@
    "win": true,
    "entry": 3.41,
    "exit": 8.18,
-   "pct": 140,
+   "pct": 140.0,
    "dollar": 477.4
   },
   {
@@ -3330,7 +3330,7 @@
    "win": true,
    "entry": 1.98,
    "exit": 3.17,
-   "pct": 60,
+   "pct": 60.0,
    "dollar": 118.8
   },
   {
@@ -3341,7 +3341,7 @@
    "win": true,
    "entry": 2.51,
    "exit": 3.51,
-   "pct": 40,
+   "pct": 40.0,
    "dollar": 100.4
   },
   {
@@ -3352,7 +3352,7 @@
    "win": true,
    "entry": 1.04,
    "exit": 1.4,
-   "pct": 35,
+   "pct": 35.0,
    "dollar": 36.4
   },
   {
@@ -3363,7 +3363,7 @@
    "win": false,
    "entry": 5.55,
    "exit": 3.05,
-   "pct": -45,
+   "pct": -45.0,
    "dollar": -249.75
   },
   {
@@ -3374,8 +3374,8 @@
    "win": false,
    "entry": 0.7,
    "exit": 0.35,
-   "pct": -50,
-   "dollar": -35
+   "pct": -50.0,
+   "dollar": -35.0
   },
   {
    "id": 308,
@@ -3384,9 +3384,9 @@
    "ticker": "VERA",
    "win": false,
    "entry": 4.3,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -430
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -430.0
   },
   {
    "id": 309,
@@ -3395,9 +3395,9 @@
    "ticker": "NBIS",
    "win": true,
    "entry": 2.49,
-   "exit": 0,
-   "pct": 100,
-   "dollar": 249
+   "exit": 0.0,
+   "pct": 100.0,
+   "dollar": 249.0
   },
   {
    "id": 310,
@@ -3408,7 +3408,7 @@
    "entry": 3.9,
    "exit": 6.4,
    "pct": 64.1,
-   "dollar": 250
+   "dollar": 250.0
   },
   {
    "id": 311,
@@ -3419,7 +3419,7 @@
    "entry": 2.3,
    "exit": 3.7,
    "pct": 60.87,
-   "dollar": 140
+   "dollar": 140.0
   },
   {
    "id": 312,
@@ -3427,10 +3427,10 @@
    "analyst": "WAXUI",
    "ticker": "SPX",
    "win": true,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 7.4,
-   "pct": 85,
-   "dollar": 340
+   "pct": 85.0,
+   "dollar": 340.0
   },
   {
    "id": 313,
@@ -3441,7 +3441,7 @@
    "entry": 0.83,
    "exit": 1.1,
    "pct": 32.53,
-   "dollar": 27
+   "dollar": 27.0
   },
   {
    "id": 314,
@@ -3449,10 +3449,10 @@
    "analyst": "SHOWTIME",
    "ticker": "IREN",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 0.22,
-   "pct": 78,
-   "dollar": 78
+   "pct": 78.0,
+   "dollar": 78.0
   },
   {
    "id": 315,
@@ -3462,7 +3462,7 @@
    "win": true,
    "entry": 0.92,
    "exit": 1.29,
-   "pct": 40,
+   "pct": 40.0,
    "dollar": 36.8
   },
   {
@@ -3471,10 +3471,10 @@
    "analyst": "SCOTT",
    "ticker": "HOOD",
    "win": true,
-   "entry": 2,
+   "entry": 2.0,
    "exit": 1.4,
-   "pct": 30,
-   "dollar": 60
+   "pct": 30.0,
+   "dollar": 60.0
   },
   {
    "id": 317,
@@ -3484,7 +3484,7 @@
    "win": true,
    "entry": 2.95,
    "exit": 3.69,
-   "pct": 25,
+   "pct": 25.0,
    "dollar": 73.75
   },
   {
@@ -3496,7 +3496,7 @@
    "entry": 4.44,
    "exit": 5.78,
    "pct": 30.18,
-   "dollar": 134
+   "dollar": 134.0
   },
   {
    "id": 319,
@@ -3507,7 +3507,7 @@
    "entry": 1.15,
    "exit": 1.1,
    "pct": -4.35,
-   "dollar": -5
+   "dollar": -5.0
   },
   {
    "id": 320,
@@ -3515,10 +3515,10 @@
    "analyst": "BISHOP",
    "ticker": "SHOP",
    "win": false,
-   "entry": 5,
+   "entry": 5.0,
    "exit": 4.25,
-   "pct": -15,
-   "dollar": -75
+   "pct": -15.0,
+   "dollar": -75.0
   },
   {
    "id": 321,
@@ -3528,7 +3528,7 @@
    "win": false,
    "entry": 5.75,
    "exit": 4.71,
-   "pct": -18,
+   "pct": -18.0,
    "dollar": -103.5
   },
   {
@@ -3539,8 +3539,8 @@
    "win": false,
    "entry": 6.7,
    "exit": 3.35,
-   "pct": -50,
-   "dollar": -335
+   "pct": -50.0,
+   "dollar": -335.0
   },
   {
    "id": 323,
@@ -3550,8 +3550,8 @@
    "win": false,
    "entry": 1.1,
    "exit": 0.88,
-   "pct": -20,
-   "dollar": -22
+   "pct": -20.0,
+   "dollar": -22.0
   },
   {
    "id": 324,
@@ -3561,7 +3561,7 @@
    "win": true,
    "entry": 4.44,
    "exit": 8.52,
-   "pct": 92,
+   "pct": 92.0,
    "dollar": 408.48
   },
   {
@@ -3573,7 +3573,7 @@
    "entry": 0.31,
    "exit": 0.51,
    "pct": 64.52,
-   "dollar": 20
+   "dollar": 20.0
   },
   {
    "id": 326,
@@ -3584,7 +3584,7 @@
    "entry": 5.5,
    "exit": 6.95,
    "pct": 26.36,
-   "dollar": 145
+   "dollar": 145.0
   },
   {
    "id": 327,
@@ -3594,7 +3594,7 @@
    "win": false,
    "entry": 2.8,
    "exit": 2.18,
-   "pct": -22,
+   "pct": -22.0,
    "dollar": -61.6
   },
   {
@@ -3605,7 +3605,7 @@
    "win": false,
    "entry": 3.15,
    "exit": 2.46,
-   "pct": -22,
+   "pct": -22.0,
    "dollar": -69.3
   },
   {
@@ -3616,7 +3616,7 @@
    "win": false,
    "entry": 1.49,
    "exit": 1.03,
-   "pct": -31,
+   "pct": -31.0,
    "dollar": -46.19
   },
   {
@@ -3628,7 +3628,7 @@
    "entry": 2.82,
    "exit": 1.68,
    "pct": 40.43,
-   "dollar": 114
+   "dollar": 114.0
   },
   {
    "id": 331,
@@ -3638,7 +3638,7 @@
    "win": true,
    "entry": 0.94,
    "exit": 1.18,
-   "pct": 25,
+   "pct": 25.0,
    "dollar": 23.5
   },
   {
@@ -3649,7 +3649,7 @@
    "win": true,
    "entry": 2.95,
    "exit": 3.69,
-   "pct": 25,
+   "pct": 25.0,
    "dollar": 73.75
   },
   {
@@ -3660,8 +3660,8 @@
    "win": true,
    "entry": 2.75,
    "exit": 3.3,
-   "pct": 20,
-   "dollar": 55
+   "pct": 20.0,
+   "dollar": 55.0
   },
   {
    "id": 334,
@@ -3671,7 +3671,7 @@
    "win": false,
    "entry": 2.2,
    "exit": 1.69,
-   "pct": -23,
+   "pct": -23.0,
    "dollar": -50.6
   },
   {
@@ -3682,7 +3682,7 @@
    "win": false,
    "entry": 4.63,
    "exit": 3.94,
-   "pct": -15,
+   "pct": -15.0,
    "dollar": -69.45
   },
   {
@@ -3694,7 +3694,7 @@
    "entry": 4.5,
    "exit": 8.5,
    "pct": 88.89,
-   "dollar": 400
+   "dollar": 400.0
   },
   {
    "id": 337,
@@ -3704,8 +3704,8 @@
    "win": false,
    "entry": 3.8,
    "exit": 1.9,
-   "pct": -50,
-   "dollar": -190
+   "pct": -50.0,
+   "dollar": -190.0
   },
   {
    "id": 338,
@@ -3715,7 +3715,7 @@
    "win": true,
    "entry": 0.45,
    "exit": 0.19,
-   "pct": 58,
+   "pct": 58.0,
    "dollar": 26.1
   },
   {
@@ -3725,9 +3725,9 @@
    "ticker": "RDDT",
    "win": true,
    "entry": 6.39,
-   "exit": 8,
+   "exit": 8.0,
    "pct": 25.2,
-   "dollar": 161
+   "dollar": 161.0
   },
   {
    "id": 340,
@@ -3738,7 +3738,7 @@
    "entry": 2.71,
    "exit": 1.5,
    "pct": 44.65,
-   "dollar": 121
+   "dollar": 121.0
   },
   {
    "id": 341,
@@ -3749,7 +3749,7 @@
    "entry": 6.7,
    "exit": 5.05,
    "pct": -24.63,
-   "dollar": -165
+   "dollar": -165.0
   },
   {
    "id": 342,
@@ -3760,7 +3760,7 @@
    "entry": 0.72,
    "exit": 0.91,
    "pct": 26.39,
-   "dollar": 19
+   "dollar": 19.0
   },
   {
    "id": 343,
@@ -3768,7 +3768,7 @@
    "analyst": "LUXE",
    "ticker": "XPON",
    "win": true,
-   "entry": 10,
+   "entry": 10.0,
    "exit": 11.79,
    "pct": 17.9,
    "dollar": 1.79
@@ -3779,7 +3779,7 @@
    "analyst": "LUXE",
    "ticker": "CRE",
    "win": true,
-   "entry": 8,
+   "entry": 8.0,
    "exit": 8.6,
    "pct": 7.5,
    "dollar": 0.6
@@ -3793,7 +3793,7 @@
    "entry": 0.95,
    "exit": 0.85,
    "pct": -10.53,
-   "dollar": -10
+   "dollar": -10.0
   },
   {
    "id": 346,
@@ -3803,7 +3803,7 @@
    "win": false,
    "entry": 0.39,
    "exit": 0.25,
-   "pct": -35,
+   "pct": -35.0,
    "dollar": -13.65
   },
   {
@@ -3814,8 +3814,8 @@
    "win": false,
    "entry": 5.7,
    "exit": 3.42,
-   "pct": -40,
-   "dollar": -228
+   "pct": -40.0,
+   "dollar": -228.0
   },
   {
    "id": 348,
@@ -3825,7 +3825,7 @@
    "win": false,
    "entry": 0.53,
    "exit": 0.32,
-   "pct": -40,
+   "pct": -40.0,
    "dollar": -21.2
   },
   {
@@ -3836,7 +3836,7 @@
    "win": false,
    "entry": 1.11,
    "exit": 0.78,
-   "pct": -30,
+   "pct": -30.0,
    "dollar": -33.3
   },
   {
@@ -3846,9 +3846,9 @@
    "ticker": "PLTR",
    "win": true,
    "entry": 2.5,
-   "exit": 6,
-   "pct": 140,
-   "dollar": 350
+   "exit": 6.0,
+   "pct": 140.0,
+   "dollar": 350.0
   },
   {
    "id": 351,
@@ -3858,7 +3858,7 @@
    "win": true,
    "entry": 2.9,
    "exit": 6.82,
-   "pct": 135,
+   "pct": 135.0,
    "dollar": 391.5
   },
   {
@@ -3869,8 +3869,8 @@
    "win": true,
    "entry": 4.4,
    "exit": 6.6,
-   "pct": 50,
-   "dollar": 220
+   "pct": 50.0,
+   "dollar": 220.0
   },
   {
    "id": 353,
@@ -3880,7 +3880,7 @@
    "win": true,
    "entry": 0.94,
    "exit": 1.08,
-   "pct": 15,
+   "pct": 15.0,
    "dollar": 14.1
   },
   {
@@ -3891,8 +3891,8 @@
    "win": false,
    "entry": 6.4,
    "exit": 5.12,
-   "pct": -20,
-   "dollar": -128
+   "pct": -20.0,
+   "dollar": -128.0
   },
   {
    "id": 355,
@@ -3902,7 +3902,7 @@
    "win": false,
    "entry": 0.73,
    "exit": 0.51,
-   "pct": -30,
+   "pct": -30.0,
    "dollar": -21.9
   },
   {
@@ -3914,7 +3914,7 @@
    "entry": 7.6,
    "exit": 3.2,
    "pct": 57.89,
-   "dollar": 440
+   "dollar": 440.0
   },
   {
    "id": 357,
@@ -3924,8 +3924,8 @@
    "win": true,
    "entry": 1.36,
    "exit": 0.68,
-   "pct": 50,
-   "dollar": 68
+   "pct": 50.0,
+   "dollar": 68.0
   },
   {
    "id": 358,
@@ -3936,7 +3936,7 @@
    "entry": 7.2,
    "exit": 3.9,
    "pct": 45.83,
-   "dollar": 330
+   "dollar": 330.0
   },
   {
    "id": 359,
@@ -3946,7 +3946,7 @@
    "win": true,
    "entry": 124.98,
    "exit": 151.22,
-   "pct": 21,
+   "pct": 21.0,
    "dollar": 26.24
   },
   {
@@ -3957,7 +3957,7 @@
    "win": false,
    "entry": 6.7,
    "exit": 4.96,
-   "pct": -26,
+   "pct": -26.0,
    "dollar": -174.2
   },
   {
@@ -3968,8 +3968,8 @@
    "win": true,
    "entry": 0.05,
    "exit": 0.51,
-   "pct": 920,
-   "dollar": 46
+   "pct": 920.0,
+   "dollar": 46.0
   },
   {
    "id": 362,
@@ -3980,7 +3980,7 @@
    "entry": 0.67,
    "exit": 1.9,
    "pct": 183.58,
-   "dollar": 123
+   "dollar": 123.0
   },
   {
    "id": 363,
@@ -3990,8 +3990,8 @@
    "win": true,
    "entry": 0.6,
    "exit": 0.87,
-   "pct": 45,
-   "dollar": 27
+   "pct": 45.0,
+   "dollar": 27.0
   },
   {
    "id": 364,
@@ -4002,7 +4002,7 @@
    "entry": 0.4,
    "exit": 0.55,
    "pct": 37.5,
-   "dollar": 15
+   "dollar": 15.0
   },
   {
    "id": 365,
@@ -4011,9 +4011,9 @@
    "ticker": "MCD",
    "win": false,
    "entry": 0.57,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -57
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -57.0
   },
   {
    "id": 366,
@@ -4022,9 +4022,9 @@
    "ticker": "CRCL",
    "win": false,
    "entry": 0.57,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -57
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -57.0
   },
   {
    "id": 367,
@@ -4033,9 +4033,9 @@
    "ticker": "MRNA",
    "win": false,
    "entry": 0.76,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -76
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -76.0
   },
   {
    "id": 368,
@@ -4045,8 +4045,8 @@
    "win": true,
    "entry": 0.75,
    "exit": 2.1,
-   "pct": 180,
-   "dollar": 135
+   "pct": 180.0,
+   "dollar": 135.0
   },
   {
    "id": 369,
@@ -4056,7 +4056,7 @@
    "win": true,
    "entry": 4.47,
    "exit": 8.05,
-   "pct": 80,
+   "pct": 80.0,
    "dollar": 357.6
   },
   {
@@ -4067,8 +4067,8 @@
    "win": true,
    "entry": 2.65,
    "exit": 3.18,
-   "pct": 20,
-   "dollar": 53
+   "pct": 20.0,
+   "dollar": 53.0
   },
   {
    "id": 371,
@@ -4078,8 +4078,8 @@
    "win": true,
    "entry": 3.75,
    "exit": 4.5,
-   "pct": 20,
-   "dollar": 75
+   "pct": 20.0,
+   "dollar": 75.0
   },
   {
    "id": 372,
@@ -4089,8 +4089,8 @@
    "win": true,
    "entry": 5.1,
    "exit": 5.61,
-   "pct": 10,
-   "dollar": 51
+   "pct": 10.0,
+   "dollar": 51.0
   },
   {
    "id": 373,
@@ -4099,9 +4099,9 @@
    "ticker": "SPX",
    "win": true,
    "entry": 4.2,
-   "exit": 10,
+   "exit": 10.0,
    "pct": 138.1,
-   "dollar": 580
+   "dollar": 580.0
   },
   {
    "id": 374,
@@ -4110,9 +4110,9 @@
    "ticker": "WMT",
    "win": true,
    "entry": 2.47,
-   "exit": 0,
-   "pct": 100,
-   "dollar": -247
+   "exit": 0.0,
+   "pct": 100.0,
+   "dollar": -247.0
   },
   {
    "id": 375,
@@ -4123,7 +4123,7 @@
    "entry": 7.05,
    "exit": 11.5,
    "pct": 63.12,
-   "dollar": 445
+   "dollar": 445.0
   },
   {
    "id": 376,
@@ -4133,8 +4133,8 @@
    "win": true,
    "entry": 5.5,
    "exit": 7.15,
-   "pct": 30,
-   "dollar": 165
+   "pct": 30.0,
+   "dollar": 165.0
   },
   {
    "id": 377,
@@ -4143,9 +4143,9 @@
    "ticker": "HOOD",
    "win": true,
    "entry": 0.51,
-   "exit": 0,
-   "pct": 100,
-   "dollar": 51
+   "exit": 0.0,
+   "pct": 100.0,
+   "dollar": 51.0
   },
   {
    "id": 378,
@@ -4155,7 +4155,7 @@
    "win": false,
    "entry": 3.15,
    "exit": 2.21,
-   "pct": -30,
+   "pct": -30.0,
    "dollar": -94.5
   },
   {
@@ -4197,10 +4197,10 @@
    "analyst": "LUXE",
    "ticker": "IREN",
    "win": false,
-   "entry": 41,
-   "exit": 37,
+   "entry": 41.0,
+   "exit": 37.0,
    "pct": -9.76,
-   "dollar": -4
+   "dollar": -4.0
   },
   {
    "id": 383,
@@ -4209,9 +4209,9 @@
    "ticker": "IREN",
    "win": false,
    "entry": 1.22,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -4278
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -4278.0
   },
   {
    "id": 384,
@@ -4221,7 +4221,7 @@
    "win": true,
    "entry": 0.36,
    "exit": 0.86,
-   "pct": 140,
+   "pct": 140.0,
    "dollar": 50.4
   },
   {
@@ -4232,7 +4232,7 @@
    "win": false,
    "entry": 1.26,
    "exit": 1.07,
-   "pct": -15,
+   "pct": -15.0,
    "dollar": -18.9
   },
   {
@@ -4244,7 +4244,7 @@
    "entry": 0.65,
    "exit": 1.4,
    "pct": 115.38,
-   "dollar": 75
+   "dollar": 75.0
   },
   {
    "id": 387,
@@ -4255,7 +4255,7 @@
    "entry": 0.65,
    "exit": 1.1,
    "pct": 69.23,
-   "dollar": 45
+   "dollar": 45.0
   },
   {
    "id": 388,
@@ -4264,9 +4264,9 @@
    "ticker": "MU",
    "win": true,
    "entry": 2.35,
-   "exit": 3,
+   "exit": 3.0,
    "pct": 27.66,
-   "dollar": 65
+   "dollar": 65.0
   },
   {
    "id": 389,
@@ -4275,9 +4275,9 @@
    "ticker": "SPY",
    "win": false,
    "entry": 1.15,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -115
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -115.0
   },
   {
    "id": 390,
@@ -4288,7 +4288,7 @@
    "entry": 3.7,
    "exit": 5.9,
    "pct": 59.46,
-   "dollar": 220
+   "dollar": 220.0
   },
   {
    "id": 391,
@@ -4296,10 +4296,10 @@
    "analyst": "WAXUI",
    "ticker": "SPY",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 1.2,
-   "pct": 20,
-   "dollar": 20
+   "pct": 20.0,
+   "dollar": 20.0
   },
   {
    "id": 392,
@@ -4308,7 +4308,7 @@
    "ticker": "WETO",
    "win": true,
    "entry": 9.05,
-   "exit": 14,
+   "exit": 14.0,
    "pct": 54.7,
    "dollar": 4.95
   },
@@ -4320,7 +4320,7 @@
    "win": true,
    "entry": 0.89,
    "exit": 1.25,
-   "pct": 40,
+   "pct": 40.0,
    "dollar": 35.6
   },
   {
@@ -4331,8 +4331,8 @@
    "win": true,
    "entry": 10.5,
    "exit": 14.7,
-   "pct": 40,
-   "dollar": 420
+   "pct": 40.0,
+   "dollar": 420.0
   },
   {
    "id": 395,
@@ -4342,7 +4342,7 @@
    "win": true,
    "entry": 0.76,
    "exit": 0.91,
-   "pct": 20,
+   "pct": 20.0,
    "dollar": 15.2
   },
   {
@@ -4353,7 +4353,7 @@
    "win": false,
    "entry": 5.75,
    "exit": 4.03,
-   "pct": -30,
+   "pct": -30.0,
    "dollar": -172.5
   },
   {
@@ -4364,7 +4364,7 @@
    "win": false,
    "entry": 0.79,
    "exit": 0.51,
-   "pct": -35,
+   "pct": -35.0,
    "dollar": -27.65
   },
   {
@@ -4375,7 +4375,7 @@
    "win": false,
    "entry": 3.05,
    "exit": 1.52,
-   "pct": -50,
+   "pct": -50.0,
    "dollar": -152.5
   },
   {
@@ -4387,7 +4387,7 @@
    "entry": 0.36,
    "exit": 1.5,
    "pct": 316.67,
-   "dollar": 114
+   "dollar": 114.0
   },
   {
    "id": 400,
@@ -4397,7 +4397,7 @@
    "win": false,
    "entry": 4.9,
    "exit": 2.74,
-   "pct": -44,
+   "pct": -44.0,
    "dollar": -215.6
   },
   {
@@ -4408,7 +4408,7 @@
    "win": false,
    "entry": 0.68,
    "exit": 0.38,
-   "pct": -44,
+   "pct": -44.0,
    "dollar": -29.92
   },
   {
@@ -4419,8 +4419,8 @@
    "win": true,
    "entry": 0.56,
    "exit": 1.12,
-   "pct": 100,
-   "dollar": 56
+   "pct": 100.0,
+   "dollar": 56.0
   },
   {
    "id": 403,
@@ -4430,8 +4430,8 @@
    "win": true,
    "entry": 10.5,
    "exit": 15.75,
-   "pct": 50,
-   "dollar": 525
+   "pct": 50.0,
+   "dollar": 525.0
   },
   {
    "id": 404,
@@ -4441,7 +4441,7 @@
    "win": true,
    "entry": 1.7,
    "exit": 2.13,
-   "pct": 25,
+   "pct": 25.0,
    "dollar": 42.5
   },
   {
@@ -4452,7 +4452,7 @@
    "win": false,
    "entry": 18.96,
    "exit": 17.25,
-   "pct": -9,
+   "pct": -9.0,
    "dollar": -1.71
   },
   {
@@ -4463,7 +4463,7 @@
    "win": false,
    "entry": 8.7,
    "exit": 7.39,
-   "pct": -15,
+   "pct": -15.0,
    "dollar": -1.3
   },
   {
@@ -4474,8 +4474,8 @@
    "win": false,
    "entry": 4.8,
    "exit": 2.16,
-   "pct": -55,
-   "dollar": -264
+   "pct": -55.0,
+   "dollar": -264.0
   },
   {
    "id": 408,
@@ -4485,8 +4485,8 @@
    "win": false,
    "entry": 5.6,
    "exit": 0.84,
-   "pct": -85,
-   "dollar": -476
+   "pct": -85.0,
+   "dollar": -476.0
   },
   {
    "id": 409,
@@ -4497,7 +4497,7 @@
    "entry": 0.33,
    "exit": 0.6,
    "pct": 81.82,
-   "dollar": 27
+   "dollar": 27.0
   },
   {
    "id": 410,
@@ -4505,10 +4505,10 @@
    "analyst": "COBAIN",
    "ticker": "MRNA",
    "win": true,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 1.6,
-   "pct": 60,
-   "dollar": 60
+   "pct": 60.0,
+   "dollar": 60.0
   },
   {
    "id": 411,
@@ -4518,7 +4518,7 @@
    "win": false,
    "entry": 0.54,
    "exit": 0.46,
-   "pct": -15,
+   "pct": -15.0,
    "dollar": -8.1
   },
   {
@@ -4530,7 +4530,7 @@
    "entry": 0.7,
    "exit": 1.1,
    "pct": 57.14,
-   "dollar": 40
+   "dollar": 40.0
   },
   {
    "id": 413,
@@ -4540,7 +4540,7 @@
    "win": true,
    "entry": 1.53,
    "exit": 2.29,
-   "pct": 50,
+   "pct": 50.0,
    "dollar": 76.5
   },
   {
@@ -4552,7 +4552,7 @@
    "entry": 10.57,
    "exit": 8.32,
    "pct": 21.29,
-   "dollar": 225
+   "dollar": 225.0
   },
   {
    "id": 415,
@@ -4563,7 +4563,7 @@
    "entry": 3.65,
    "exit": 4.4,
    "pct": 20.55,
-   "dollar": 75
+   "dollar": 75.0
   },
   {
    "id": 416,
@@ -4571,10 +4571,10 @@
    "analyst": "SHOWTIME",
    "ticker": "IREN",
    "win": true,
-   "entry": 2,
+   "entry": 2.0,
    "exit": 1.79,
    "pct": 10.5,
-   "dollar": 21
+   "dollar": 21.0
   },
   {
    "id": 417,
@@ -4584,7 +4584,7 @@
    "win": true,
    "entry": 1.69,
    "exit": 1.74,
-   "pct": 3,
+   "pct": 3.0,
    "dollar": 5.07
   },
   {
@@ -4595,7 +4595,7 @@
    "win": true,
    "entry": 0.36,
    "exit": 2.09,
-   "pct": 480,
+   "pct": 480.0,
    "dollar": 172.8
   },
   {
@@ -4607,7 +4607,7 @@
    "entry": 2.98,
    "exit": 4.6,
    "pct": 54.36,
-   "dollar": 162
+   "dollar": 162.0
   },
   {
    "id": 420,
@@ -4617,8 +4617,8 @@
    "win": true,
    "entry": 2.1,
    "exit": 5.25,
-   "pct": 150,
-   "dollar": 315
+   "pct": 150.0,
+   "dollar": 315.0
   },
   {
    "id": 421,
@@ -4628,7 +4628,7 @@
    "win": false,
    "entry": 0.92,
    "exit": 0.66,
-   "pct": -28,
+   "pct": -28.0,
    "dollar": -25.76
   },
   {
@@ -4640,7 +4640,7 @@
    "entry": 1.57,
    "exit": 3.5,
    "pct": 122.93,
-   "dollar": 193
+   "dollar": 193.0
   },
   {
    "id": 423,
@@ -4651,7 +4651,7 @@
    "entry": 0.6,
    "exit": 0.95,
    "pct": 58.33,
-   "dollar": 35
+   "dollar": 35.0
   },
   {
    "id": 424,
@@ -4662,7 +4662,7 @@
    "entry": 1.9,
    "exit": 2.9,
    "pct": 52.63,
-   "dollar": 100
+   "dollar": 100.0
   },
   {
    "id": 425,
@@ -4673,7 +4673,7 @@
    "entry": 1.02,
    "exit": 0.88,
    "pct": -13.73,
-   "dollar": -14
+   "dollar": -14.0
   },
   {
    "id": 426,
@@ -4681,10 +4681,10 @@
    "analyst": "MR. SWINGER",
    "ticker": "SPY",
    "win": false,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 0.85,
-   "pct": -15,
-   "dollar": -15
+   "pct": -15.0,
+   "dollar": -15.0
   },
   {
    "id": 427,
@@ -4694,8 +4694,8 @@
    "win": false,
    "entry": 5.2,
    "exit": 2.6,
-   "pct": -50,
-   "dollar": -260
+   "pct": -50.0,
+   "dollar": -260.0
   },
   {
    "id": 428,
@@ -4703,10 +4703,10 @@
    "analyst": "WAXUI",
    "ticker": "SPY",
    "win": false,
-   "entry": 1,
+   "entry": 1.0,
    "exit": 0.5,
-   "pct": -50,
-   "dollar": -50
+   "pct": -50.0,
+   "dollar": -50.0
   },
   {
    "id": 429,
@@ -4716,8 +4716,8 @@
    "win": false,
    "entry": 4.2,
    "exit": 2.1,
-   "pct": -50,
-   "dollar": -210
+   "pct": -50.0,
+   "dollar": -210.0
   },
   {
    "id": 430,
@@ -4728,7 +4728,7 @@
    "entry": 0.24,
    "exit": 2.6,
    "pct": 983.33,
-   "dollar": 236
+   "dollar": 236.0
   },
   {
    "id": 431,
@@ -4739,7 +4739,7 @@
    "entry": 0.74,
    "exit": 2.15,
    "pct": 190.54,
-   "dollar": 141
+   "dollar": 141.0
   },
   {
    "id": 432,
@@ -4749,8 +4749,8 @@
    "win": true,
    "entry": 0.3,
    "exit": 0.6,
-   "pct": 100,
-   "dollar": 30
+   "pct": 100.0,
+   "dollar": 30.0
   },
   {
    "id": 433,
@@ -4760,8 +4760,8 @@
    "win": true,
    "entry": 1.3,
    "exit": 2.6,
-   "pct": 100,
-   "dollar": 130
+   "pct": 100.0,
+   "dollar": 130.0
   },
   {
    "id": 434,
@@ -4772,7 +4772,7 @@
    "entry": 1.26,
    "exit": 1.86,
    "pct": 47.62,
-   "dollar": 60
+   "dollar": 60.0
   },
   {
    "id": 435,
@@ -4782,7 +4782,7 @@
    "win": true,
    "entry": null,
    "exit": null,
-   "pct": 300,
+   "pct": 300.0,
    "dollar": null
   },
   {
@@ -4793,7 +4793,7 @@
    "win": true,
    "entry": 1.99,
    "exit": 18.71,
-   "pct": 840,
+   "pct": 840.0,
    "dollar": 1671.6
   },
   {
@@ -4804,8 +4804,8 @@
    "win": true,
    "entry": 0.42,
    "exit": 1.05,
-   "pct": 150,
-   "dollar": 63
+   "pct": 150.0,
+   "dollar": 63.0
   },
   {
    "id": 438,
@@ -4815,8 +4815,8 @@
    "win": true,
    "entry": 4.3,
    "exit": 20.21,
-   "pct": 370,
-   "dollar": 1591
+   "pct": 370.0,
+   "dollar": 1591.0
   },
   {
    "id": 439,
@@ -4824,10 +4824,10 @@
    "analyst": "SCOTT",
    "ticker": "HOOD",
    "win": true,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 16.28,
-   "pct": 307,
-   "dollar": 1228
+   "pct": 307.0,
+   "dollar": 1228.0
   },
   {
    "id": 440,
@@ -4837,7 +4837,7 @@
    "win": true,
    "entry": 4.25,
    "exit": 8.71,
-   "pct": 105,
+   "pct": 105.0,
    "dollar": 446.25
   },
   {
@@ -4846,10 +4846,10 @@
    "analyst": "SCOTT",
    "ticker": "NVDA",
    "win": true,
-   "entry": 4,
+   "entry": 4.0,
    "exit": 6.8,
-   "pct": 70,
-   "dollar": 280
+   "pct": 70.0,
+   "dollar": 280.0
   },
   {
    "id": 442,
@@ -4859,8 +4859,8 @@
    "win": true,
    "entry": 7.9,
    "exit": 12.64,
-   "pct": 60,
-   "dollar": 474
+   "pct": 60.0,
+   "dollar": 474.0
   },
   {
    "id": 443,
@@ -4870,7 +4870,7 @@
    "win": true,
    "entry": 0.88,
    "exit": 1.14,
-   "pct": 30,
+   "pct": 30.0,
    "dollar": 26.4
   },
   {
@@ -4882,7 +4882,7 @@
    "entry": 0.9,
    "exit": 2.5,
    "pct": 177.78,
-   "dollar": 160
+   "dollar": 160.0
   },
   {
    "id": 445,
@@ -4892,8 +4892,8 @@
    "win": true,
    "entry": 4.6,
    "exit": 11.96,
-   "pct": 160,
-   "dollar": 736
+   "pct": 160.0,
+   "dollar": 736.0
   },
   {
    "id": 446,
@@ -4904,7 +4904,7 @@
    "entry": 1.42,
    "exit": 2.45,
    "pct": 72.54,
-   "dollar": 103
+   "dollar": 103.0
   },
   {
    "id": 447,
@@ -4915,7 +4915,7 @@
    "entry": 1.64,
    "exit": 2.5,
    "pct": 52.44,
-   "dollar": 86
+   "dollar": 86.0
   },
   {
    "id": 448,
@@ -4926,7 +4926,7 @@
    "entry": 1.66,
    "exit": 2.5,
    "pct": 50.6,
-   "dollar": 84
+   "dollar": 84.0
   },
   {
    "id": 449,
@@ -4936,7 +4936,7 @@
    "win": false,
    "entry": 1.65,
    "exit": 1.49,
-   "pct": -10,
+   "pct": -10.0,
    "dollar": -16.5
   },
   {
@@ -4947,7 +4947,7 @@
    "win": false,
    "entry": 1.6,
    "exit": 1.25,
-   "pct": -22,
+   "pct": -22.0,
    "dollar": -35.2
   },
   {
@@ -4969,8 +4969,8 @@
    "win": true,
    "entry": 1.26,
    "exit": 13.86,
-   "pct": 1000,
-   "dollar": 1260
+   "pct": 1000.0,
+   "dollar": 1260.0
   },
   {
    "id": 453,
@@ -4981,7 +4981,7 @@
    "entry": 0.3,
    "exit": 0.86,
    "pct": 186.67,
-   "dollar": 56
+   "dollar": 56.0
   },
   {
    "id": 454,
@@ -4991,8 +4991,8 @@
    "win": true,
    "entry": 0.65,
    "exit": 1.3,
-   "pct": 100,
-   "dollar": 65
+   "pct": 100.0,
+   "dollar": 65.0
   },
   {
    "id": 455,
@@ -5003,7 +5003,7 @@
    "entry": 2.3,
    "exit": 4.1,
    "pct": 78.26,
-   "dollar": 180
+   "dollar": 180.0
   },
   {
    "id": 456,
@@ -5014,7 +5014,7 @@
    "entry": 2.4,
    "exit": 0.8,
    "pct": -66.67,
-   "dollar": -160
+   "dollar": -160.0
   },
   {
    "id": 457,
@@ -5023,9 +5023,9 @@
    "ticker": "SPY",
    "win": false,
    "entry": 3.7,
-   "exit": 0,
-   "pct": -100,
-   "dollar": -370
+   "exit": 0.0,
+   "pct": -100.0,
+   "dollar": -370.0
   },
   {
    "id": 458,
@@ -5034,9 +5034,9 @@
    "ticker": "IREN",
    "win": true,
    "entry": 0.65,
-   "exit": 0,
-   "pct": 100,
-   "dollar": 65
+   "exit": 0.0,
+   "pct": 100.0,
+   "dollar": 65.0
   },
   {
    "id": 459,
@@ -5047,7 +5047,7 @@
    "entry": 0.95,
    "exit": 1.8,
    "pct": 89.47,
-   "dollar": 85
+   "dollar": 85.0
   },
   {
    "id": 460,
@@ -5057,8 +5057,8 @@
    "win": false,
    "entry": 1.34,
    "exit": 0.67,
-   "pct": -50,
-   "dollar": -67
+   "pct": -50.0,
+   "dollar": -67.0
   },
   {
    "id": 461,
@@ -5069,7 +5069,7 @@
    "entry": 5.9,
    "exit": 2.3,
    "pct": 61.02,
-   "dollar": 360
+   "dollar": 360.0
   },
   {
    "id": 462,
@@ -5080,7 +5080,7 @@
    "entry": 0.92,
    "exit": 1.45,
    "pct": 57.61,
-   "dollar": 53
+   "dollar": 53.0
   },
   {
    "id": 463,
@@ -5090,8 +5090,8 @@
    "win": true,
    "entry": 0.9,
    "exit": 1.08,
-   "pct": 20,
-   "dollar": 18
+   "pct": 20.0,
+   "dollar": 18.0
   },
   {
    "id": 464,
@@ -5101,7 +5101,7 @@
    "win": false,
    "entry": 0.93,
    "exit": 0.65,
-   "pct": -30,
+   "pct": -30.0,
    "dollar": -27.9
   },
   {
@@ -5112,7 +5112,7 @@
    "win": false,
    "entry": 0.84,
    "exit": 0.5,
-   "pct": -40,
+   "pct": -40.0,
    "dollar": -33.6
   },
   {
@@ -5123,8 +5123,8 @@
    "win": false,
    "entry": 0.7,
    "exit": 0.21,
-   "pct": -70,
-   "dollar": -49
+   "pct": -70.0,
+   "dollar": -49.0
   },
   {
    "id": 467,
@@ -5132,7 +5132,7 @@
    "analyst": "LUXE",
    "ticker": "AOUT",
    "win": true,
-   "entry": 13,
+   "entry": 13.0,
    "exit": 14.65,
    "pct": 12.69,
    "dollar": 1.65
@@ -5142,7 +5142,7 @@
   {
    "date": "2026-07-06",
    "totalTrades": 5,
-   "winRate": 40,
+   "winRate": 40.0,
    "totalGainsPct": 112.79,
    "avgGainsPct": 22.56,
    "totalProfit": 149.75
@@ -5153,12 +5153,12 @@
    "winRate": 83.33,
    "totalGainsPct": 499.19,
    "avgGainsPct": 83.2,
-   "totalProfit": 2331
+   "totalProfit": 2331.0
   },
   {
    "date": "2026-07-08",
    "totalTrades": 4,
-   "winRate": 50,
+   "winRate": 50.0,
    "totalGainsPct": 40.79,
    "avgGainsPct": 10.2,
    "totalProfit": 445.65
@@ -5166,7 +5166,7 @@
   {
    "date": "2026-07-09",
    "totalTrades": 9,
-   "winRate": 100,
+   "winRate": 100.0,
    "totalGainsPct": 387.15,
    "avgGainsPct": 43.02,
    "totalProfit": 1794.1
@@ -5174,7 +5174,7 @@
   {
    "date": "2026-07-10",
    "totalTrades": 4,
-   "winRate": 75,
+   "winRate": 75.0,
    "totalGainsPct": 231.92,
    "avgGainsPct": 57.98,
    "totalProfit": 2267.85
@@ -5182,7 +5182,7 @@
   {
    "date": "2026-07-13",
    "totalTrades": 3,
-   "winRate": 100,
+   "winRate": 100.0,
    "totalGainsPct": 216.78,
    "avgGainsPct": 72.26,
    "totalProfit": 314.5
@@ -5199,7 +5199,7 @@
    "date": "2026-07-20",
    "totalTrades": 6,
    "winRate": 66.67,
-   "totalGainsPct": 197,
+   "totalGainsPct": 197.0,
    "avgGainsPct": 32.83,
    "totalProfit": 58.21
   },
@@ -5223,8 +5223,8 @@
    "date": "2026-07-23",
    "totalTrades": 14,
    "winRate": 85.71,
-   "totalGainsPct": 896,
-   "avgGainsPct": 64,
+   "totalGainsPct": 896.0,
+   "avgGainsPct": 64.0,
    "totalProfit": 2604.7
   },
   {
@@ -5246,18 +5246,18 @@
   {
    "date": "2026-07-28",
    "totalTrades": 2,
-   "winRate": 50,
-   "totalGainsPct": 190,
-   "avgGainsPct": 95,
+   "winRate": 50.0,
+   "totalGainsPct": 190.0,
+   "avgGainsPct": 95.0,
    "totalProfit": 329.97
   },
   {
    "date": "2026-07-29",
    "totalTrades": 2,
-   "winRate": 100,
-   "totalGainsPct": 125,
+   "winRate": 100.0,
+   "totalGainsPct": 125.0,
    "avgGainsPct": 62.5,
-   "totalProfit": 450
+   "totalProfit": 450.0
   },
   {
    "date": "2026-07-30",
@@ -5294,10 +5294,10 @@
   {
    "date": "2026-08-05",
    "totalTrades": 10,
-   "winRate": 70,
+   "winRate": 70.0,
    "totalGainsPct": 844.71,
    "avgGainsPct": 84.47,
-   "totalProfit": 3002
+   "totalProfit": 3002.0
   },
   {
    "date": "2026-08-06",
@@ -5342,7 +5342,7 @@
   {
    "date": "2026-08-17",
    "totalTrades": 8,
-   "winRate": 50,
+   "winRate": 50.0,
    "totalGainsPct": 535.6,
    "avgGainsPct": 66.95,
    "totalProfit": 2027.22
@@ -5350,7 +5350,7 @@
   {
    "date": "2026-08-21",
    "totalTrades": 16,
-   "winRate": 75,
+   "winRate": 75.0,
    "totalGainsPct": 1109.83,
    "avgGainsPct": 69.36,
    "totalProfit": 1819.25
@@ -5374,7 +5374,7 @@
   {
    "date": "2026-08-26",
    "totalTrades": 14,
-   "winRate": 50,
+   "winRate": 50.0,
    "totalGainsPct": 38.37,
    "avgGainsPct": 2.74,
    "totalProfit": 68.34
@@ -5414,7 +5414,7 @@
   {
    "date": "2026-09-02",
    "totalTrades": 12,
-   "winRate": 50,
+   "winRate": 50.0,
    "totalGainsPct": 711.53,
    "avgGainsPct": 59.29,
    "totalProfit": 403.04

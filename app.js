@@ -498,21 +498,33 @@
       mergeBtn.disabled = false;
     };
 
-    mergeBtn.onclick = () => {
-      if (!state.pendingParsed || !state.pendingParsed.trades.length) return;
+    // Shared by the Merge button and by Publish/Download as a safety net --
+    // if there's parsed data sitting in state.pendingParsed that never got
+    // explicitly merged, folding it in here means clicking Publish can never
+    // silently skip it. Returns how many trades it merged (0 if none pending).
+    function mergePending() {
+      if (!state.pendingParsed || !state.pendingParsed.trades.length) return 0;
+      const count = state.pendingParsed.trades.length;
       state.trades = state.trades.concat(state.pendingParsed.trades);
       const existingDates = new Set(state.dailySummaries.map(d => d.date));
       state.pendingParsed.dailySummaries.forEach(d => {
         if (!existingDates.has(d.date)) state.dailySummaries.push(d);
       });
       state.colorMap = buildColorMap(state.trades);
-      parseMsg.innerHTML = '<div class="ok-text">Merged into the live view below. Click "Publish to GitHub" to make it live for everyone (or download it and commit it yourself).</div>';
       mergeBtn.disabled = true;
       state.pendingParsed = null;
       renderAll();
+      return count;
+    }
+
+    mergeBtn.onclick = () => {
+      const count = mergePending();
+      if (!count) return;
+      parseMsg.innerHTML = '<div class="ok-text">Merged into the live view below. Click "Publish to GitHub" to make it live for everyone (or download it and commit it yourself).</div>';
     };
 
     downloadBtn.onclick = () => {
+      mergePending();
       const payload = JSON.stringify({ trades: state.trades, dailySummaries: state.dailySummaries }, null, 1);
       const blob = new Blob([payload], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -525,9 +537,11 @@
     const publishBtn = document.getElementById('publishBtn');
     const publishMsg = document.getElementById('publishMsg');
     publishBtn.onclick = async () => {
+      const autoMerged = mergePending();
       publishBtn.disabled = true;
       publishBtn.textContent = 'Publishing…';
       publishMsg.innerHTML = '';
+      const tradeCountBefore = state.trades.length;
       try {
         const res = await fetch('/api/publish', {
           method: 'POST',
@@ -537,7 +551,8 @@
         });
         const json = await res.json();
         if (json.ok) {
-          publishMsg.innerHTML = `<div class="ok-text">Published${json.commitUrl ? ' — <a href="' + json.commitUrl + '" target="_blank" rel="noopener">view commit</a>' : ''}. Cloudflare will redeploy in under a minute.</div>`;
+          const mergedNote = autoMerged ? ` (included ${autoMerged} new call${autoMerged === 1 ? '' : 's'} you hadn't clicked "Merge into page" for yet)` : '';
+          publishMsg.innerHTML = `<div class="ok-text">Published ${fmtNum(tradeCountBefore)} total trades${mergedNote}${json.commitUrl ? ' — <a href="' + json.commitUrl + '" target="_blank" rel="noopener">view commit</a>' : ''}. Cloudflare will redeploy in under a minute.</div>`;
         } else {
           publishMsg.innerHTML = `<div class="error-text">${json.error || 'Publish failed.'}</div>`;
         }
