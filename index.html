@@ -104,9 +104,14 @@
   <div class="modal-card">
     <button class="ghost close-x" id="adminCloseBtn">✕</button>
     <h3>Add a new recap <button class="ghost" id="logoutBtn" style="font-size:12px;margin-left:8px">Log out</button></h3>
-    <p class="hint">Paste the raw HTML (or plain text) of one or more new #recaps days below — the same kind of
-      export you'd save from Discord. It's parsed entirely in your browser; nothing is sent anywhere.</p>
-    <textarea id="pasteArea" placeholder="Paste recap HTML or text here…"></textarea>
+    <p class="hint">Upload the recap .html file you downloaded, or paste the raw HTML/text below — either
+      works. Parsing happens entirely in your browser. "Publish to GitHub" is the only step that sends
+      anything anywhere — it sends the merged data to your own Worker, which commits it to your repo.</p>
+    <div id="dropZone" class="drop-zone">
+      <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display:none">
+      <span id="dropZoneLabel">Drop the .html file here, or <a href="#" id="browseLink">browse</a></span>
+    </div>
+    <textarea id="pasteArea" placeholder="…or paste recap HTML or text here"></textarea>
     <div class="modal-actions">
       <button class="primary" id="parseBtn">Parse</button>
     </div>
@@ -114,10 +119,16 @@
     <div class="preview-list" id="previewList"></div>
     <div class="modal-actions">
       <button id="mergeBtn" disabled>Merge into page</button>
-      <button id="downloadBtn">Download data.json</button>
     </div>
-    <p class="hint">After merging, download <code>data.json</code> and commit/push it to your GitHub repo
-      (overwriting the old one) to publish the update for everyone. See README.md for the full workflow.</p>
+    <div class="modal-actions">
+      <button class="primary" id="publishBtn">Publish to GitHub</button>
+      <button id="downloadBtn">Download data.json instead</button>
+    </div>
+    <div id="publishMsg"></div>
+    <p class="hint">"Publish to GitHub" commits the current data straight to your repo (needs
+      <code>GITHUB_TOKEN</code> / <code>GITHUB_REPO</code> set on the Worker — see README.md). Cloudflare then
+      auto-redeploys in under a minute. "Download data.json instead" is the manual fallback if you'd rather
+      commit it yourself.</p>
   </div>
 </div>
 

@@ -249,6 +249,21 @@ svg text { fill: var(--text-secondary); font-size: 10.5px; }
   border: 1px solid var(--border);
 }
 .modal-card h3 { margin-top: 0; }
+.drop-zone {
+  border: 1.5px dashed var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  transition: border-color .15s, background .15s;
+}
+.drop-zone a { cursor: pointer; }
+.drop-zone.drag-over {
+  border-color: var(--series-1);
+  background: color-mix(in srgb, var(--series-1) 8%, transparent);
+}
 .modal-card textarea {
   width: 100%; min-height: 160px; font-family: ui-monospace, monospace; font-size: 12px;
   border: 1px solid var(--border); border-radius: 8px; padding: 10px; background: var(--page-plane); color: var(--text-primary);

@@ -390,6 +390,37 @@
     const previewList = document.getElementById('previewList');
     const mergeBtn = document.getElementById('mergeBtn');
     const downloadBtn = document.getElementById('downloadBtn');
+    const dropZone = document.getElementById('dropZone');
+    const dropZoneLabel = document.getElementById('dropZoneLabel');
+    const fileInput = document.getElementById('fileInput');
+    const browseLink = document.getElementById('browseLink');
+
+    function loadFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        pasteArea.value = String(reader.result || '');
+        dropZoneLabel.textContent = `Loaded "${file.name}" (${(file.size / 1024).toFixed(0)} KB) — click Parse below`;
+        parseMsg.innerHTML = '';
+      };
+      reader.onerror = () => {
+        parseMsg.innerHTML = '<div class="error-text">Could not read that file.</div>';
+      };
+      reader.readAsText(file);
+    }
+
+    browseLink.onclick = (e) => { e.preventDefault(); fileInput.click(); };
+    fileInput.onchange = () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); };
+    ['dragenter', 'dragover'].forEach((evt) => {
+      dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    });
+    ['dragleave', 'drop'].forEach((evt) => {
+      dropZone.addEventListener(evt, (e) => { e.preventDefault(); dropZone.classList.remove('drag-over'); });
+    });
+    dropZone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file) loadFile(file);
+    });
 
     openBtn.onclick = async () => {
       if (state.adminUnlocked || (await checkSession())) {
@@ -475,7 +506,7 @@
         if (!existingDates.has(d.date)) state.dailySummaries.push(d);
       });
       state.colorMap = buildColorMap(state.trades);
-      parseMsg.innerHTML = '<div class="ok-text">Merged into the live view below. Click "Download data.json" and commit it to GitHub to publish this for everyone.</div>';
+      parseMsg.innerHTML = '<div class="ok-text">Merged into the live view below. Click "Publish to GitHub" to make it live for everyone (or download it and commit it yourself).</div>';
       mergeBtn.disabled = true;
       state.pendingParsed = null;
       renderAll();
@@ -489,6 +520,32 @@
       a.href = url; a.download = 'data.json';
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       URL.revokeObjectURL(url);
+    };
+
+    const publishBtn = document.getElementById('publishBtn');
+    const publishMsg = document.getElementById('publishMsg');
+    publishBtn.onclick = async () => {
+      publishBtn.disabled = true;
+      publishBtn.textContent = 'Publishing…';
+      publishMsg.innerHTML = '';
+      try {
+        const res = await fetch('/api/publish', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ trades: state.trades, dailySummaries: state.dailySummaries })
+        });
+        const json = await res.json();
+        if (json.ok) {
+          publishMsg.innerHTML = `<div class="ok-text">Published${json.commitUrl ? ' — <a href="' + json.commitUrl + '" target="_blank" rel="noopener">view commit</a>' : ''}. Cloudflare will redeploy in under a minute.</div>`;
+        } else {
+          publishMsg.innerHTML = `<div class="error-text">${json.error || 'Publish failed.'}</div>`;
+        }
+      } catch (e) {
+        publishMsg.innerHTML = '<div class="error-text">Could not reach the publish API. Is GITHUB_TOKEN / GITHUB_REPO set on this Worker?</div>';
+      }
+      publishBtn.disabled = false;
+      publishBtn.textContent = 'Publish to GitHub';
     };
   }
 
