@@ -37,6 +37,79 @@
     return (n >= 0 ? '+' : '') + n.toFixed(digits == null ? 1 : digits) + '%';
   }
   function fmtNum(n) { return n === null || n === undefined || isNaN(n) ? '—' : n.toLocaleString('en-US'); }
+  // Drawdown is always >= 0 internally; this just decides whether to show it
+  // as "-X.X%" (red) or a flat "0.0%" (muted) -- avoids ever printing the
+  // "-0.0%" artifact you get from blindly prepending a minus sign to 0.
+  function fmtDrawdown(pct) {
+    if (pct === null || pct === undefined || isNaN(pct) || pct <= 0.05) return { text: '0.0%', cls: 'muted-cell' };
+    return { text: '-' + pct.toFixed(1) + '%', cls: 'neg' };
+  }
+
+  // ---- lightweight animation helpers -------------------------------------
+  const prefersReducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Draws SVG polylines in on render instead of popping in fully formed, and
+  // fades the Monte Carlo percentile bands up to their target opacity.
+  function animateSvgDraw(svg) {
+    if (!svg || prefersReducedMotion()) return;
+    const lines = svg.querySelectorAll('polyline');
+    lines.forEach((el, i) => {
+      let len = 0;
+      try { len = el.getTotalLength(); } catch (e) { return; }
+      if (!len) return;
+      el.style.strokeDasharray = len;
+      el.style.strokeDashoffset = len;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.transition = `stroke-dashoffset .7s cubic-bezier(.22,.8,.25,1) ${Math.min(i * 70, 280)}ms`;
+        el.style.strokeDashoffset = '0';
+      }));
+    });
+    svg.querySelectorAll('.band-outer, .band-inner').forEach((el) => {
+      const target = el.classList.contains('band-outer') ? .16 : .28;
+      el.style.opacity = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.transition = 'opacity .6s ease .15s';
+        el.style.opacity = target;
+      }));
+    });
+  }
+
+  // Counts a `.tile .value`-style element up from whatever it last showed to
+  // the new formatted value, instead of snapping straight to it. Parses the
+  // sign/symbol/number/suffix out of the already-formatted string so callers
+  // don't need to pass raw numbers through separately.
+  function animateValue(el, finalText) {
+    if (!el) return;
+    if (prefersReducedMotion() || typeof finalText !== 'string') { el.textContent = finalText; return; }
+    const m = finalText.match(/^(-?)([^0-9\-]*)([\d,]+(?:\.\d+)?)(.*)$/);
+    if (!m) { el.textContent = finalText; return; }
+    const [, signStr, symbol, numStr, suffix] = m;
+    const to = parseFloat((signStr === '-' ? '-' : '') + numStr.replace(/,/g, ''));
+    if (isNaN(to)) { el.textContent = finalText; return; }
+    const decimals = (numStr.split('.')[1] || '').length;
+    const from = el.dataset.animVal !== undefined ? parseFloat(el.dataset.animVal) : 0;
+    el.dataset.animVal = to;
+    const isMoney = symbol.indexOf('$') !== -1;
+    const isPlus = symbol.indexOf('+') !== -1;
+    const duration = 600;
+    const t0 = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - t0) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = from + (to - from) * eased;
+      const abs = Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+      el.textContent = isMoney
+        ? (val < 0 ? '-' : '') + '$' + abs + suffix
+        : (val < 0 ? '-' : (isPlus ? '+' : '')) + abs + suffix;
+      if (t < 1) requestAnimationFrame(step); else el.textContent = finalText;
+    }
+    requestAnimationFrame(step);
+  }
+
+  function animateTiles(container) {
+    if (!container) return;
+    container.querySelectorAll('.tile .value').forEach(v => animateValue(v, v.textContent));
+  }
 
   function buildColorMap(trades) {
     const names = Array.from(new Set(trades.map(t => t.analyst))).sort();
@@ -92,12 +165,14 @@
       { label: 'Tracked Trades', value: fmtNum(totalTrades), sub: stats.length + ' analysts' },
       { label: 'Combined profit', value: fmtMoney(totalProfit), sub: 'across everyone shown' }
     ];
+    el.classList.add('stagger-in');
     el.innerHTML = tiles.map(t => `
       <div class="tile">
         <div class="label">${t.label}</div>
         <div class="value">${t.value}</div>
         <div class="hint" style="margin-top:2px">${t.sub}</div>
       </div>`).join('');
+    animateTiles(el);
   }
 
   // ---- rendering: leaderboard table -----------------------------------
@@ -178,7 +253,7 @@
   }
 
   // ---- rendering: bar chart (total profit by analyst) -----------------
-  function renderBarChart(stats) {
+  function renderBarChart(stats, animate) {
     const wrap = document.getElementById('barChart');
     const sorted = stats.slice().sort((a,b)=>b.totalProfit-a.totalProfit);
     if (!sorted.length) { wrap.innerHTML = ''; return; }
@@ -196,7 +271,8 @@
       const color = css(state.colorMap[s.analyst] || '--series-1');
       const barW = Math.max(2, (Math.abs(s.totalProfit) / maxAbs) * plotW);
       const x = s.totalProfit >= 0 ? leftPad : leftPad - barW;
-      bars += `<rect x="${x}" y="${y}" width="${barW}" height="${rowH}" rx="4" fill="${color}"></rect>`;
+      const anchor = s.totalProfit >= 0 ? 'left' : 'right';
+      bars += `<rect class="bar-rect" data-anchor="${anchor}" x="${x}" y="${y}" width="${barW}" height="${rowH}" rx="4" fill="${color}"></rect>`;
       // name label gets an opaque halo so it stays legible even if a
       // negative bar's left edge runs underneath it
       const haloW = s.analyst.length * 7.6 + 14;
@@ -212,12 +288,24 @@
       <line class="axis-line" x1="${leftPad}" y1="0" x2="${leftPad}" y2="${h}"></line>
       ${labels}
     </svg>`;
+
+    if (animate !== false && !prefersReducedMotion()) {
+      wrap.querySelectorAll('.bar-rect').forEach((rect, i) => {
+        rect.style.transformBox = 'fill-box';
+        rect.style.transformOrigin = rect.dataset.anchor === 'right' ? '100% 50%' : '0% 50%';
+        rect.style.transform = 'scaleX(0)';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          rect.style.transition = `transform .5s cubic-bezier(.22,.8,.25,1) ${Math.min(i * 40, 240)}ms`;
+          rect.style.transform = 'scaleX(1)';
+        }));
+      });
+    }
   }
 
   // ---- rendering: cumulative profit line chart -------------------------
   let lineChartVisibility = {};
 
-  function renderLineChart(trades, stats) {
+  function renderLineChart(trades, stats, animate) {
     const wrap = document.getElementById('lineChart');
     const legendEl = document.getElementById('lineLegend');
     const tooltip = document.getElementById('lineTooltip');
@@ -297,6 +385,7 @@
     });
 
     const svg = document.getElementById('lineSvg');
+    if (animate !== false) animateSvgDraw(svg);
     const catcher = document.getElementById('hoverCatcher');
     const crosshair = document.getElementById('crosshair');
     catcher.addEventListener('mousemove', (e) => {
@@ -375,7 +464,7 @@
   // the main cumulative-profit chart, generalized to simulated accounts.
   let simLineVisibility = {};
 
-  function renderSimChart(seriesList) {
+  function renderSimChart(seriesList, animate) {
     const wrap = document.getElementById('simChart');
     const tooltip = document.getElementById('simTooltip');
     const legendEl = document.getElementById('simLegend');
@@ -453,6 +542,7 @@
     });
 
     const svg = document.getElementById('simSvg');
+    if (animate !== false) animateSvgDraw(svg);
     const catcher = document.getElementById('simHoverCatcher');
     const crosshair = document.getElementById('simCrosshair');
     catcher.addEventListener('mousemove', (e) => {
@@ -479,7 +569,7 @@
   // has no single real calendar mapping. actualPoints (the real,
   // unshuffled history for this same scenario) lines up 1:1 by index with
   // mc.steps since it's the exact same positions, just not shuffled.
-  function renderMonteCarloChart(mc, actualPoints, actualColor) {
+  function renderMonteCarloChart(mc, actualPoints, actualColor, animate) {
     const wrap = document.getElementById('simMcChart');
     const tooltip = document.getElementById('simMcTooltip');
     const legendEl = document.getElementById('simMcLegend');
@@ -531,6 +621,7 @@
       <span class="item"><span class="swatch" style="background:${bandColor};opacity:.28"></span>10th–90th percentile</span>`;
 
     const svg = document.getElementById('simMcSvg');
+    if (animate !== false) animateSvgDraw(svg);
     const catcher = document.getElementById('simMcHoverCatcher');
     const crosshair = document.getElementById('simMcCrosshair');
     catcher.addEventListener('mousemove', (e) => {
@@ -686,7 +777,8 @@
       });
     }
 
-    function run() {
+    function run(opts) {
+      const animate = !(opts && opts.silent);
       linkMsg.textContent = '';
       const names = Array.from(simSelectedAnalysts);
       if (!names.length) {
@@ -734,11 +826,12 @@
         const rows = sim.results.slice().sort((a, b) => b.finalBalance - a.finalBalance).map(r => {
           const gained = r.finalBalance >= r.startingCapital;
           const color = css(state.colorMap[r.analyst] || '--series-1');
+          const dd = fmtDrawdown(r.maxDrawdownPct);
           return `<tr>
             <td class="name-cell"><span class="dot" style="background:${color}"></span>${r.analyst}</td>
             <td class="${gained ? 'pos' : 'neg'}">${fmtMoney(r.finalBalance)}</td>
             <td class="${gained ? 'pos' : 'neg'}">${fmtPct(r.totalReturnPct, 0)}</td>
-            <td class="neg">-${r.maxDrawdownPct.toFixed(1)}%</td>
+            <td class="${dd.cls}">${dd.text}</td>
             <td>${fmtNum(r.positionsSimulated)}</td>
             <td>${r.bustedOnDate ? '<span class="error-text" style="font-size:11.5px">busted ' + r.bustedOnDate + '</span>' : '—'}</td>
           </tr>`;
@@ -747,9 +840,10 @@
           <thead><tr><th>Analyst</th><th>Final Balance</th><th>Return</th><th>Max Drawdown</th><th>Positions</th><th>Busted?</th></tr></thead>
           <tbody>${rows}</tbody>
         </table></div>${benchNote}`;
+        if (animate) resultsEl.querySelector('tbody').classList.add('stagger-in');
         chartWrap.style.display = 'block';
         mcBlock.style.display = 'none';
-        renderSimChart(sim.results.map(r => ({ name: r.analyst, color: css(state.colorMap[r.analyst] || '--series-1'), points: r.points })).concat(benchSeries));
+        renderSimChart(sim.results.map(r => ({ name: r.analyst, color: css(state.colorMap[r.analyst] || '--series-1'), points: r.points })).concat(benchSeries), animate);
         simLastResult = { mode: 'compare', rows: sim.results.flatMap(r => r.ledger.map(row => Object.assign({}, row, { analyst: r.analyst }))) };
       } else {
         if (!sim.positionsSimulated) {
@@ -761,6 +855,7 @@
           return;
         }
         const gained = sim.finalBalance >= sim.startingCapital;
+        const dd = fmtDrawdown(sim.maxDrawdownPct);
         const bustedBanner = sim.bustedOnDate ? `<div class="busted-banner">Account hit $0 on ${sim.bustedOnDate} and couldn't keep trading — ${sim.positionsSkipped} later call(s) had to be skipped.</div>` : '';
         const breakdown = names.length > 1
           ? `<div class="hint" style="margin-top:10px">Contribution: ${names.map(n => `${n} ${fmtMoney(sim.perAnalystProfit[n] || 0, {plus:true})}`).join(' · ')}</div>`
@@ -768,12 +863,13 @@
         resultsEl.innerHTML = `${bustedBanner}<div class="tiles">
           <div class="tile"><div class="label">Final Balance</div><div class="value ${gained ? 'pos' : 'neg'}">${fmtMoney(sim.finalBalance)}</div><div class="hint" style="margin-top:2px">from ${fmtMoney(sim.startingCapital)} start</div></div>
           <div class="tile"><div class="label">Total Return</div><div class="value ${gained ? 'pos' : 'neg'}">${fmtPct(sim.totalReturnPct, 0)}</div></div>
-          <div class="tile"><div class="label">Max Drawdown</div><div class="value neg">-${sim.maxDrawdownPct.toFixed(1)}%</div><div class="hint" style="margin-top:2px">worst dip from a high point</div></div>
+          <div class="tile"><div class="label">Max Drawdown</div><div class="value ${dd.cls}">${dd.text}</div><div class="hint" style="margin-top:2px">worst dip from a high point</div></div>
           <div class="tile"><div class="label">Positions Simulated</div><div class="value">${fmtNum(sim.positionsSimulated)}</div>${sim.positionsSkipped ? `<div class="hint" style="margin-top:2px">${sim.positionsSkipped} skipped (unaffordable)</div>` : ''}</div>
         </div>${breakdown}${benchNote}`;
+        if (animate) { resultsEl.querySelector('.tiles').classList.add('stagger-in'); animateTiles(resultsEl); }
         chartWrap.style.display = 'block';
         const mainColor = css(state.colorMap[names[0]] || '--series-1');
-        renderSimChart([{ name: names.length > 1 ? 'Blended' : names[0], color: mainColor, points: sim.points }].concat(benchSeries));
+        renderSimChart([{ name: names.length > 1 ? 'Blended' : names[0], color: mainColor, points: sim.points }].concat(benchSeries), animate);
 
         if (wantMonteCarlo && sim.monteCarlo && sim.monteCarlo.iterations) {
           mcBlock.style.display = 'block';
@@ -782,7 +878,7 @@
             `Reshuffled these same ${sim.positionsSimulated} trades ${mc.iterations} times. Median outcome: ${fmtMoney(mc.medianFinal)} ·
              unlucky (10th pct): ${fmtMoney(mc.p10Final)} · lucky (90th pct): ${fmtMoney(mc.p90Final)} ·
              busted the account in ${(mc.bustedFraction * 100).toFixed(0)}% of orderings.`;
-          renderMonteCarloChart(mc, sim.points, mainColor);
+          renderMonteCarloChart(mc, sim.points, mainColor, animate);
         } else {
           mcBlock.style.display = 'none';
         }
@@ -801,16 +897,25 @@
       const settings = currentSimSettings();
       const token = MordyParser.encodeScenario(settings);
       const url = `${location.origin}${location.pathname}?scenario=${token}`;
+      linkMsg.classList.remove('copied');
       try {
         await navigator.clipboard.writeText(url);
         linkMsg.textContent = 'Link copied to clipboard.';
+        linkMsg.classList.add('copied');
       } catch (e) {
         linkMsg.innerHTML = `Copy this link: <span style="word-break:break-all">${url}</span>`;
       }
     };
 
-    runBtn.onclick = run;
-    window.addEventListener('resize', () => { if (chartWrap.style.display !== 'none') run(); });
+    runBtn.onclick = () => {
+      runBtn.classList.add('is-loading');
+      setTimeout(() => { run(); runBtn.classList.remove('is-loading'); }, 220);
+    };
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { if (chartWrap.style.display !== 'none') run({ silent: true }); }, 120);
+    });
 
     return run;
   }
@@ -839,7 +944,14 @@
     document.getElementById('rangeNote').textContent = `Showing ${rangeLabel} · ${fmtNum(trades.length)} calls posted (${fmtNum(stats.reduce((s,x)=>s+x.trades,0))} distinct trades — see "Trades" tooltip) · updated through ${maxDate(state.trades) || '—'}`;
   }
 
-  window.addEventListener('resize', () => { renderBarChart(MordyParser.computeStats(filteredTrades())); renderLineChart(filteredTrades(), MordyParser.computeStats(filteredTrades())); });
+  let pageResizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(pageResizeTimer);
+    pageResizeTimer = setTimeout(() => {
+      renderBarChart(MordyParser.computeStats(filteredTrades()), false);
+      renderLineChart(filteredTrades(), MordyParser.computeStats(filteredTrades()), false);
+    }, 120);
+  });
 
   // ---- data loading ------------------------------------------------------
   async function loadData() {
