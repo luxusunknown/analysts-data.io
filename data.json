@@ -5486,6 +5486,116 @@
    "exit": 1.5,
    "pct": 50,
    "dollar": 50
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.56,
+   "exit": 1.4,
+   "pct": 150,
+   "dollar": 84
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "TSLA",
+   "win": true,
+   "entry": 1,
+   "exit": 1.6,
+   "pct": 60,
+   "dollar": 60
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "AAOI",
+   "win": false,
+   "entry": 1.4,
+   "exit": 0,
+   "pct": -100,
+   "dollar": -140
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 0.73,
+   "exit": 0,
+   "pct": -100,
+   "dollar": -73
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "LUXE",
+   "ticker": "TNON",
+   "win": true,
+   "entry": 4.3,
+   "exit": 9,
+   "pct": 109.3,
+   "dollar": 4.7
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "LUXE",
+   "ticker": "BDRX",
+   "win": true,
+   "entry": 1.25,
+   "exit": 1.55,
+   "pct": 24,
+   "dollar": 0.3
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "AMD",
+   "win": true,
+   "entry": 2.47,
+   "exit": 5.06,
+   "pct": 105,
+   "dollar": 259.35
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "MSFT",
+   "win": true,
+   "entry": 1.28,
+   "exit": 2.62,
+   "pct": 105,
+   "dollar": 134.4
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "C",
+   "win": true,
+   "entry": 3.15,
+   "exit": 3.94,
+   "pct": 25,
+   "dollar": 78.75
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.85,
+   "exit": 1.6,
+   "pct": 88.24,
+   "dollar": 75
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SHOWTIME",
+   "ticker": "IREN",
+   "win": true,
+   "entry": 1.05,
+   "exit": 0.48,
+   "pct": 54.29,
+   "dollar": 57
   }
  ],
  "dailySummaries": [
@@ -5808,6 +5918,14 @@
    "totalGainsPct": 211.84,
    "avgGainsPct": 42.37,
    "totalProfit": 296.56
+  },
+  {
+   "date": "2026-09-11",
+   "totalTrades": 11,
+   "winRate": 81.82,
+   "totalGainsPct": 520.82,
+   "avgGainsPct": 47.35,
+   "totalProfit": 540.5
   }
  ]
 }
