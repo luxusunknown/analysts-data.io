@@ -32,6 +32,9 @@ export default {
     if (url.pathname === '/api/publish' && request.method === 'POST') {
       return handlePublish(request, env);
     }
+    if (url.pathname === '/api/ingest' && request.method === 'POST') {
+      return handleIngest(request, env);
+    }
 
     // Anything else under /api/* that doesn't match a known route.
     if (url.pathname.startsWith('/api/')) {
@@ -180,9 +183,151 @@ async function handlePublish(request, env) {
   }
 }
 
+// POST /api/ingest
+// Protected by INGEST_SECRET (Authorization: Bearer <INGEST_SECRET>)
+// Receives { rawText, htmlTranscript, trades, dailySummaries } from the selfbot
+async function handleIngest(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+  const secret = env.INGEST_SECRET || '';
+
+  if (!secret) {
+    return jsonResponse({ ok: false, error: 'Server missing INGEST_SECRET env var. Set it in Worker settings.' }, 500);
+  }
+
+  if (!token || !timingSafeEqual(token, secret)) {
+    return jsonResponse({ ok: false, error: 'Unauthorized. Invalid or missing secret token.' }, 401);
+  }
+
+  const ghToken = env.GITHUB_TOKEN || '';
+  const ghRepo = env.GITHUB_REPO || '';
+  const ghBranch = env.GITHUB_BRANCH || 'main';
+  const ghPath = env.GITHUB_DATA_PATH || 'data.json';
+
+  if (!ghToken || !ghRepo) {
+    return jsonResponse({ ok: false, error: 'Server missing GITHUB_TOKEN or GITHUB_REPO.' }, 500);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse({ ok: false, error: 'Invalid JSON payload.' }, 400);
+  }
+
+  const ghHeaders = {
+    Authorization: `Bearer ${ghToken}`,
+    Accept: 'application/vnd.github+json',
+    'User-Agent': 'mordy-tracker-ingest',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+
+  // 1. If HTML transcript provided, optionally save it as transcript.html in repo
+  if (body.htmlTranscript) {
+    try {
+      const transPath = 'transcript.html';
+      const transUrl = `https://api.github.com/repos/${ghRepo}/contents/${encodeURIComponent(transPath)}`;
+      let transSha;
+      const getTrans = await fetch(`${transUrl}?ref=${encodeURIComponent(ghBranch)}`, { headers: ghHeaders });
+      if (getTrans.status === 200) {
+        const tj = await getTrans.json();
+        transSha = tj.sha;
+      }
+      await fetch(transUrl, {
+        method: 'PUT',
+        headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `Update ${transPath} transcript (${new Date().toISOString()})`,
+          content: toBase64Utf8(body.htmlTranscript),
+          branch: ghBranch,
+          ...(transSha ? { sha: transSha } : {})
+        })
+      });
+    } catch (e) {
+      console.error('Failed to commit transcript.html:', e);
+    }
+  }
+
+  // 2. Fetch current data.json from GitHub
+  const dataUrl = `https://api.github.com/repos/${ghRepo}/contents/${encodeURIComponent(ghPath)}`;
+  let sha = null;
+  let currentData = { trades: [], dailySummaries: [] };
+
+  try {
+    const getRes = await fetch(`${dataUrl}?ref=${encodeURIComponent(ghBranch)}`, { headers: ghHeaders });
+    if (getRes.status === 200) {
+      const j = await getRes.json();
+      sha = j.sha;
+      if (j.content) {
+        const decoded = fromBase64Utf8(j.content.replace(/\n/g, ''));
+        currentData = JSON.parse(decoded);
+      }
+    }
+  } catch (e) {
+    return jsonResponse({ ok: false, error: 'Failed fetching existing data.json: ' + e.message }, 502);
+  }
+
+  // 3. Deduplicate and merge newly passed trades
+  const newTrades = Array.isArray(body.trades) ? body.trades : [];
+  const existingSet = new Set((currentData.trades || []).map(t => [t.date, t.analyst, t.ticker, t.entry, t.exit, t.pct, t.dollar].join('|')));
+  let addedCount = 0;
+
+  newTrades.forEach(t => {
+    const key = [t.date, t.analyst, t.ticker, t.entry, t.exit, t.pct, t.dollar].join('|');
+    if (!existingSet.has(key)) {
+      existingSet.add(key);
+      currentData.trades.push(t);
+      addedCount++;
+    }
+  });
+
+  if (Array.isArray(body.dailySummaries)) {
+    const existingDates = new Set((currentData.dailySummaries || []).map(d => d.date));
+    body.dailySummaries.forEach(s => {
+      if (!existingDates.has(s.date)) {
+        existingDates.add(s.date);
+        currentData.dailySummaries.push(s);
+      }
+    });
+  }
+
+  // 4. Commit updated data.json back to GitHub
+  const payloadStr = JSON.stringify(currentData, null, 1);
+  const putRes = await fetch(dataUrl, {
+    method: 'PUT',
+    headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: `Auto-ingest ${addedCount} trade(s) from Discord bot (${new Date().toISOString()})`,
+      content: toBase64Utf8(payloadStr),
+      branch: ghBranch,
+      ...(sha ? { sha } : {})
+    })
+  });
+
+  const putJson = await putRes.json().catch(() => ({}));
+  if (putRes.status !== 200 && putRes.status !== 201) {
+    return jsonResponse({ ok: false, error: `GitHub API error committing data.json: ${putJson.message || 'unknown error'}` }, 502);
+  }
+
+  return jsonResponse({
+    ok: true,
+    newTradesCount: addedCount,
+    totalTradesCount: currentData.trades.length,
+    commitUrl: putJson && putJson.commit ? putJson.commit.html_url : null
+  });
+}
+
 function toBase64Utf8(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = '';
   for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
   return btoa(binary);
 }
+
+function fromBase64Utf8(b64) {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
