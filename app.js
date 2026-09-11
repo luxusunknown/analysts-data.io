@@ -18,6 +18,8 @@
     sortCol: 'totalProfit',
     sortDir: 'desc',
     selectedAnalyst: null,
+    detailSearch: '',
+    detailOutcome: 'all',
     colorMap: {},            // analyst -> css var
     adminUnlocked: false,
     pendingParsed: null      // { trades, dailySummaries } staged from paste, not yet merged
@@ -27,16 +29,16 @@
   const css = (v) => getComputedStyle(root).getPropertyValue(v).trim();
 
   function fmtMoney(n, opts) {
-    if (n === null || n === undefined || isNaN(n)) return '—';
+    if (n === null || n === undefined || isNaN(n)) return '-';
     const o = opts || {};
     const sign = n < 0 ? '-' : (o.plus ? '+' : '');
     return sign + '$' + Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   function fmtPct(n, digits) {
-    if (n === null || n === undefined || isNaN(n)) return '—';
+    if (n === null || n === undefined || isNaN(n)) return '-';
     return (n >= 0 ? '+' : '') + n.toFixed(digits == null ? 1 : digits) + '%';
   }
-  function fmtNum(n) { return n === null || n === undefined || isNaN(n) ? '—' : n.toLocaleString('en-US'); }
+  function fmtNum(n) { return n === null || n === undefined || isNaN(n) ? '-' : n.toLocaleString('en-US'); }
   // Drawdown is always >= 0 internally; this just decides whether to show it
   // as "-X.X%" (red) or a flat "0.0%" (muted) -- avoids ever printing the
   // "-0.0%" artifact you get from blindly prepending a minus sign to 0.
@@ -178,13 +180,14 @@
   // ---- rendering: leaderboard table -----------------------------------
   const COLUMNS = [
     { key: 'analyst', label: 'Analyst' },
-    { key: 'trades', label: 'Trades', tip: 'Distinct positions, not raw posted calls — if the same ticker gets re-posted at the same entry price within 10 days (a trim of an existing position), it counts once, not once per trim.' },
-    { key: 'winRate', label: 'Win Rate', tip: 'Winning positions ÷ total positions (see "Trades" — trims of one position are judged on that position\'s net result, not each trim separately).' },
+    { key: 'trades', label: 'Trades', tip: 'Distinct positions, not raw posted calls - if the same ticker gets re-posted at the same entry price within 10 days (a trim of an existing position), it counts once, not once per trim.' },
+    { key: 'winRate', label: 'Win Rate', tip: 'Winning positions ÷ total positions (see "Trades" - trims of one position are judged on that position\'s net result, not each trim separately).' },
     { key: 'profitFactor', label: 'Profit Factor', tip: 'Gross $ won ÷ gross $ lost, by position net result. Above 1 = net profitable.' },
+    { key: 'sharpeRatio', label: 'Sharpe (Est.)', tip: 'Annualized risk-adjusted return estimate based on position outcomes. Higher = smoother profits, less lottery-ticket variance.' },
     { key: 'totalProfit', label: 'Total Profit' },
-    { key: 'avgPerTrade', label: 'Avg $ / Trade', tip: 'Total profit ÷ priced positions — the blended expected outcome of one position, wins and losses combined.' },
-    { key: 'maxLoss', label: 'Worst Loss', tip: 'Worst net result of any single position — if a position was trimmed at a loss but the remaining trims turned it net positive, it\'s not counted here as a loss.' },
-    { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 across distinct positions — roughly what one contract costs to open. Hover a row for the most expensive single position.' },
+    { key: 'avgPerTrade', label: 'Avg $ / Trade', tip: 'Total profit ÷ priced positions - the blended expected outcome of one position, wins and losses combined.' },
+    { key: 'maxLoss', label: 'Worst Loss', tip: 'Worst net result of any single position - if a position was trimmed at a loss but the remaining trims turned it net positive, it\'s not counted here as a loss.' },
+    { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 across distinct positions - roughly what one contract costs to open. Hover a row for the most expensive single position.' },
     { key: 'daysActive', label: 'Days Active', tip: 'Hover a row for how often positions span multiple days and how many can be open at once.' },
     { key: 'streakSortValue', label: 'Streak', tip: 'Current run of wins or losses in a row, most recent call last. Hover a row for the worst losing streak on record.' },
     { key: 'maxDrawdown', label: 'Max Drawdown', tip: 'Worst peak-to-trough dip in this analyst\'s running tracked profit -- not the same as "Worst Loss" (one position); this is how far underwater the total ever went before recovering.' }
@@ -221,22 +224,25 @@
       const color = css(state.colorMap[s.analyst] || '--series-1');
       const selected = state.selectedAnalyst === s.analyst ? 'selected' : '';
       const medianTip = `Median $/trade: ${fmtMoney(s.medianPerTrade)} (less skewed by one huge outlier than the average)`;
-      const entryTip = `Most expensive single position: ${s.maxEntryCost != null ? fmtMoney(s.maxEntryCost) : '—'}`;
+      const entryTip = `Most expensive single position: ${s.maxEntryCost != null ? fmtMoney(s.maxEntryCost) : '-'}`;
       const daysTip = `${s.multiDayPct.toFixed(0)}% of positions span multiple days` +
         (s.avgHoldDays != null ? ` (avg ${s.avgHoldDays.toFixed(1)}d when they do)` : '') +
         ` · up to ${s.maxConcurrentPositions} position${s.maxConcurrentPositions === 1 ? '' : 's'} open at once`;
-      const streakLabel = s.currentStreak ? `${s.currentStreak.type === 'win' ? '🔥' : '🧊'}${s.currentStreak.count}${s.currentStreak.type === 'win' ? 'W' : 'L'}` : '—';
+      const streakLabel = s.currentStreak ? `${s.currentStreak.type === 'win' ? '🔥' : '🧊'}${s.currentStreak.count}${s.currentStreak.type === 'win' ? 'W' : 'L'}` : '-';
       const streakTip = `Worst losing streak on record: ${s.worstLossStreak}`;
       const ddTip = 'Peak-to-trough dip in running tracked profit, not a single-position loss';
+      const sharpeText = s.sharpeRatio != null ? s.sharpeRatio.toFixed(2) : '-';
+      const sharpeCls = s.sharpeRatio != null ? (s.sharpeRatio >= 1.5 ? 'pos' : (s.sharpeRatio <= 0 ? 'neg' : '')) : 'muted-cell';
       return `<tr class="${selected}" data-analyst="${s.analyst}">
         <td class="name-cell"><span class="dot" style="background:${color}"></span>${s.analyst}</td>
         <td>${fmtNum(s.trades)}</td>
         <td>${s.winRate.toFixed(1)}%</td>
         <td>${isFinite(s.profitFactor) ? s.profitFactor.toFixed(2) : '∞'}</td>
+        <td class="${sharpeCls}">${sharpeText}</td>
         <td class="${s.totalProfit >= 0 ? 'pos' : 'neg'}">${fmtMoney(s.totalProfit)}</td>
         <td class="${s.avgPerTrade >= 0 ? 'pos' : 'neg'}" title="${medianTip}">${fmtMoney(s.avgPerTrade)}</td>
-        <td class="neg">${s.maxLoss != null ? fmtMoney(s.maxLoss) : '—'}</td>
-        <td class="muted-cell" title="${entryTip}">${s.avgEntryCost != null ? fmtMoney(s.avgEntryCost) : '—'}</td>
+        <td class="neg">${s.maxLoss != null ? fmtMoney(s.maxLoss) : '-'}</td>
+        <td class="muted-cell" title="${entryTip}">${s.avgEntryCost != null ? fmtMoney(s.avgEntryCost) : '-'}</td>
         <td title="${daysTip}">${s.daysActive}</td>
         <td class="${s.currentStreak && s.currentStreak.type === 'win' ? 'pos' : (s.currentStreak ? 'neg' : 'muted-cell')}" title="${streakTip}">${streakLabel}</td>
         <td class="${s.maxDrawdown > 0 ? 'neg' : 'muted-cell'}" title="${ddTip}">${fmtMoney(s.maxDrawdown)}</td>
@@ -410,48 +416,190 @@
   }
 
   // ---- rendering: detail panel -----------------------------------------
+  let detailWired = false;
+  function wireDetailControls() {
+    if (detailWired) return;
+    detailWired = true;
+    const searchInput = document.getElementById('detailSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        state.detailSearch = e.target.value.trim().toUpperCase();
+        renderDetailOnly();
+      });
+    }
+    const outcomeSeg = document.getElementById('detailOutcomeFilter');
+    if (outcomeSeg) {
+      outcomeSeg.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          outcomeSeg.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.detailOutcome = btn.dataset.outcome;
+          renderDetailOnly();
+        });
+      });
+    }
+    const exportBtn = document.getElementById('detailExportBtn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        if (!state.selectedAnalyst) return;
+        const trades = filteredTrades().filter(t => t.analyst === state.selectedAnalyst);
+        const headers = ['date','analyst','ticker','win','entry','exit','pct','dollar'];
+        const csvRows = [headers.join(',')];
+        trades.forEach(t => {
+          csvRows.push([
+            t.date,
+            `"${(t.analyst||'').replace(/"/g, '""')}"`,
+            `"${(t.ticker||'').replace(/"/g, '""')}"`,
+            t.win ? 'WIN' : 'LOSS',
+            t.entry ?? '',
+            t.exit ?? '',
+            t.pct ?? '',
+            t.dollar ?? ''
+          ].join(','));
+        });
+        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${state.selectedAnalyst.toLowerCase().replace(/\s+/g, '_')}_trades.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+  }
+
+  function renderDetailOnly() {
+    const trades = filteredTrades();
+    const stats = MordyParser.computeStats(trades);
+    renderDetail(trades, stats);
+  }
+
   function renderDetail(trades, stats) {
+    wireDetailControls();
     const panel = document.getElementById('detailPanel');
     if (!state.selectedAnalyst) { panel.classList.remove('open'); return; }
     panel.classList.add('open');
     const a = state.selectedAnalyst;
     const color = css(state.colorMap[a] || '--series-1');
-    const rows = trades.filter(t => t.analyst === a).sort((x,y)=> y.date.localeCompare(x.date));
+    let rows = trades.filter(t => t.analyst === a).sort((x,y)=> y.date.localeCompare(x.date));
+
+    // Apply search filter
+    if (state.detailSearch) {
+      rows = rows.filter(t => (t.ticker || '').toUpperCase().includes(state.detailSearch));
+    }
+    // Apply outcome filter
+    if (state.detailOutcome === 'win') {
+      rows = rows.filter(t => t.win);
+    } else if (state.detailOutcome === 'loss') {
+      rows = rows.filter(t => !t.win);
+    }
 
     const s = (stats || []).find(x => x.analyst === a);
     const statsEl = document.getElementById('detailStats');
     if (s) {
-      const tickerList = s.topTickers.map(t => `${t.ticker} (${t.count})`).join(', ') || '—';
+      const tickerList = s.topTickers.map(t => `${t.ticker} (${t.count})`).join(', ') || '-';
       statsEl.innerHTML = `Most active: ${tickerList} · up to ${s.maxConcurrentPositions} position${s.maxConcurrentPositions === 1 ? '' : 's'} open at once · ` +
         `${s.multiDayPct.toFixed(0)}% of positions held multi-day${s.avgHoldDays != null ? ` (avg ${s.avgHoldDays.toFixed(1)}d when they do)` : ''}`;
     } else {
       statsEl.innerHTML = '';
     }
 
-    // Tag rows that are one trim of a multi-day position (see COLUMNS tip
-    // on "Trades") so it's visible in the raw call list, not just baked
-    // silently into the leaderboard math.
+    // Tag rows that are one trim of a multi-day position
     const trimInfo = new Map();
     MordyParser.groupPositions(trades).forEach(p => {
       if (p.trimCount > 1) p.trims.forEach((t, i) => trimInfo.set(t, { i: i + 1, n: p.trimCount, net: p.netDollar }));
     });
 
-    document.getElementById('detailTitle').innerHTML = `<span class="dot" style="background:${color}"></span>${a} — ${rows.length} calls in range`;
+    document.getElementById('detailTitle').innerHTML = `<span class="dot" style="background:${color}"></span>${a} - ${rows.length} calls shown`;
     document.getElementById('detailBody').innerHTML = rows.map(t => {
       const info = trimInfo.get(t);
       const trimTag = info
-        ? ` <span class="trim-tag" title="Part of one position held across ${info.n} trims, net ${fmtMoney(info.net)} — counted once in the leaderboard, not ${info.n} times">trim ${info.i}/${info.n}</span>`
+        ? ` <span class="trim-tag" title="Part of one position held across ${info.n} trims, net ${fmtMoney(info.net)} - counted once in the leaderboard, not ${info.n} times">trim ${info.i}/${info.n}</span>`
         : '';
       return `
       <tr>
         <td class="name-cell">${t.date}</td>
         <td>$${t.ticker}${trimTag}</td>
         <td class="${t.win ? 'pos' : 'neg'}">${t.win ? 'WIN' : 'LOSS'}</td>
-        <td>${t.entry != null ? t.entry.toFixed(2) : '—'}</td>
-        <td>${t.exit != null ? t.exit.toFixed(2) : '—'}</td>
+        <td>${t.entry != null ? t.entry.toFixed(2) : '-'}</td>
+        <td>${t.exit != null ? t.exit.toFixed(2) : '-'}</td>
         <td class="${t.pct >= 0 ? 'pos':'neg'}">${fmtPct(t.pct)}</td>
-        <td class="${(t.dollar||0) >= 0 ? 'pos':'neg'}">${t.dollar != null ? fmtMoney(t.dollar) : '—'}</td>
+        <td class="${(t.dollar||0) >= 0 ? 'pos':'neg'}">${t.dollar != null ? fmtMoney(t.dollar) : '-'}</td>
       </tr>`;
+    }).join('');
+  }
+
+  // ---- rendering: multi-analyst confluence cards -----------------------
+  function renderConfluence(trades) {
+    const grid = document.getElementById('confluenceGrid');
+    if (!grid) return;
+    const confluences = MordyParser.findConfluenceTrades(trades);
+    if (!confluences.length) {
+      grid.innerHTML = '<div class="hint" style="grid-column:1/-1;padding:16px;background:var(--surface-1);border-radius:8px;border:1px solid var(--border);text-align:center">No confluence entries (2+ analysts calling the same ticker on the same day) in this window.</div>';
+      return;
+    }
+
+    grid.innerHTML = confluences.slice(0, 12).map(c => {
+      const outcomeCls = c.winRate === 100 ? 'confluence-win' : (c.winRate === 0 ? 'confluence-loss' : 'confluence-mixed');
+      const chips = c.calls.map(call => {
+        const col = css(state.colorMap[call.analyst] || '--series-1');
+        const resIcon = call.win ? '🟩' : '🟥';
+        const gainStr = call.pct != null ? (call.pct >= 0 ? '+' : '') + call.pct.toFixed(0) + '%' : '';
+        return `<span class="confluence-chip"><span class="dot" style="background:${col}"></span>${call.analyst} ${resIcon} ${gainStr}</span>`;
+      }).join('');
+
+      return `
+      <div class="confluence-card ${outcomeCls}">
+        <div class="confluence-header">
+          <span class="confluence-ticker">$${c.ticker}</span>
+          <span class="confluence-date">${c.date}</span>
+        </div>
+        <div class="confluence-meta">
+          <span>${c.analysts.length} analysts called</span>
+          <span class="${c.winRate >= 50 ? 'pos' : 'neg'}" style="font-weight:700">${c.winRate.toFixed(0)}% Win Rate</span>
+        </div>
+        <div class="confluence-analysts">${chips}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // ---- rendering: day-of-week performance heatmap ----------------------
+  function renderDayHeatmap(trades) {
+    const grid = document.getElementById('dayHeatmapGrid');
+    if (!grid) return;
+
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const dayStats = { 1: { name: 'Monday', wins: 0, trades: 0, profit: 0 },
+                       2: { name: 'Tuesday', wins: 0, trades: 0, profit: 0 },
+                       3: { name: 'Wednesday', wins: 0, trades: 0, profit: 0 },
+                       4: { name: 'Thursday', wins: 0, trades: 0, profit: 0 },
+                       5: { name: 'Friday', wins: 0, trades: 0, profit: 0 } };
+
+    trades.forEach(t => {
+      if (!t.date) return;
+      const d = new Date(t.date + 'T12:00:00Z');
+      const dayIdx = d.getUTCDay();
+      if (dayStats[dayIdx]) {
+        dayStats[dayIdx].trades += 1;
+        if (t.win) dayStats[dayIdx].wins += 1;
+        if (typeof t.dollar === 'number') dayStats[dayIdx].profit += t.dollar;
+      }
+    });
+
+    grid.innerHTML = [1, 2, 3, 4, 5].map(idx => {
+      const item = dayStats[idx];
+      const winRate = item.trades ? (item.wins / item.trades) * 100 : 0;
+      const profitStr = fmtMoney(item.profit, { plus: true });
+      const winCls = winRate >= 55 ? 'pos' : (winRate <= 45 ? 'neg' : '');
+      const profitCls = item.profit >= 0 ? 'pos' : 'neg';
+
+      return `
+      <div class="day-heatmap-card">
+        <div class="day-heatmap-name">${item.name}</div>
+        <div class="day-heatmap-winrate ${winCls}">${item.trades ? winRate.toFixed(1) + '%' : '-'}</div>
+        <div class="day-heatmap-trades">${fmtNum(item.trades)} calls</div>
+        <div class="day-heatmap-profit ${profitCls}">${profitStr}</div>
+      </div>`;
     }).join('');
   }
 
@@ -833,7 +981,7 @@
             <td class="${gained ? 'pos' : 'neg'}">${fmtPct(r.totalReturnPct, 0)}</td>
             <td class="${dd.cls}">${dd.text}</td>
             <td>${fmtNum(r.positionsSimulated)}</td>
-            <td>${r.bustedOnDate ? '<span class="error-text" style="font-size:11.5px">busted ' + r.bustedOnDate + '</span>' : '—'}</td>
+            <td>${r.bustedOnDate ? '<span class="error-text" style="font-size:11.5px">busted ' + r.bustedOnDate + '</span>' : '-'}</td>
           </tr>`;
         }).join('');
         resultsEl.innerHTML = `<div class="table-scroll"><table class="sim-compare-table">
@@ -856,7 +1004,7 @@
         }
         const gained = sim.finalBalance >= sim.startingCapital;
         const dd = fmtDrawdown(sim.maxDrawdownPct);
-        const bustedBanner = sim.bustedOnDate ? `<div class="busted-banner">Account hit $0 on ${sim.bustedOnDate} and couldn't keep trading — ${sim.positionsSkipped} later call(s) had to be skipped.</div>` : '';
+        const bustedBanner = sim.bustedOnDate ? `<div class="busted-banner">Account hit $0 on ${sim.bustedOnDate} and couldn't keep trading - ${sim.positionsSkipped} later call(s) had to be skipped.</div>` : '';
         const breakdown = names.length > 1
           ? `<div class="hint" style="margin-top:10px">Contribution: ${names.map(n => `${n} ${fmtMoney(sim.perAnalystProfit[n] || 0, {plus:true})}`).join(' · ')}</div>`
           : '';
@@ -936,12 +1084,14 @@
     renderFilters();
     renderTiles(stats);
     renderTable(stats);
+    renderConfluence(trades);
+    renderDayHeatmap(trades);
     renderBarChart(stats);
     renderLineChart(trades, stats);
     renderDetail(trades, stats);
     populateSimAnalystSelect();
     const rangeLabel = state.rangeDays ? `last ${state.rangeDays} days` : 'all tracked days';
-    document.getElementById('rangeNote').textContent = `Showing ${rangeLabel} · ${fmtNum(trades.length)} calls posted (${fmtNum(stats.reduce((s,x)=>s+x.trades,0))} distinct trades — see "Trades" tooltip) · updated through ${maxDate(state.trades) || '—'}`;
+    document.getElementById('rangeNote').textContent = `Showing ${rangeLabel} · ${fmtNum(trades.length)} calls posted (${fmtNum(stats.reduce((s,x)=>s+x.trades,0))} distinct trades - see "Trades" tooltip) · updated through ${maxDate(state.trades) || '-'}`;
   }
 
   let pageResizeTimer = null;
@@ -1008,7 +1158,7 @@
       const reader = new FileReader();
       reader.onload = () => {
         pasteArea.value = String(reader.result || '');
-        dropZoneLabel.textContent = `Loaded "${file.name}" (${(file.size / 1024).toFixed(0)} KB) — click Parse below`;
+        dropZoneLabel.textContent = `Loaded "${file.name}" (${(file.size / 1024).toFixed(0)} KB) - click Parse below`;
         parseMsg.innerHTML = '';
       };
       reader.onerror = () => {
@@ -1160,7 +1310,7 @@
         const json = await res.json();
         if (json.ok) {
           const mergedNote = autoMerged ? ` (included ${autoMerged} new call${autoMerged === 1 ? '' : 's'} you hadn't clicked "Merge into page" for yet)` : '';
-          publishMsg.innerHTML = `<div class="ok-text">Published ${fmtNum(tradeCountBefore)} total trades${mergedNote}${json.commitUrl ? ' — <a href="' + json.commitUrl + '" target="_blank" rel="noopener">view commit</a>' : ''}. Cloudflare will redeploy in under a minute.</div>`;
+          publishMsg.innerHTML = `<div class="ok-text">Published ${fmtNum(tradeCountBefore)} total trades${mergedNote}${json.commitUrl ? ' - <a href="' + json.commitUrl + '" target="_blank" rel="noopener">view commit</a>' : ''}. Cloudflare will redeploy in under a minute.</div>`;
         } else {
           publishMsg.innerHTML = `<div class="error-text">${json.error || 'Publish failed.'}</div>`;
         }
@@ -1174,6 +1324,28 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     wireAdminUI();
+    const themeBtn = document.getElementById('themeToggleBtn');
+    if (themeBtn) {
+      const savedTheme = localStorage.getItem('mordy_theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeBtn.textContent = savedTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+      } else {
+        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        themeBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+      }
+      themeBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const isDark = currentTheme === 'dark' || (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const nextTheme = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', nextTheme);
+        localStorage.setItem('mordy_theme', nextTheme);
+        themeBtn.textContent = nextTheme === 'dark' ? '☀️ Light' : '🌙 Dark';
+        // Re-render charts so their svg colors refresh
+        renderBarChart(MordyParser.computeStats(filteredTrades()), false);
+        renderLineChart(filteredTrades(), MordyParser.computeStats(filteredTrades()), false);
+      });
+    }
     const runSim = wireSimulator();
     await loadData();
     restoreScenarioFromURL(runSim);

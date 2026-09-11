@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trade With Mordy — Analyst Tracker</title>
+<title>Trade With Mordy - Analyst Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,10 +15,12 @@
   <header class="top">
     <div class="row">
       <div>
-        <h1>Trade With Mordy — Analyst Tracker</h1>
+        <div class="brand-badge"><span>●</span> LIVE PERFORMANCE INTELLIGENCE</div>
+        <h1>Trade With Mordy - Analyst Tracker</h1>
         <div class="sub" id="rangeNote">Loading…</div>
       </div>
       <div class="top-actions">
+        <button id="themeToggleBtn" class="ghost theme-toggle" title="Toggle dark / light mode">🌙 Dark</button>
         <button id="adminOpenBtn" class="ghost admin-toggle">Admin</button>
       </div>
     </div>
@@ -23,27 +28,45 @@
 
   <section>
     <div class="filters" id="filters"></div>
-    <div class="hint" style="margin:-6px 0 14px">Ranges count the last N days the channel actually posted a recap — weekends/off days don't count against the window.</div>
+    <div class="hint" style="margin:-6px 0 14px">Ranges count the last N days the channel actually posted a recap - weekends/off days don't count against the window.</div>
     <div class="tiles" id="tiles"></div>
   </section>
 
   <section>
-    <h2 class="section-title">Leaderboard</h2>
+    <div class="section-head-row">
+      <h2 class="section-title">Leaderboard</h2>
+      <div class="table-legend-hint">Sharpe & Profit Factor evaluate consistency vs lottery tickets</div>
+    </div>
     <div class="table-scroll">
       <table>
         <thead id="tableHead"></thead>
         <tbody id="tableBody"></tbody>
       </table>
     </div>
-    <div class="hint">Click a column to sort · click a row to see every call. "Trades" counts distinct positions — if the same ticker/entry gets re-posted within 10 days (a trim of an existing position), it's counted once, not once per trim; the detail view tags these as "trim 1/2" etc. "Avg $/Trade" blends wins and losses together — see tooltips. Small sample sizes (few trades, few days) are noisy; don't over-read them.</div>
+    <div class="hint">Click a column to sort · click a row to see every call. "Trades" counts distinct positions - if the same ticker/entry gets re-posted within 10 days (a trim of an existing position), it's counted once, not once per trim; the detail view tags these as "trim 1/2" etc. "Avg $/Trade" blends wins and losses together - see tooltips. Small sample sizes (few trades, few days) are noisy; don't over-read them.</div>
   </section>
 
   <section id="detailPanel">
     <div class="detail-head">
       <h3 id="detailTitle"></h3>
-      <button class="ghost" onclick="document.getElementById('detailPanel').classList.remove('open')">Close</button>
+      <div class="detail-actions">
+        <button id="detailExportBtn" class="ghost" style="font-size:12px">Export CSV</button>
+        <button class="ghost" onclick="document.getElementById('detailPanel').classList.remove('open')">Close</button>
+      </div>
     </div>
     <div class="hint" id="detailStats" style="margin:-4px 0 10px"></div>
+    
+    <div class="detail-filters-bar">
+      <div class="search-input-wrap">
+        <input type="text" id="detailSearchInput" placeholder="Filter by ticker (e.g. NVDA, SPY)...">
+      </div>
+      <div class="detail-segmented" id="detailOutcomeFilter">
+        <button type="button" class="active" data-outcome="all">All</button>
+        <button type="button" data-outcome="win">Wins only</button>
+        <button type="button" data-outcome="loss">Losses only</button>
+      </div>
+    </div>
+
     <div class="table-scroll">
       <table>
         <thead><tr>
@@ -51,6 +74,24 @@
         </tr></thead>
         <tbody id="detailBody"></tbody>
       </table>
+    </div>
+  </section>
+
+  <!-- Multi-Analyst Confluence / Overlap -->
+  <section id="confluenceSection">
+    <div class="section-head-row">
+      <h2 class="section-title">Analyst Confluence Signals</h2>
+      <span class="badge-pill">High Conviction Overlap</span>
+    </div>
+    <div class="hint" style="margin-top:-6px;margin-bottom:12px">Dates and tickers where 2 or more analysts entered the exact same stock/index on the same day.</div>
+    <div class="confluence-grid" id="confluenceGrid"></div>
+  </section>
+
+  <!-- Day-of-Week Performance Heatmap -->
+  <section id="dayOfWeekSection">
+    <h2 class="section-title">Day-of-Week Performance Profile</h2>
+    <div class="chart-card">
+      <div class="day-heatmap-grid" id="dayHeatmapGrid"></div>
     </div>
   </section>
 
@@ -166,24 +207,24 @@
     </div>
     <div class="hint">
       A simplified hypothetical, not a replay of real trades: it applies each call's real % return to a risk
-      amount sized YOUR way (not the analyst's own dollar figures — we don't know their real position size, only
+      amount sized YOUR way (not the analyst's own dollar figures - we don't know their real position size, only
       their % move). "Blend" pools every selected analyst's calls into one shared account in the order they
       actually happened; "Compare" gives each analyst their own independent account from the same starting
-      capital. "Skip calls I couldn't afford" is the closest this gets to real-world whole-contract limits — off
+      capital. "Skip calls I couldn't afford" is the closest this gets to real-world whole-contract limits - off
       by default, it assumes fractional sizing, which is optimistic. Slippage/fees haircut every modeled return to
       account for real execution. "Split evenly" is a fixed baseline: your starting capital divided equally across
       every tracked analyst, each run independently and added back together. "Range of possible outcomes" reruns
-      these exact same trades in hundreds of random orders — the ending number is often identical for %-based
+      these exact same trades in hundreds of random orders - the ending number is often identical for %-based
       sizing (multiplying the same returns in a different order gives the same product), but the bumpiness of the
       ride and the odds of an early unlucky stretch busting the account are very real and very order-dependent.
       Use this to compare scenarios, not as a literal "you would have made $X" prediction. Historical simulation
-      only — not financial advice.
+      only - not financial advice.
     </div>
   </section>
 
   <footer class="site">
     Data parsed directly from the #recaps channel's own posted calls (win/loss markers and $ figures as posted).
-    Historical performance only — not financial advice, not a guarantee of future results. Options can lose their
+    Historical performance only - not financial advice, not a guarantee of future results. Options can lose their
     full value; size accordingly. This is an independent community tracker, not affiliated with or endorsed by
     the analysts named above.
   </footer>
@@ -204,7 +245,7 @@
     </div>
     <p class="hint" style="margin-top:16px">
       Checked server-side against the <code>ADMIN_USERNAME</code> / <code>ADMIN_PASSWORD_HASH</code> environment
-      variables set in your Cloudflare Pages project — nothing password-related ships in this page's code.
+      variables set in your Cloudflare Pages project - nothing password-related ships in this page's code.
       See README.md to set those up.
     </p>
   </div>
@@ -215,9 +256,9 @@
   <div class="modal-card">
     <button class="ghost close-x" id="adminCloseBtn">✕</button>
     <h3>Add a new recap <button class="ghost" id="logoutBtn" style="font-size:12px;margin-left:8px">Log out</button></h3>
-    <p class="hint">Upload the recap .html file you downloaded, or paste the raw HTML/text below — either
+    <p class="hint">Upload the recap .html file you downloaded, or paste the raw HTML/text below - either
       works. Parsing happens entirely in your browser. "Publish to GitHub" is the only step that sends
-      anything anywhere — it sends the merged data to your own Worker, which commits it to your repo.</p>
+      anything anywhere - it sends the merged data to your own Worker, which commits it to your repo.</p>
     <div id="dropZone" class="drop-zone">
       <input type="file" id="fileInput" accept=".html,.htm,.txt" style="display:none">
       <span id="dropZoneLabel">Drop the .html file here, or <a href="#" id="browseLink">browse</a></span>
@@ -237,7 +278,7 @@
     </div>
     <div id="publishMsg"></div>
     <p class="hint">"Publish to GitHub" commits the current data straight to your repo (needs
-      <code>GITHUB_TOKEN</code> / <code>GITHUB_REPO</code> set on the Worker — see README.md). Cloudflare then
+      <code>GITHUB_TOKEN</code> / <code>GITHUB_REPO</code> set on the Worker - see README.md). Cloudflare then
       auto-redeploys in under a minute. "Download data.json instead" is the manual fallback if you'd rather
       commit it yourself.</p>
   </div>

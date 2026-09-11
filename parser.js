@@ -368,9 +368,16 @@
       const avgHoldDays = multiDay.length
         ? multiDay.reduce((s, p) => s + (dateNum(p.lastDate) - dateNum(p.firstDate)) / DAY_MS, 0) / multiDay.length
         : null;
-      const sortedByDate = a.positions.slice().sort((x, y) => (x.lastDate < y.lastDate ? -1 : x.lastDate > y.lastDate ? 1 : 0));
-      const { currentStreak, worstLossStreak } = computeStreaks(sortedByDate);
-      const dd = drawdowns[a.analyst] || { maxDrawdown: 0, maxDrawdownPct: 0 };
+      // Standard deviation of trade dollar returns and simple Sharpe estimate
+      let sharpeRatio = null;
+      if (pricedNets.length >= 3) {
+        const mean = a.totalProfit / pricedNets.length;
+        const variance = pricedNets.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / pricedNets.length;
+        const stdDev = Math.sqrt(variance);
+        if (stdDev > 0) {
+          sharpeRatio = (mean / stdDev) * Math.sqrt(Math.min(pricedNets.length, 252));
+        }
+      }
 
       return {
         analyst: a.analyst,
@@ -380,6 +387,7 @@
         winRate,
         totalProfit: a.totalProfit,
         profitFactor,
+        sharpeRatio,
         avgPerTrade,
         medianPerTrade,
         maxWin: a.maxWin === -Infinity ? null : a.maxWin,
@@ -400,6 +408,38 @@
       };
     });
     return out;
+  }
+
+  // Identifies dates and tickers where 2 or more analysts called the same ticker on the same day
+  function findConfluenceTrades(trades) {
+    const map = new Map();
+    trades.forEach(t => {
+      if (!t.ticker || !t.date) return;
+      const key = `${t.date}_${t.ticker.toUpperCase()}`;
+      if (!map.has(key)) map.set(key, []);
+      const list = map.get(key);
+      if (!list.some(x => x.analyst === t.analyst)) {
+        list.push(t);
+      }
+    });
+
+    const confluences = [];
+    map.forEach((analystCalls, key) => {
+      if (analystCalls.length >= 2) {
+        const [date, ticker] = key.split('_');
+        const wins = analystCalls.filter(c => c.win).length;
+        const totalProfit = analystCalls.reduce((s, c) => s + (c.dollar || 0), 0);
+        confluences.push({
+          date,
+          ticker,
+          analysts: analystCalls.map(c => c.analyst),
+          winRate: (wins / analystCalls.length) * 100,
+          totalProfit,
+          calls: analystCalls
+        });
+      }
+    });
+    return confluences.sort((a, b) => (b.date.localeCompare(a.date)));
   }
 
   // ---- copy-trade simulator --------------------------------------------
@@ -660,6 +700,6 @@
 
   global.MordyParser = {
     parseRecapText, computeStats, groupPositions, simulateCopyTrading, runMonteCarlo,
-    encodeScenario, decodeScenario, dedupeKey, toFlatText
+    encodeScenario, decodeScenario, dedupeKey, toFlatText, findConfluenceTrades
   };
 })(typeof window !== 'undefined' ? window : globalThis);
