@@ -89,7 +89,7 @@
     const tiles = [
       { label: 'Most profitable', value: mostProfitable.analyst, sub: fmtMoney(mostProfitable.totalProfit) },
       { label: 'Best win rate (10+ trades)', value: bestWinRate.analyst, sub: bestWinRate.winRate.toFixed(1)+'%' },
-      { label: 'Tracked calls', value: fmtNum(totalTrades), sub: stats.length + ' analysts' },
+      { label: 'Tracked Trades', value: fmtNum(totalTrades), sub: stats.length + ' analysts' },
       { label: 'Combined profit', value: fmtMoney(totalProfit), sub: 'across everyone shown' }
     ];
     el.innerHTML = tiles.map(t => `
@@ -109,8 +109,10 @@
     { key: 'totalProfit', label: 'Total Profit' },
     { key: 'avgPerTrade', label: 'Avg $ / Trade', tip: 'Total profit ÷ priced positions — the blended expected outcome of one position, wins and losses combined.' },
     { key: 'maxLoss', label: 'Worst Loss', tip: 'Worst net result of any single position — if a position was trimmed at a loss but the remaining trims turned it net positive, it\'s not counted here as a loss.' },
-    { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 across distinct positions — roughly what one contract costs to open.' },
-    { key: 'daysActive', label: 'Days Active' }
+    { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 across distinct positions — roughly what one contract costs to open. Hover a row for the most expensive single position.' },
+    { key: 'daysActive', label: 'Days Active', tip: 'Hover a row for how often positions span multiple days and how many can be open at once.' },
+    { key: 'streakSortValue', label: 'Streak', tip: 'Current run of wins or losses in a row, most recent call last. Hover a row for the worst losing streak on record.' },
+    { key: 'maxDrawdown', label: 'Max Drawdown', tip: 'Worst peak-to-trough dip in this analyst\'s running tracked profit -- not the same as "Worst Loss" (one position); this is how far underwater the total ever went before recovering.' }
   ];
 
   function renderTable(stats) {
@@ -143,16 +145,26 @@
     tbody.innerHTML = sorted.map(s => {
       const color = css(state.colorMap[s.analyst] || '--series-1');
       const selected = state.selectedAnalyst === s.analyst ? 'selected' : '';
+      const medianTip = `Median $/trade: ${fmtMoney(s.medianPerTrade)} (less skewed by one huge outlier than the average)`;
+      const entryTip = `Most expensive single position: ${s.maxEntryCost != null ? fmtMoney(s.maxEntryCost) : '—'}`;
+      const daysTip = `${s.multiDayPct.toFixed(0)}% of positions span multiple days` +
+        (s.avgHoldDays != null ? ` (avg ${s.avgHoldDays.toFixed(1)}d when they do)` : '') +
+        ` · up to ${s.maxConcurrentPositions} position${s.maxConcurrentPositions === 1 ? '' : 's'} open at once`;
+      const streakLabel = s.currentStreak ? `${s.currentStreak.type === 'win' ? '🔥' : '🧊'}${s.currentStreak.count}${s.currentStreak.type === 'win' ? 'W' : 'L'}` : '—';
+      const streakTip = `Worst losing streak on record: ${s.worstLossStreak}`;
+      const ddTip = 'Peak-to-trough dip in running tracked profit, not a single-position loss';
       return `<tr class="${selected}" data-analyst="${s.analyst}">
         <td class="name-cell"><span class="dot" style="background:${color}"></span>${s.analyst}</td>
         <td>${fmtNum(s.trades)}</td>
         <td>${s.winRate.toFixed(1)}%</td>
         <td>${isFinite(s.profitFactor) ? s.profitFactor.toFixed(2) : '∞'}</td>
         <td class="${s.totalProfit >= 0 ? 'pos' : 'neg'}">${fmtMoney(s.totalProfit)}</td>
-        <td class="${s.avgPerTrade >= 0 ? 'pos' : 'neg'}">${fmtMoney(s.avgPerTrade)}</td>
+        <td class="${s.avgPerTrade >= 0 ? 'pos' : 'neg'}" title="${medianTip}">${fmtMoney(s.avgPerTrade)}</td>
         <td class="neg">${s.maxLoss != null ? fmtMoney(s.maxLoss) : '—'}</td>
-        <td class="muted-cell">${s.avgEntryCost != null ? fmtMoney(s.avgEntryCost) : '—'}</td>
-        <td>${s.daysActive}</td>
+        <td class="muted-cell" title="${entryTip}">${s.avgEntryCost != null ? fmtMoney(s.avgEntryCost) : '—'}</td>
+        <td title="${daysTip}">${s.daysActive}</td>
+        <td class="${s.currentStreak && s.currentStreak.type === 'win' ? 'pos' : (s.currentStreak ? 'neg' : 'muted-cell')}" title="${streakTip}">${streakLabel}</td>
+        <td class="${s.maxDrawdown > 0 ? 'neg' : 'muted-cell'}" title="${ddTip}">${fmtMoney(s.maxDrawdown)}</td>
       </tr>`;
     }).join('');
 
@@ -309,13 +321,23 @@
   }
 
   // ---- rendering: detail panel -----------------------------------------
-  function renderDetail(trades) {
+  function renderDetail(trades, stats) {
     const panel = document.getElementById('detailPanel');
     if (!state.selectedAnalyst) { panel.classList.remove('open'); return; }
     panel.classList.add('open');
     const a = state.selectedAnalyst;
     const color = css(state.colorMap[a] || '--series-1');
     const rows = trades.filter(t => t.analyst === a).sort((x,y)=> y.date.localeCompare(x.date));
+
+    const s = (stats || []).find(x => x.analyst === a);
+    const statsEl = document.getElementById('detailStats');
+    if (s) {
+      const tickerList = s.topTickers.map(t => `${t.ticker} (${t.count})`).join(', ') || '—';
+      statsEl.innerHTML = `Most active: ${tickerList} · up to ${s.maxConcurrentPositions} position${s.maxConcurrentPositions === 1 ? '' : 's'} open at once · ` +
+        `${s.multiDayPct.toFixed(0)}% of positions held multi-day${s.avgHoldDays != null ? ` (avg ${s.avgHoldDays.toFixed(1)}d when they do)` : ''}`;
+    } else {
+      statsEl.innerHTML = '';
+    }
 
     // Tag rows that are one trim of a multi-day position (see COLUMNS tip
     // on "Trades") so it's visible in the raw call list, not just baked
@@ -344,6 +366,116 @@
     }).join('');
   }
 
+  // ---- rendering: copy-trade simulator equity curve --------------------
+  function renderSimChart(points) {
+    const wrap = document.getElementById('simChart');
+    const tooltip = document.getElementById('simTooltip');
+    if (!points.length) { wrap.innerHTML = ''; return; }
+
+    const w = wrap.clientWidth || 600, h = 240, padL = 64, padR = 16, padT = 14, padB = 26;
+    const plotW = w - padL - padR, plotH = h - padT - padB;
+    const vals = points.map(p => p.balance);
+    const minV = Math.min(...vals, 0), maxV = Math.max(...vals);
+    const range = (maxV - minV) || 1;
+
+    const xFor = (i) => padL + (points.length === 1 ? plotW / 2 : (i / (points.length - 1)) * plotW);
+    const yFor = (v) => padT + plotH - ((v - minV) / range) * plotH;
+
+    let gridLines = '';
+    const ticks = 4;
+    for (let i = 0; i <= ticks; i++) {
+      const v = minV + (range * i / ticks);
+      const y = yFor(v);
+      gridLines += `<line class="grid-line" x1="${padL}" x2="${w-padR}" y1="${y}" y2="${y}"></line>
+        <text x="${padL-8}" y="${y}" text-anchor="end" dominant-baseline="middle">${fmtMoney(v)}</text>`;
+    }
+
+    const color = css('--series-1');
+    const pts = points.map((p, i) => `${xFor(i)},${yFor(p.balance)}`).join(' ');
+    const startY = yFor(points[0].balance);
+
+    let xLabels = '';
+    [0, Math.floor((points.length - 1) / 2), points.length - 1].forEach(i => {
+      if (i < 0 || i >= points.length || !points[i].date) return;
+      xLabels += `<text x="${xFor(i)}" y="${h-6}" text-anchor="middle">${points[i].date.slice(5)}</text>`;
+    });
+
+    wrap.innerHTML = `<svg id="simSvg" width="100%" height="${h}" viewBox="0 0 ${w} ${h}" style="overflow:visible">
+      ${gridLines}
+      <line class="axis-line" x1="${padL}" x2="${w-padR}" y1="${startY}" y2="${startY}" style="stroke-dasharray:3,3"></line>
+      <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2"></polyline>
+      ${xLabels}
+      <rect id="simHoverCatcher" x="${padL}" y="${padT}" width="${plotW}" height="${plotH}" fill="transparent"></rect>
+      <line id="simCrosshair" class="grid-line" x1="0" x2="0" y1="${padT}" y2="${padT+plotH}" style="display:none;stroke-dasharray:3,3"></line>
+    </svg>`;
+
+    const svg = document.getElementById('simSvg');
+    const catcher = document.getElementById('simHoverCatcher');
+    const crosshair = document.getElementById('simCrosshair');
+    catcher.addEventListener('mousemove', (e) => {
+      const rect = svg.getBoundingClientRect();
+      const scale = w / rect.width;
+      const mx = (e.clientX - rect.left) * scale;
+      let idx = Math.round(((mx - padL) / plotW) * (points.length - 1));
+      idx = Math.max(0, Math.min(points.length - 1, idx));
+      const x = xFor(idx);
+      crosshair.setAttribute('x1', x); crosshair.setAttribute('x2', x);
+      crosshair.style.display = 'block';
+      tooltip.innerHTML = `<div style="margin-bottom:3px;font-weight:600">${points[idx].date || 'Start'}</div><div>${fmtMoney(points[idx].balance)}</div>`;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (x / scale) + 'px';
+      tooltip.style.top = padT + 'px';
+    });
+    catcher.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; crosshair.style.display = 'none'; });
+  }
+
+  function populateSimAnalystSelect() {
+    const sel = document.getElementById('simAnalyst');
+    if (!sel) return;
+    const names = Array.from(new Set(state.trades.map(t => t.analyst))).sort();
+    const prev = sel.value;
+    sel.innerHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+    if (names.includes(prev)) sel.value = prev;
+  }
+
+  function wireSimulator() {
+    const analystSel = document.getElementById('simAnalyst');
+    const capitalInput = document.getElementById('simCapital');
+    const riskSel = document.getElementById('simRisk');
+    const runBtn = document.getElementById('simRunBtn');
+    const resultsEl = document.getElementById('simResults');
+    const chartWrap = document.getElementById('simChartWrap');
+    if (!runBtn) return;
+
+    runBtn.onclick = () => {
+      const analyst = analystSel.value;
+      if (!analyst) return;
+      const startingCapital = Math.max(100, Number(capitalInput.value) || 2000);
+      const riskPct = Number(riskSel.value) || 0.10;
+      const sim = MordyParser.simulateCopyTrading(state.trades, analyst, { startingCapital, riskPct });
+
+      if (!sim.positionsSimulated) {
+        resultsEl.innerHTML = `<div class="error-text">No priced, entry-priced positions found for ${analyst} to simulate.</div>`;
+        chartWrap.style.display = 'none';
+        return;
+      }
+
+      const gained = sim.finalBalance >= sim.startingCapital;
+      resultsEl.innerHTML = `<div class="tiles">
+        <div class="tile"><div class="label">Final Balance</div><div class="value ${gained ? 'pos' : 'neg'}">${fmtMoney(sim.finalBalance)}</div><div class="hint" style="margin-top:2px">from ${fmtMoney(sim.startingCapital)} start</div></div>
+        <div class="tile"><div class="label">Total Return</div><div class="value ${gained ? 'pos' : 'neg'}">${fmtPct(sim.totalReturnPct, 0)}</div></div>
+        <div class="tile"><div class="label">Max Drawdown</div><div class="value neg">-${sim.maxDrawdownPct.toFixed(1)}%</div><div class="hint" style="margin-top:2px">worst dip from a high point</div></div>
+        <div class="tile"><div class="label">Positions Simulated</div><div class="value">${fmtNum(sim.positionsSimulated)}</div><div class="hint" style="margin-top:2px">at ${(sim.riskPct*100).toFixed(0)}% risk per call</div></div>
+      </div>`;
+      chartWrap.style.display = 'block';
+      renderSimChart(sim.points);
+    };
+
+    window.addEventListener('resize', () => {
+      if (chartWrap.style.display !== 'none' && analystSel.value) runBtn.onclick();
+    });
+  }
+
   // ---- master render ---------------------------------------------------
   function renderAll() {
     const trades = filteredTrades();
@@ -353,7 +485,8 @@
     renderTable(stats);
     renderBarChart(stats);
     renderLineChart(trades, stats);
-    renderDetail(trades);
+    renderDetail(trades, stats);
+    populateSimAnalystSelect();
     const rangeLabel = state.rangeDays ? `last ${state.rangeDays} days` : 'all tracked days';
     document.getElementById('rangeNote').textContent = `Showing ${rangeLabel} · ${fmtNum(trades.length)} calls posted (${fmtNum(stats.reduce((s,x)=>s+x.trades,0))} distinct trades — see "Trades" tooltip) · updated through ${maxDate(state.trades) || '—'}`;
   }
@@ -581,6 +714,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     wireAdminUI();
+    wireSimulator();
     loadData();
   });
 })();

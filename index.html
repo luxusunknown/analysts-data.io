@@ -43,6 +43,7 @@
       <h3 id="detailTitle"></h3>
       <button class="ghost" onclick="document.getElementById('detailPanel').classList.remove('open')">Close</button>
     </div>
+    <div class="hint" id="detailStats" style="margin:-4px 0 10px"></div>
     <div class="table-scroll">
       <table>
         <thead><tr>
@@ -68,6 +69,42 @@
       <div class="legend" id="lineLegend"></div>
     </div>
     <div class="hint">Click a name in the legend to hide/show that analyst's line.</div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Copy-trade simulator</h2>
+    <div class="chart-card">
+      <div class="sim-form">
+        <label>Analyst
+          <select id="simAnalyst"></select>
+        </label>
+        <label>Starting capital
+          <input type="number" id="simCapital" value="2000" min="100" step="100">
+        </label>
+        <label>Risk per call
+          <select id="simRisk">
+            <option value="0.03">3% — conservative</option>
+            <option value="0.05" selected>5% — moderate</option>
+            <option value="0.10">10% — aggressive</option>
+          </select>
+        </label>
+        <button class="primary" id="simRunBtn">Run simulation</button>
+      </div>
+      <div id="simResults"></div>
+      <div class="chart-wrap" id="simChartWrap" style="display:none">
+        <div id="simChart"></div>
+        <div class="tooltip-box" id="simTooltip"></div>
+      </div>
+    </div>
+    <div class="hint">
+      A simplified hypothetical, not a replay of real trades: each run risks the chosen % of your <em>current</em>
+      balance on every call this analyst posted (compounding), applying that call's real % return to your risk
+      amount instead of their actual dollar figures — we don't know their real position size, only their % move.
+      It assumes you can always size in exact proportion to your risk budget; in reality options trade in whole
+      contracts, and some calls cost more per contract than your entire risked amount, so a real account this size
+      couldn't necessarily take every single call. Use this to compare analysts side by side, not as a literal
+      "you would have made $X" prediction. Historical simulation only — not financial advice.
+    </div>
   </section>
 
   <footer class="site">
