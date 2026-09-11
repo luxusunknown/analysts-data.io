@@ -74,36 +74,110 @@
   <section>
     <h2 class="section-title">Copy-trade simulator</h2>
     <div class="chart-card">
-      <div class="sim-form">
-        <label>Analyst
-          <select id="simAnalyst"></select>
-        </label>
-        <label>Starting capital
-          <input type="number" id="simCapital" value="2000" min="100" step="100">
-        </label>
-        <label>Risk per call
-          <select id="simRisk">
-            <option value="0.03">3% — conservative</option>
-            <option value="0.05" selected>5% — moderate</option>
-            <option value="0.10">10% — aggressive</option>
-          </select>
-        </label>
-        <button class="primary" id="simRunBtn">Run simulation</button>
-      </div>
-      <div id="simResults"></div>
-      <div class="chart-wrap" id="simChartWrap" style="display:none">
-        <div id="simChart"></div>
-        <div class="tooltip-box" id="simTooltip"></div>
+      <div class="sim-layout">
+        <div class="sim-settings">
+          <div class="sim-field">
+            <label>Analysts (pick 1 or more)</label>
+            <div class="chip-group" id="simAnalystChips"></div>
+          </div>
+          <div class="sim-field" id="simModeField" style="display:none">
+            <label>With multiple selected</label>
+            <div class="segmented" id="simModeToggle">
+              <button type="button" data-mode="blend" class="active">Blend into one account</button>
+              <button type="button" data-mode="compare">Compare side-by-side</button>
+            </div>
+          </div>
+          <div class="sim-field-row">
+            <div class="sim-field">
+              <label>Starting capital</label>
+              <input type="number" id="simCapital" value="2000" min="100" step="100">
+            </div>
+            <div class="sim-field">
+              <label>Date range</label>
+              <select id="simRange">
+                <option value="">All time</option>
+                <option value="30">Last 30 days</option>
+                <option value="60">Last 60 days</option>
+                <option value="90">Last 90 days</option>
+              </select>
+            </div>
+          </div>
+          <div class="sim-field-row">
+            <div class="sim-field">
+              <label>Position sizing</label>
+              <select id="simSizing">
+                <option value="fixed" selected>Flat $ per call</option>
+                <option value="startingPct">% of starting capital</option>
+                <option value="balancePct">% of current balance (compounding)</option>
+              </select>
+            </div>
+            <div class="sim-field">
+              <label id="simSizingAmountLabel">$ per call</label>
+              <input type="number" id="simSizingAmount" value="100" min="1" step="10">
+            </div>
+          </div>
+          <div class="sim-field-row">
+            <div class="sim-field">
+              <label>Slippage / fees</label>
+              <select id="simSlippage">
+                <option value="0">None</option>
+                <option value="0.02">2%</option>
+                <option value="0.05" selected>5%</option>
+                <option value="0.10">10%</option>
+              </select>
+            </div>
+            <div class="sim-field sim-checkbox-field">
+              <label><input type="checkbox" id="simAfford"> Skip calls I couldn't afford</label>
+            </div>
+          </div>
+          <div class="sim-field-row">
+            <div class="sim-field sim-checkbox-field">
+              <label><input type="checkbox" id="simBenchmark"> Compare vs. split evenly across everyone</label>
+            </div>
+            <div class="sim-field sim-checkbox-field">
+              <label><input type="checkbox" id="simMonteCarlo"> Show range of possible outcomes</label>
+            </div>
+          </div>
+          <button class="primary" id="simRunBtn">Run simulation</button>
+          <button class="ghost" id="simLinkBtn" style="font-size:12px">Copy shareable link</button>
+          <div id="simLinkMsg" class="hint" style="min-height:14px"></div>
+        </div>
+        <div class="sim-output">
+          <div id="simResults" class="sim-placeholder">Pick at least one analyst on the left, then hit Run.</div>
+          <div class="chart-wrap" id="simChartWrap" style="display:none">
+            <div id="simChart"></div>
+            <div class="tooltip-box" id="simTooltip"></div>
+            <div class="legend" id="simLegend"></div>
+          </div>
+          <div id="simMonteCarloBlock" style="display:none">
+            <h3 class="sim-subhead">Range of possible outcomes</h3>
+            <div class="hint" id="simMonteCarloSummary"></div>
+            <div class="chart-wrap">
+              <div id="simMcChart"></div>
+              <div class="tooltip-box" id="simMcTooltip"></div>
+            </div>
+            <div class="legend" id="simMcLegend"></div>
+          </div>
+          <div id="simExportRow" style="display:none">
+            <button id="simExportBtn">Export ledger as CSV</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="hint">
-      A simplified hypothetical, not a replay of real trades: each run risks the chosen % of your <em>current</em>
-      balance on every call this analyst posted (compounding), applying that call's real % return to your risk
-      amount instead of their actual dollar figures — we don't know their real position size, only their % move.
-      It assumes you can always size in exact proportion to your risk budget; in reality options trade in whole
-      contracts, and some calls cost more per contract than your entire risked amount, so a real account this size
-      couldn't necessarily take every single call. Use this to compare analysts side by side, not as a literal
-      "you would have made $X" prediction. Historical simulation only — not financial advice.
+      A simplified hypothetical, not a replay of real trades: it applies each call's real % return to a risk
+      amount sized YOUR way (not the analyst's own dollar figures — we don't know their real position size, only
+      their % move). "Blend" pools every selected analyst's calls into one shared account in the order they
+      actually happened; "Compare" gives each analyst their own independent account from the same starting
+      capital. "Skip calls I couldn't afford" is the closest this gets to real-world whole-contract limits — off
+      by default, it assumes fractional sizing, which is optimistic. Slippage/fees haircut every modeled return to
+      account for real execution. "Split evenly" is a fixed baseline: your starting capital divided equally across
+      every tracked analyst, each run independently and added back together. "Range of possible outcomes" reruns
+      these exact same trades in hundreds of random orders — the ending number is often identical for %-based
+      sizing (multiplying the same returns in a different order gives the same product), but the bumpiness of the
+      ride and the odds of an early unlucky stretch busting the account are very real and very order-dependent.
+      Use this to compare scenarios, not as a literal "you would have made $X" prediction. Historical simulation
+      only — not financial advice.
     </div>
   </section>
 

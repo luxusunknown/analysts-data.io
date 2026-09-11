@@ -403,54 +403,263 @@
   }
 
   // ---- copy-trade simulator --------------------------------------------
-  // "If I'd started with $X and risked riskPct of my account on every call
-  // this analyst posted, sized proportionally to a single contract's entry
-  // cost, what would my account look like now?" This is deliberately an
-  // approximation: we don't know the analyst's own position size behind
-  // their posted $ figures, only their % move per position, so this maps
-  // that % move onto YOUR capital instead of reproducing their dollar
-  // amounts. A single long-option position can't lose more than what's
-  // risked on it, so any modeled loss is floored at -100% of the risked
-  // amount. Runs on grouped positions (see groupPositions) so a multi-day
-  // trim chain is one simulated bet, not several.
-  function simulateCopyTrading(trades, analystName, opts) {
-    const o = opts || {};
-    const startingCapital = o.startingCapital != null ? o.startingCapital : 2000;
-    const riskPct = o.riskPct != null ? o.riskPct : 0.10;
-    const maxGapDays = o.maxGapDays != null ? o.maxGapDays : 10;
-
-    const analystTrades = trades.filter((t) => t.analyst === analystName);
-    const positions = groupPositions(analystTrades, maxGapDays)
-      .filter((p) => typeof p.entry === 'number' && !isNaN(p.entry) && p.entry > 0 && p.netDollar != null)
-      .sort((a, b) => (a.lastDate < b.lastDate ? -1 : a.lastDate > b.lastDate ? 1 : 0));
-
+  // "If I'd started with $X and sized every call this way, what would my
+  // account look like now?" Deliberately an approximation: we don't know
+  // an analyst's own position size behind their posted $ figures, only
+  // their % move per position, so this maps that % move onto YOUR capital
+  // instead of reproducing their dollar amounts. Runs on grouped positions
+  // (see groupPositions) so a multi-day trim chain is one simulated bet,
+  // not several.
+  //
+  // Core numeric walk through a list of positions, in whatever order
+  // they're given, against one account balance. Returns index-aligned
+  // arrays (balances[0] is the starting balance, before any position) so
+  // it works whether the positions are in real chronological order or
+  // reshuffled for a Monte Carlo run -- dates only get attached on top of
+  // this by the callers below.
+  function walkPositions(positions, startingCapital, o) {
     let balance = startingCapital;
     let peak = startingCapital;
     let maxDrawdownPct = 0;
-    const points = [{ date: positions.length ? positions[0].firstDate : null, balance }];
+    let bustedIndex = null;
+    let skipped = 0;
+    const perAnalystProfit = {};
+    const balances = [startingCapital];
+    const ledger = [];
 
-    positions.forEach((p) => {
-      const riskAmount = balance * riskPct;
+    positions.forEach((p, i) => {
+      if (balance <= 0.01) { skipped += 1; balances.push(balance); return; } // busted -- nothing left to risk
+      if (o.affordabilityCheck && balance < p.entry * 100) { skipped += 1; balances.push(balance); return; } // can't afford 1 contract
+
+      let riskAmount;
+      if (o.sizing === 'fixed') riskAmount = o.fixedAmount;
+      else if (o.sizing === 'startingPct') riskAmount = startingCapital * o.riskPct;
+      else riskAmount = balance * o.riskPct; // 'balancePct', compounding
+      riskAmount = Math.min(riskAmount, balance);
+
       let returnPct = (p.netDollar / (p.entry * 100)) * 100;
       returnPct = Math.max(returnPct, -100); // long options can't lose more than 100% of what's risked
-      balance = Math.max(0, balance + riskAmount * (returnPct / 100));
+      if (o.slippagePct) returnPct = returnPct >= 0 ? returnPct * (1 - o.slippagePct) : returnPct * (1 + o.slippagePct);
+
+      const profit = riskAmount * (returnPct / 100);
+      balance = Math.max(0, balance + profit);
+      perAnalystProfit[p.analyst] = (perAnalystProfit[p.analyst] || 0) + profit;
+
       if (balance > peak) peak = balance;
       const dd = peak > 0 ? ((peak - balance) / peak) * 100 : 0;
       if (dd > maxDrawdownPct) maxDrawdownPct = dd;
-      points.push({ date: p.lastDate, balance });
+      if (balance <= 0.01 && bustedIndex == null) bustedIndex = i;
+
+      balances.push(balance);
+      ledger.push({
+        date: p.lastDate, analyst: p.analyst, ticker: p.ticker, entry: p.entry,
+        netDollar: p.netDollar, returnPct, riskAmount, profit, balanceAfter: balance
+      });
     });
 
+    return { balances, maxDrawdownPct, bustedIndex, perAnalystProfit, ledger, skipped };
+  }
+
+  function shuffled(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function percentileOf(sortedArr, p) {
+    if (!sortedArr.length) return 0;
+    const idx = Math.min(sortedArr.length - 1, Math.max(0, Math.round((p / 100) * (sortedArr.length - 1))));
+    return sortedArr[idx];
+  }
+
+  // "If I'd started with $X and sized every call this way, what would my
+  // account look like now?" Deliberately an approximation: we don't know
+  // an analyst's own position size behind their posted $ figures, only
+  // their % move per position, so this maps that % move onto YOUR capital
+  // instead of reproducing their dollar amounts. Runs on grouped positions
+  // (see groupPositions) so a multi-day trim chain is one simulated bet,
+  // not several.
+  //
+  // Walks a single already-sorted, already-filtered list of positions
+  // through one shared account balance, then attaches real calendar dates
+  // on top of walkPositions' index-based result. Used directly for one
+  // analyst, and for "blend" mode where positions from several analysts
+  // are interleaved chronologically first so they all draw on one pool.
+  function runAccountSim(positions, startingCapital, o) {
+    const w = walkPositions(positions, startingCapital, o);
+    const points = [{ date: positions.length ? positions[0].firstDate : null, balance: startingCapital }];
+    positions.forEach((p, i) => points.push({ date: p.lastDate, balance: w.balances[i + 1] }));
+    const finalBalance = w.balances[w.balances.length - 1];
     return {
-      analyst: analystName,
       startingCapital,
-      riskPct,
-      positionsSimulated: positions.length,
-      finalBalance: balance,
-      totalReturnPct: ((balance - startingCapital) / startingCapital) * 100,
-      maxDrawdownPct,
+      finalBalance,
+      totalReturnPct: ((finalBalance - startingCapital) / startingCapital) * 100,
+      maxDrawdownPct: w.maxDrawdownPct,
+      positionsSimulated: positions.length - w.skipped,
+      positionsSkipped: w.skipped,
+      bustedOnDate: w.bustedIndex != null ? positions[w.bustedIndex].lastDate : null,
+      perAnalystProfit: w.perAnalystProfit,
+      ledger: w.ledger,
       points
     };
   }
 
-  global.MordyParser = { parseRecapText, computeStats, groupPositions, simulateCopyTrading, dedupeKey, toFlatText };
+  // Reshuffles the SAME set of positions hundreds of times and re-runs the
+  // walk on each ordering, to show how much sequence-of-returns luck alone
+  // changes the outcome of a compounding account -- the real historical
+  // path is only one of very many orders these exact trades could have
+  // landed in. Bands are keyed by step index (the Nth position), not date,
+  // since a shuffled run has no single real calendar mapping.
+  function runMonteCarlo(positions, startingCapital, o, iterations) {
+    const iters = iterations || 400;
+    const n = positions.length;
+    if (!n) return { iterations: 0, steps: [], finalBalances: [], bustedFraction: 0, medianFinal: startingCapital, p10Final: startingCapital, p90Final: startingCapital };
+
+    const byStep = Array.from({ length: n + 1 }, () => []);
+    const finals = [];
+    let bustedCount = 0;
+    for (let it = 0; it < iters; it++) {
+      const w = walkPositions(shuffled(positions), startingCapital, o);
+      w.balances.forEach((b, step) => byStep[step].push(b));
+      finals.push(w.balances[w.balances.length - 1]);
+      if (w.bustedIndex != null) bustedCount += 1;
+    }
+    const steps = byStep.map((arr, i) => {
+      const s = arr.slice().sort((a, b) => a - b);
+      return { step: i, p10: percentileOf(s, 10), p25: percentileOf(s, 25), p50: percentileOf(s, 50), p75: percentileOf(s, 75), p90: percentileOf(s, 90) };
+    });
+    const sortedFinals = finals.slice().sort((a, b) => a - b);
+    return {
+      iterations: iters,
+      steps,
+      finalBalances: sortedFinals,
+      bustedFraction: bustedCount / iters,
+      medianFinal: percentileOf(sortedFinals, 50),
+      p10Final: percentileOf(sortedFinals, 10),
+      p90Final: percentileOf(sortedFinals, 90)
+    };
+  }
+
+  const SIM_DEFAULTS = {
+    startingCapital: 2000, sizing: 'balancePct', riskPct: 0.05, fixedAmount: 100,
+    slippagePct: 0, affordabilityCheck: false, mode: 'blend', rangeDays: null, maxGapDays: 10,
+    monteCarlo: false, monteCarloIterations: 400, benchmark: false
+  };
+
+  function pricedPositionsFor(trades, analystName, maxGapDays) {
+    return groupPositions(trades.filter((t) => t.analyst === analystName), maxGapDays)
+      .filter((p) => typeof p.entry === 'number' && !isNaN(p.entry) && p.entry > 0 && p.netDollar != null)
+      .sort((a, b) => (a.lastDate < b.lastDate ? -1 : a.lastDate > b.lastDate ? 1 : 0));
+  }
+
+  function byDate(a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }
+
+  // Combines several {points} curves (each its own dates/length) into one
+  // curve on the union of all their dates, step-holding and SUMMING each
+  // sub-account's balance -- used for the "split evenly across everyone"
+  // benchmark, which is really N independent sub-accounts added together.
+  function sumCurves(curves) {
+    const nonEmpty = curves.filter((c) => c.points && c.points.length);
+    if (!nonEmpty.length) return { points: [], finalBalance: 0 };
+    const allDates = Array.from(new Set(nonEmpty.flatMap((c) => c.points.map((p) => p.date).filter(Boolean)))).sort();
+    const stepped = nonEmpty.map((c) => {
+      let cursor = 1, current = c.points[0].balance;
+      return allDates.map((d) => {
+        while (cursor < c.points.length && c.points[cursor].date <= d) { current = c.points[cursor].balance; cursor += 1; }
+        return current;
+      });
+    });
+    const startSum = nonEmpty.reduce((s, c) => s + c.points[0].balance, 0);
+    const points = [{ date: null, balance: startSum }].concat(
+      allDates.map((d, i) => ({ date: d, balance: stepped.reduce((s, vals) => s + vals[i], 0) }))
+    );
+    return { points, finalBalance: points[points.length - 1].balance };
+  }
+
+  // Builds the "what if you'd just split your capital evenly across every
+  // analyst in the data" reference curve -- a fixed, always-available
+  // baseline independent of whichever analysts you happened to pick.
+  function runBenchmark(trades, startingCapital, o) {
+    const allNames = Array.from(new Set(trades.map((t) => t.analyst)));
+    if (!allNames.length) return { points: [], finalBalance: startingCapital };
+    const share = startingCapital / allNames.length;
+    const curves = allNames.map((name) => runAccountSim(pricedPositionsFor(trades, name, o.maxGapDays), share, o));
+    return sumCurves(curves);
+  }
+
+  // analystNames: one name or an array of names.
+  // mode 'compare': each analyst gets their own independent account,
+  //   starting fresh at startingCapital -- for picking a winner.
+  // mode 'blend': every selected analyst's calls draw on ONE shared,
+  //   pooled account, interleaved in the order they actually happened --
+  //   for simulating "I followed this whole group."
+  function simulateCopyTrading(trades, analystNames, opts) {
+    const names = Array.isArray(analystNames) ? analystNames : [analystNames];
+    const o = Object.assign({}, SIM_DEFAULTS, opts || {});
+
+    let scoped = trades.filter((t) => names.includes(t.analyst));
+    let rangeTrades = trades;
+    if (o.rangeDays) {
+      const uniqueDates = Array.from(new Set(scoped.map((t) => t.date))).sort();
+      const windowDates = new Set(uniqueDates.slice(-o.rangeDays));
+      scoped = scoped.filter((t) => windowDates.has(t.date));
+      rangeTrades = trades.filter((t) => windowDates.has(t.date));
+    }
+    const benchmark = o.benchmark ? runBenchmark(rangeTrades, o.startingCapital, o) : null;
+
+    if (o.mode === 'compare') {
+      return {
+        mode: 'compare',
+        analysts: names,
+        benchmark,
+        results: names.map((name) => Object.assign(
+          { analyst: name },
+          runAccountSim(pricedPositionsFor(scoped, name, o.maxGapDays), o.startingCapital, o)
+        ))
+      };
+    }
+
+    const positions = names
+      .reduce((acc, name) => acc.concat(pricedPositionsFor(scoped, name, o.maxGapDays)), [])
+      .sort(byDate);
+    const result = Object.assign(
+      { mode: 'blend', analysts: names, benchmark },
+      runAccountSim(positions, o.startingCapital, o)
+    );
+    if (o.monteCarlo) result.monteCarlo = runMonteCarlo(positions, o.startingCapital, o, o.monteCarloIterations);
+    return result;
+  }
+
+  // ---- shareable simulator scenarios -----------------------------------
+  // Packs the settings that matter (not the resulting data) into a short,
+  // URL-safe token so a specific scenario can be sent as a link and
+  // reproduced exactly by decodeScenario() on the other end.
+  function encodeScenario(settings) {
+    const json = JSON.stringify(settings);
+    const b64 = (typeof btoa === 'function' ? btoa : (s) => Buffer.from(s, 'binary').toString('base64'))(
+      typeof btoa === 'function' ? unescape(encodeURIComponent(json)) : json
+    );
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function decodeScenario(token) {
+    if (!token) return null;
+    try {
+      const b64 = token.replace(/-/g, '+').replace(/_/g, '/');
+      const padded = b64 + '==='.slice((b64.length + 3) % 4);
+      const bin = typeof atob === 'function' ? atob(padded) : Buffer.from(padded, 'base64').toString('binary');
+      const json = typeof atob === 'function' ? decodeURIComponent(escape(bin)) : bin;
+      return JSON.parse(json);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  global.MordyParser = {
+    parseRecapText, computeStats, groupPositions, simulateCopyTrading, runMonteCarlo,
+    encodeScenario, decodeScenario, dedupeKey, toFlatText
+  };
 })(typeof window !== 'undefined' ? window : globalThis);
