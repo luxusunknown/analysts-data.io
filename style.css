@@ -432,7 +432,12 @@ footer.site {
 .segmented button:hover:not(.active) { background: color-mix(in srgb, var(--text-primary) 14%, var(--surface-1)); }
 .segmented button:active { transform: none; }
 
-.sim-output { min-height: 60px; }
+/* Grid items default to min-width:auto, which refuses to shrink below the
+   content's intrinsic size -- with the compare-mode table's six columns
+   that intrinsic width is wider than the "1fr" track ever gets, so without
+   this the whole box silently overflows past the card's right border
+   instead of the intended horizontal scrollbar (.table-scroll) kicking in. */
+.sim-output { min-height: 60px; min-width: 0; }
 .sim-placeholder { color: var(--text-muted); font-size: 13px; padding: 20px 0; text-align: center; }
 #simResults .tiles { margin-bottom: 0; }
 .busted-banner {
