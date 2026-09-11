@@ -368,6 +368,10 @@
       const avgHoldDays = multiDay.length
         ? multiDay.reduce((s, p) => s + (dateNum(p.lastDate) - dateNum(p.firstDate)) / DAY_MS, 0) / multiDay.length
         : null;
+      const sortedByDate = a.positions.slice().sort((x, y) => (x.lastDate < y.lastDate ? -1 : x.lastDate > y.lastDate ? 1 : 0));
+      const { currentStreak, worstLossStreak } = computeStreaks(sortedByDate);
+      const dd = drawdowns[a.analyst] || { maxDrawdown: 0, maxDrawdownPct: 0 };
+
       // Standard deviation of trade dollar returns and simple Sharpe estimate
       let sharpeRatio = null;
       if (pricedNets.length >= 3) {
