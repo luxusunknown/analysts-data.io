@@ -5726,6 +5726,16 @@
    "exit": 0.34,
    "pct": -65.31,
    "dollar": -64
+  },
+  {
+   "date": "2026-09-14",
+   "analyst": "TEST_BOT",
+   "ticker": "TESTPULSE",
+   "win": true,
+   "entry": 1,
+   "exit": 1.5,
+   "pct": 50,
+   "dollar": 50
   }
  ],
  "dailySummaries": [
