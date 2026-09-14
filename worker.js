@@ -1,18 +1,14 @@
 // Cloudflare Worker entry point.
 //
-// Cloudflare's current dashboard flow ("Workers & Pages -> Connect to Git")
-// creates a *Worker*, not a classic Pages project -- so the old
-// functions/api/*.js "Pages Functions" convention is never picked up, and
-// a Worker with no `main` script attached is static-assets-only, which is
-// exactly why "Variables cannot be added to a Worker that only has static
-// assets" shows up. This file is the fix: it's a real Worker script, wired
-// up in wrangler.json as `main`, so the Worker has actual code -- which is
-// what unlocks Settings -> Variables and secrets in the dashboard.
+// Routes handled here (all under /api/* per wrangler.json run_worker_first):
+//   POST /api/login      — admin login (session cookie)
+//   GET  /api/session    — check if logged in
+//   POST /api/logout     — clear session
+//   POST /api/publish    — admin: commit merged data.json to GitHub
+//   POST /api/ingest     — Discord bot: push new trades directly (INGEST_SECRET auth)
 //
-// Routing: wrangler.json sets `assets.run_worker_first: ["/api/*"]`, so
-// everything under /api/* comes here first; everything else (index.html,
-// style.css, app.js, parser.js, data.json) is served directly from the
-// assets binding without ever running this code.
+// Everything else (index.html, style.css, app.js, parser.js, data.json)
+// is served straight from the assets binding.
 
 import { sha256Hex, hmacHex, timingSafeEqual, jsonResponse, getCookie, verifySessionToken, SESSION_COOKIE, SESSION_TTL_MS } from './functions/_utils.js';
 
@@ -32,18 +28,137 @@ export default {
     if (url.pathname === '/api/publish' && request.method === 'POST') {
       return handlePublish(request, env);
     }
+    // ← THE FIX: Discord bot pushes recap data here after each new message
+    if (url.pathname === '/api/ingest' && request.method === 'POST') {
+      return handleIngest(request, env);
+    }
 
-    // Anything else under /api/* that doesn't match a known route.
+    // Unknown /api/* route
     if (url.pathname.startsWith('/api/')) {
       return jsonResponse({ ok: false, error: 'Not found.' }, 404);
     }
 
-    // Shouldn't normally get here (run_worker_first is scoped to /api/*),
-    // but fall back to serving assets just in case.
+    // Fall back to static assets (shouldn't normally reach here)
     return env.ASSETS.fetch(request);
   }
 };
 
+// ---------------------------------------------------------------------------
+// POST /api/ingest
+// Called by the Discord bot every time a new recap message lands in #recaps.
+// Auth: Authorization: Bearer <INGEST_SECRET>  (set as a Worker env var)
+// Body: { trades, dailySummaries, rawText?, htmlTranscript?, channelId?, timestamp? }
+// Returns: { ok: true, newTradesCount: N, totalTradesCount: N }
+// ---------------------------------------------------------------------------
+async function handleIngest(request, env) {
+  const authHeader = request.headers.get('Authorization') || '';
+  const secret = env.INGEST_SECRET || '';
+  if (!secret || authHeader !== `Bearer ${secret}`) {
+    return jsonResponse({ ok: false, error: 'Unauthorized.' }, 401);
+  }
+
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return jsonResponse({ ok: false, error: 'Bad request body.' }, 400);
+  }
+  if (!body || !Array.isArray(body.trades)) {
+    return jsonResponse({ ok: false, error: 'Missing trades array in request body.' }, 400);
+  }
+
+  const ghToken = env.GITHUB_TOKEN || '';
+  const ghRepo  = env.GITHUB_REPO  || ''; // "owner/repo"
+  const ghBranch = env.GITHUB_BRANCH    || 'main';
+  const ghPath   = env.GITHUB_DATA_PATH || 'data.json';
+  if (!ghToken || !ghRepo) {
+    return jsonResponse(
+      { ok: false, error: 'Server missing GITHUB_TOKEN / GITHUB_REPO env vars. Set them in this Worker\'s Settings → Variables and secrets.' },
+      500
+    );
+  }
+
+  const apiUrl = `https://api.github.com/repos/${ghRepo}/contents/${encodeURIComponent(ghPath)}`;
+  const ghHeaders = {
+    Authorization: `Bearer ${ghToken}`,
+    Accept: 'application/vnd.github+json',
+    'User-Agent': 'mordy-tracker-worker',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+
+  // ---- Read existing data.json from GitHub --------------------------------
+  let existingTrades = [], existingDailySummaries = [], sha;
+  try {
+    const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(ghBranch)}`, { headers: ghHeaders });
+    if (getRes.status === 200) {
+      const j = await getRes.json();
+      sha = j.sha;
+      // GitHub returns base64-encoded content (may have newlines)
+      const rawJson = atob(j.content.replace(/[\r\n]/g, ''));
+      const parsed = JSON.parse(rawJson);
+      existingTrades = parsed.trades || [];
+      existingDailySummaries = parsed.dailySummaries || [];
+    } else if (getRes.status !== 404) {
+      const errText = await getRes.text();
+      return jsonResponse({ ok: false, error: `GitHub API error reading data.json (${getRes.status}): ${errText}` }, 502);
+    }
+    // 404 just means no data.json yet — we'll create it
+  } catch (e) {
+    return jsonResponse({ ok: false, error: 'Could not read data.json from GitHub: ' + e.message }, 502);
+  }
+
+  // ---- Dedupe-merge incoming trades into existing data --------------------
+  const existingKeys = new Set(existingTrades.map(ingestDedupeKey));
+  const newTrades = body.trades.filter(t => !existingKeys.has(ingestDedupeKey(t)));
+  const mergedTrades = existingTrades.concat(newTrades);
+
+  // Merge dailySummaries (one entry per date, no duplicates)
+  const existingDates = new Set(existingDailySummaries.map(d => d.date));
+  const newSummaries  = (body.dailySummaries || []).filter(d => !existingDates.has(d.date));
+  const mergedSummaries = existingDailySummaries.concat(newSummaries);
+
+  // ---- Commit merged data back to GitHub ----------------------------------
+  const payloadStr = JSON.stringify({ trades: mergedTrades, dailySummaries: mergedSummaries }, null, 1);
+  const contentB64 = toBase64Utf8(payloadStr);
+
+  try {
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Auto-ingest: +${newTrades.length} trade${newTrades.length === 1 ? '' : 's'} via Discord bot (${new Date().toISOString()})`,
+        content: contentB64,
+        branch: ghBranch,
+        ...(sha ? { sha } : {})
+      })
+    });
+    const putJson = await putRes.json().catch(() => ({}));
+    if (putRes.status !== 200 && putRes.status !== 201) {
+      return jsonResponse(
+        { ok: false, error: `GitHub API error committing (${putRes.status}): ${putJson.message || 'unknown error'}` },
+        502
+      );
+    }
+    const commitUrl = putJson && putJson.commit && putJson.commit.html_url;
+    return jsonResponse({
+      ok: true,
+      newTradesCount:   newTrades.length,
+      totalTradesCount: mergedTrades.length,
+      commitUrl:        commitUrl || null
+    });
+  } catch (e) {
+    return jsonResponse({ ok: false, error: 'Could not reach GitHub API: ' + e.message }, 502);
+  }
+}
+
+// Same key logic as MordyParser.dedupeKey on the client — keeps both sides in sync.
+function ingestDedupeKey(t) {
+  return `${t.analyst}|${t.date}|${t.ticker}|${String(t.entry ?? '')}`;
+}
+
+// ---------------------------------------------------------------------------
+// POST /api/login
+// ---------------------------------------------------------------------------
 async function handleLogin(request, env) {
   let body;
   try {
@@ -58,64 +173,67 @@ async function handleLogin(request, env) {
     return jsonResponse({ ok: false, error: 'Missing username or password.' }, 400);
   }
 
-  const expectedUser = env.ADMIN_USERNAME || '';
+  const expectedUser = env.ADMIN_USERNAME      || '';
   const expectedHash = env.ADMIN_PASSWORD_HASH || '';
-  const secret = env.SESSION_SECRET || '';
+  const secret       = env.SESSION_SECRET      || '';
   if (!expectedUser || !expectedHash || !secret) {
     return jsonResponse(
-      { ok: false, error: 'Server missing ADMIN_USERNAME / ADMIN_PASSWORD_HASH / SESSION_SECRET env vars. Set them in this Worker\'s Settings -> Variables and secrets.' },
+      { ok: false, error: 'Server missing ADMIN_USERNAME / ADMIN_PASSWORD_HASH / SESSION_SECRET env vars. Set them in this Worker\'s Settings → Variables and secrets.' },
       500
     );
   }
 
   const gotHash = await sha256Hex(password);
-  const userOk = timingSafeEqual(username, expectedUser);
-  const passOk = timingSafeEqual(gotHash, expectedHash);
+  const userOk  = timingSafeEqual(username, expectedUser);
+  const passOk  = timingSafeEqual(gotHash,  expectedHash);
   if (!userOk || !passOk) {
     await new Promise((r) => setTimeout(r, 400)); // slow naive brute-forcing
     return jsonResponse({ ok: false, error: 'Invalid username or password.' }, 401);
   }
 
-  const exp = Date.now() + SESSION_TTL_MS;
-  const sig = await hmacHex(secret, String(exp));
-  const token = `${exp}.${sig}`;
+  const exp    = Date.now() + SESSION_TTL_MS;
+  const sig    = await hmacHex(secret, String(exp));
+  const token  = `${exp}.${sig}`;
   const cookie = `${SESSION_COOKIE}=${token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${Math.floor(SESSION_TTL_MS / 1000)}`;
   return jsonResponse({ ok: true }, 200, { 'Set-Cookie': cookie });
 }
 
+// ---------------------------------------------------------------------------
+// GET /api/session
+// ---------------------------------------------------------------------------
 async function handleSession(request, env) {
-  const token = getCookie(request, SESSION_COOKIE);
+  const token  = getCookie(request, SESSION_COOKIE);
   const secret = env.SESSION_SECRET || '';
-  const ok = secret ? await verifySessionToken(token, secret) : false;
+  const ok     = secret ? await verifySessionToken(token, secret) : false;
   return jsonResponse({ loggedIn: ok });
 }
 
+// ---------------------------------------------------------------------------
+// POST /api/logout
+// ---------------------------------------------------------------------------
 async function handleLogout() {
   const cookie = `${SESSION_COOKIE}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`;
   return jsonResponse({ ok: true }, 200, { 'Set-Cookie': cookie });
 }
 
-// POST /api/publish { trades, dailySummaries }
-// Requires a valid admin session (same cookie as the rest of the panel).
-// Commits the merged data.json straight to the GitHub repo via the GitHub
-// REST API, using a personal access token stored as the GITHUB_TOKEN env
-// var -- so a login + one click replaces "download data.json, git add,
-// git commit, git push" by hand.
+// ---------------------------------------------------------------------------
+// POST /api/publish   (admin: manual publish from the web panel)
+// ---------------------------------------------------------------------------
 async function handlePublish(request, env) {
-  const token = getCookie(request, SESSION_COOKIE);
-  const secret = env.SESSION_SECRET || '';
+  const token    = getCookie(request, SESSION_COOKIE);
+  const secret   = env.SESSION_SECRET || '';
   const loggedIn = secret ? await verifySessionToken(token, secret) : false;
   if (!loggedIn) {
     return jsonResponse({ ok: false, error: 'Not logged in.' }, 401);
   }
 
-  const ghToken = env.GITHUB_TOKEN || '';
-  const ghRepo = env.GITHUB_REPO || ''; // "owner/repo"
-  const ghBranch = env.GITHUB_BRANCH || 'main';
-  const ghPath = env.GITHUB_DATA_PATH || 'data.json';
+  const ghToken  = env.GITHUB_TOKEN      || '';
+  const ghRepo   = env.GITHUB_REPO       || ''; // "owner/repo"
+  const ghBranch = env.GITHUB_BRANCH     || 'main';
+  const ghPath   = env.GITHUB_DATA_PATH  || 'data.json';
   if (!ghToken || !ghRepo) {
     return jsonResponse(
-      { ok: false, error: 'Server missing GITHUB_TOKEN / GITHUB_REPO env vars. Set them in this Worker\'s Settings -> Variables and secrets, then redeploy. See README.md.' },
+      { ok: false, error: 'Server missing GITHUB_TOKEN / GITHUB_REPO env vars. Set them in this Worker\'s Settings → Variables and secrets, then redeploy. See README.md.' },
       500
     );
   }
@@ -141,9 +259,6 @@ async function handlePublish(request, env) {
     'X-GitHub-Api-Version': '2022-11-28'
   };
 
-  // Need the current file's sha to update it (GitHub requires this for
-  // updating an existing file; a 404 means the file doesn't exist yet,
-  // which is also fine -- we just create it).
   let sha;
   try {
     const getRes = await fetch(`${apiUrl}?ref=${encodeURIComponent(ghBranch)}`, { headers: ghHeaders });
@@ -180,6 +295,9 @@ async function handlePublish(request, env) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Shared helpers
+// ---------------------------------------------------------------------------
 function toBase64Utf8(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = '';

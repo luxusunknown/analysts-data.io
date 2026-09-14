@@ -1,9 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Independent performance tracker for Trade With Mordy analysts — win rate, profit, leaderboard, and copy-trade simulator.">
 <title>Trade With Mordy — Analyst Tracker</title>
+<!-- Inter font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,6 +21,7 @@
         <div class="sub" id="rangeNote">Loading…</div>
       </div>
       <div class="top-actions">
+        <button id="themeToggleBtn" class="ghost" title="Toggle light / dark mode" aria-label="Toggle theme">🌙</button>
         <button id="adminOpenBtn" class="ghost admin-toggle">Admin</button>
       </div>
     </div>
@@ -23,8 +29,8 @@
 
   <section>
     <div class="filters" id="filters"></div>
-    <div class="hint" style="margin:-6px 0 14px">Ranges count the last N days the channel actually posted a recap — weekends/off days don't count against the window.</div>
-    <div class="tiles" id="tiles"></div>
+    <div class="hint" style="margin:-8px 0 16px">Ranges count the last N days the channel actually posted a recap — weekends/off days don't count against the window.</div>
+    <div class="tiles stagger-in" id="tiles"></div>
   </section>
 
   <section>
@@ -43,7 +49,7 @@
       <h3 id="detailTitle"></h3>
       <button class="ghost" onclick="document.getElementById('detailPanel').classList.remove('open')">Close</button>
     </div>
-    <div class="hint" id="detailStats" style="margin:-4px 0 10px"></div>
+    <div class="hint" id="detailStats" style="margin:-4px 0 12px"></div>
     <div class="table-scroll">
       <table>
         <thead><tr>
@@ -189,22 +195,22 @@
   </footer>
 </div>
 
-<!-- Admin login (real server-side check, see functions/api/login.js) -->
+<!-- Admin login (real server-side check via /api/login) -->
 <div id="adminGateModal">
   <div class="modal-card">
     <button class="ghost close-x" id="gateCloseBtn">✕</button>
     <h3>Admin login</h3>
     <label>Username</label>
     <input type="text" id="gateUsername" placeholder="Username" autocomplete="username">
-    <label style="display:block;margin-top:10px">Password</label>
+    <label style="display:block;margin-top:12px">Password</label>
     <input type="password" id="gatePassword" placeholder="Password" autocomplete="current-password">
     <div class="error-text" id="gateError"></div>
     <div class="modal-actions">
       <button class="primary" id="gateSubmit">Log in</button>
     </div>
-    <p class="hint" style="margin-top:16px">
+    <p class="hint" style="margin-top:18px">
       Checked server-side against the <code>ADMIN_USERNAME</code> / <code>ADMIN_PASSWORD_HASH</code> environment
-      variables set in your Cloudflare Pages project — nothing password-related ships in this page's code.
+      variables set in your Cloudflare Worker — nothing password-related ships in this page's code.
       See README.md to set those up.
     </p>
   </div>
@@ -245,6 +251,33 @@
       commit it yourself.</p>
   </div>
 </div>
+
+<!-- Theme toggle script (runs immediately, no flash) -->
+<script>
+  (function () {
+    var stored = localStorage.getItem('mordy-theme');
+    if (stored === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('themeToggleBtn');
+      if (!btn) return;
+      function sync() {
+        var dark = document.documentElement.getAttribute('data-theme') !== 'light';
+        btn.textContent = dark ? '☀️' : '🌙';
+        btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      }
+      sync();
+      btn.addEventListener('click', function () {
+        var isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('mordy-theme', next);
+        sync();
+      });
+    });
+  })();
+</script>
 
 <script src="parser.js"></script>
 <script src="app.js"></script>
