@@ -159,9 +159,32 @@
     const bestWinRate = stats.filter(s=>s.trades>=10).sort((a,b)=>b.winRate-a.winRate)[0] || stats.slice().sort((a,b)=>b.winRate-a.winRate)[0];
     const totalTrades = stats.reduce((s,x)=>s+x.trades,0);
     const totalProfit = stats.reduce((s,x)=>s+x.totalProfit,0);
+
+    // Best single-calendar-day across ALL analysts in this view: sum each
+    // analyst's dollar amounts per date, then find the date where the
+    // combined channel total was highest.
+    const dayTotals = {};
+    const dayAnalyst = {}; // track who contributed the most on each day
+    const filteredTrades = state.trades.filter(t => {
+      if (!state.rangeDays) return true;
+      const tradeDates = Array.from(new Set(state.trades.map(x => x.date))).sort();
+      const windowDates = new Set(tradeDates.slice(-state.rangeDays));
+      return windowDates.has(t.date);
+    });
+    filteredTrades.forEach(t => {
+      if (typeof t.dollar !== 'number' || isNaN(t.dollar)) return;
+      dayTotals[t.date] = (dayTotals[t.date] || 0) + t.dollar;
+    });
+    let bestDate = null, bestDayTotal = -Infinity;
+    Object.keys(dayTotals).forEach(d => {
+      if (dayTotals[d] > bestDayTotal) { bestDayTotal = dayTotals[d]; bestDate = d; }
+    });
+    const bestDayFmt = bestDate ? new Date(bestDate + 'T12:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric' }) : '—';
+
     const tiles = [
       { label: 'Most profitable', value: mostProfitable.analyst, sub: fmtMoney(mostProfitable.totalProfit) },
       { label: 'Best win rate (10+ trades)', value: bestWinRate.analyst, sub: bestWinRate.winRate.toFixed(1)+'%' },
+      { label: 'Best single day', value: fmtMoney(bestDayTotal), sub: bestDate ? bestDayFmt + ' — all analysts' : '—' },
       { label: 'Tracked Trades', value: fmtNum(totalTrades), sub: stats.length + ' analysts' },
       { label: 'Combined profit', value: fmtMoney(totalProfit), sub: 'across everyone shown' }
     ];
@@ -187,7 +210,8 @@
     { key: 'avgEntryCost', label: 'Avg Contract Cost', tip: 'Average entry price × 100 across distinct positions — roughly what one contract costs to open. Hover a row for the most expensive single position.' },
     { key: 'daysActive', label: 'Days Active', tip: 'Hover a row for how often positions span multiple days and how many can be open at once.' },
     { key: 'streakSortValue', label: 'Streak', tip: 'Current run of wins or losses in a row, most recent call last. Hover a row for the worst losing streak on record.' },
-    { key: 'maxDrawdown', label: 'Max Drawdown', tip: 'Worst peak-to-trough dip in this analyst\'s running tracked profit -- not the same as "Worst Loss" (one position); this is how far underwater the total ever went before recovering.' }
+    { key: 'maxDrawdown', label: 'Max Drawdown', tip: 'Worst peak-to-trough dip in this analyst\'s running tracked profit -- not the same as "Worst Loss" (one position); this is how far underwater the total ever went before recovering.' },
+    { key: 'bestDayProfit', label: 'Best Day $', tip: 'Best single calendar day: sum of all posted $ on that date. Hover for the date.' }
   ];
 
   function renderTable(stats) {
@@ -240,6 +264,7 @@
         <td title="${daysTip}">${s.daysActive}</td>
         <td class="${s.currentStreak && s.currentStreak.type === 'win' ? 'pos' : (s.currentStreak ? 'neg' : 'muted-cell')}" title="${streakTip}">${streakLabel}</td>
         <td class="${s.maxDrawdown > 0 ? 'neg' : 'muted-cell'}" title="${ddTip}">${fmtMoney(s.maxDrawdown)}</td>
+        <td class="${s.bestDayProfit != null && s.bestDayProfit > 0 ? 'pos' : 'muted-cell'}" title="${s.bestDate ? 'Best day: ' + s.bestDate : '—'}">${s.bestDayProfit != null ? fmtMoney(s.bestDayProfit) : '—'}</td>
       </tr>`;
     }).join('');
 
@@ -929,12 +954,117 @@
     if (run) run();
   }
 
+  // ---- rendering: latest recap feed -----------------------------------
+  function renderLatestRecap() {
+    const feed    = document.getElementById('latestRecapFeed');
+    const summary = document.getElementById('latestRecapSummary');
+    const dateLbl = document.getElementById('latestRecapDate');
+    const section = document.getElementById('latestRecapSection');
+    if (!feed || !section) return;
+
+    const latestDate = maxDate(state.trades);
+    if (!latestDate) { section.style.display = 'none'; return; }
+    section.style.display = '';
+
+    const dayTrades = state.trades.filter(t => t.date === latestDate);
+    if (!dayTrades.length) {
+      if (summary) summary.innerHTML = '';
+      feed.innerHTML = '<div class="recap-empty">No trades on record for this date.</div>';
+      return;
+    }
+
+    // ---- header date label ----
+    const d = new Date(latestDate + 'T12:00:00');
+    dateLbl.textContent = '— ' + d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+
+    // ---- day summary bar ----
+    const wins   = dayTrades.filter(t => t.win).length;
+    const losses = dayTrades.filter(t => !t.win).length;
+    const wr     = dayTrades.length ? ((wins / dayTrades.length) * 100).toFixed(0) : 0;
+    const totalPnl = dayTrades.reduce((s, t) => s + (typeof t.dollar === 'number' ? t.dollar : 0), 0);
+    const totalPct = dayTrades.reduce((s, t) => s + (typeof t.pct === 'number' ? t.pct : 0), 0);
+    const avgPct   = dayTrades.length ? totalPct / dayTrades.length : 0;
+    const analysts = Array.from(new Set(dayTrades.map(t => t.analyst)));
+
+    const pnlCls  = totalPnl >= 0 ? 'pos' : 'neg';
+    const wrsub   = `${wins}W / ${losses}L`;
+
+    if (summary) {
+      summary.innerHTML = `
+        <div class="ds-item"><div class="ds-label">Calls</div><div class="ds-val">${dayTrades.length}</div></div>
+        <div class="ds-divider"></div>
+        <div class="ds-item"><div class="ds-label">Win Rate</div><div class="ds-val ${wins > losses ? 'pos' : 'neg'}">${wr}%</div></div>
+        <div class="ds-item"><div class="ds-label">Record</div><div class="ds-val">${wrsub}</div></div>
+        <div class="ds-divider"></div>
+        <div class="ds-item"><div class="ds-label">Total P&amp;L</div><div class="ds-val ${pnlCls}">${fmtMoney(totalPnl, { plus: true })}</div></div>
+        <div class="ds-item"><div class="ds-label">Avg % / Call</div><div class="ds-val ${avgPct >= 0 ? 'pos' : 'neg'}">${avgPct >= 0 ? '+' : ''}${avgPct.toFixed(1)}%</div></div>
+        <div class="ds-divider"></div>
+        <div class="ds-item"><div class="ds-label">Analysts</div><div class="ds-val">${analysts.length}</div></div>`;
+    }
+
+    // ---- cards grouped by analyst ----
+    // Group trades by analyst, analyst order by total $ desc
+    const byAnalyst = {};
+    dayTrades.forEach(t => {
+      if (!byAnalyst[t.analyst]) byAnalyst[t.analyst] = [];
+      byAnalyst[t.analyst].push(t);
+    });
+    const analystOrder = Object.keys(byAnalyst).sort((a, b) => {
+      const sa = byAnalyst[a].reduce((s, t) => s + (t.dollar || 0), 0);
+      const sb = byAnalyst[b].reduce((s, t) => s + (t.dollar || 0), 0);
+      return sb - sa;
+    });
+
+    let html = '';
+    analystOrder.forEach(analyst => {
+      const color = css(state.colorMap[analyst] || '--series-1');
+      const aTrades = byAnalyst[analyst].slice().sort((a, b) => {
+        if (a.win !== b.win) return a.win ? -1 : 1;
+        return Math.abs(b.pct || 0) - Math.abs(a.pct || 0);
+      });
+      const aWins   = aTrades.filter(t => t.win).length;
+      const aLosses = aTrades.filter(t => !t.win).length;
+      const aPnl    = aTrades.reduce((s, t) => s + (t.dollar || 0), 0);
+      const aPnlCls = aPnl >= 0 ? 'pos' : 'neg';
+
+      // analyst row separator
+      html += `<div class="recap-group-label">
+        <span class="dot" style="background:${color}"></span>
+        ${analyst}
+        <span class="recap-group-line"></span>
+        <span class="recap-group-pnl ${aPnlCls}">${aWins}W/${aLosses}L · ${fmtMoney(aPnl, { plus: true })}</span>
+      </div>`;
+
+      aTrades.forEach(t => {
+        const cls      = t.win ? 'win' : 'loss';
+        const pctStr   = t.pct  != null ? (t.pct  >= 0 ? '+' : '') + t.pct.toFixed(1)  + '%' : '—';
+        const dollarStr = t.dollar != null ? fmtMoney(t.dollar, { plus: true }) : '';
+        const entryStr  = t.entry != null ? `@ ${t.entry.toFixed(2)}` : '';
+        const exitStr   = t.exit  != null ? `→ ${t.exit.toFixed(2)}`  : '';
+        const topPlay   = Math.abs(t.pct || 0) >= 100 ? `<span class="recap-highlight-badge">🔥 ${Math.abs(t.pct).toFixed(0)}%er</span>` : '';
+
+        html += `<div class="recap-card ${cls}">
+          <div class="recap-card-ticker">$${t.ticker}${topPlay}</div>
+          <div class="recap-card-entry-exit">${entryStr}${exitStr ? ' ' + exitStr : ''}</div>
+          <div class="recap-card-result">
+            <span class="recap-card-badge">${t.win ? 'WIN' : 'LOSS'}</span>
+            <span class="recap-card-pct">${pctStr}</span>
+            ${dollarStr ? `<span class="recap-card-dollar">${dollarStr}</span>` : ''}
+          </div>
+        </div>`;
+      });
+    });
+
+    feed.innerHTML = html;
+  }
+
   // ---- master render ---------------------------------------------------
   function renderAll() {
     const trades = filteredTrades();
     const stats = MordyParser.computeStats(trades);
     renderFilters();
     renderTiles(stats);
+    renderLatestRecap();
     renderTable(stats);
     renderBarChart(stats);
     renderLineChart(trades, stats);

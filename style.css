@@ -881,6 +881,220 @@ footer.site {
 #simLinkMsg.copied { color: var(--good); animation: fadeInUp .25s ease both; }
 
 /* =========================================================
+   Latest Recap Feed
+   ========================================================= */
+#latestRecapSection { animation: fadeInUp .4s ease both; }
+
+.latest-feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.recap-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 15px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+  animation: fadeInUp .35s cubic-bezier(.22,.8,.25,1) both;
+  position: relative;
+  overflow: hidden;
+}
+.recap-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 12px 12px 0 0;
+}
+.recap-card.win::before  { background: linear-gradient(90deg, var(--good), #34d399); }
+.recap-card.loss::before { background: linear-gradient(90deg, var(--status-crit), #f87171); }
+
+.recap-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-2);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.recap-card-analyst {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.recap-card-analyst .dot { margin-right: 0; }
+
+.recap-card-ticker {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.recap-highlight-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(251,146,60,.15);
+  border: 1px solid rgba(251,146,60,.3);
+  color: var(--status-serious);
+  border-radius: 20px;
+  padding: 1px 7px;
+  letter-spacing: .03em;
+}
+
+.recap-card-entry-exit {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+
+
+.recap-card-result {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 3px;
+}
+.recap-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+.recap-card.win  .recap-card-badge {
+  background: rgba(16,185,129,.15);
+  color: var(--good);
+  border: 1px solid rgba(16,185,129,.25);
+}
+.recap-card.loss .recap-card-badge {
+  background: rgba(239,68,68,.12);
+  color: var(--status-crit);
+  border: 1px solid rgba(239,68,68,.2);
+}
+
+.recap-card-pct {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.recap-card.win  .recap-card-pct { color: var(--good); }
+.recap-card.loss .recap-card-pct { color: var(--status-crit); }
+
+.recap-card-dollar {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.recap-card.win  .recap-card-dollar { color: var(--good); opacity: .75; }
+.recap-card.loss .recap-card-dollar { color: var(--status-crit); opacity: .75; }
+
+.recap-empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 12px 0;
+}
+
+/* day summary bar above the cards */
+.recap-day-summary {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  font-size: 13px;
+  animation: fadeInUp .3s ease both;
+}
+.recap-day-summary .ds-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.recap-day-summary .ds-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-muted);
+}
+.recap-day-summary .ds-val {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.recap-day-summary .ds-val.pos { color: var(--good); }
+.recap-day-summary .ds-val.neg { color: var(--status-crit); }
+.recap-day-summary .ds-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  align-self: center;
+}
+
+/* per-analyst mini group in the feed */
+.recap-analyst-group { display: contents; }
+.recap-group-label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.recap-group-label:first-child { margin-top: 0; }
+.recap-group-label .dot { margin-right: 0; }
+.recap-group-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.recap-group-pnl {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.recap-group-pnl.pos { color: var(--good); }
+.recap-group-pnl.neg { color: var(--status-crit); }
+
+
+/* stagger each card in */
+.latest-feed .recap-card:nth-child(1)  { animation-delay: .02s; }
+.latest-feed .recap-card:nth-child(2)  { animation-delay: .06s; }
+.latest-feed .recap-card:nth-child(3)  { animation-delay: .10s; }
+.latest-feed .recap-card:nth-child(4)  { animation-delay: .14s; }
+.latest-feed .recap-card:nth-child(5)  { animation-delay: .18s; }
+.latest-feed .recap-card:nth-child(6)  { animation-delay: .22s; }
+.latest-feed .recap-card:nth-child(7)  { animation-delay: .26s; }
+.latest-feed .recap-card:nth-child(8)  { animation-delay: .30s; }
+.latest-feed .recap-card:nth-child(n+9){ animation-delay: .34s; }
+
+/* =========================================================
    Responsive
    ========================================================= */
 @media (max-width: 760px) {
