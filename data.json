@@ -5596,6 +5596,136 @@
    "exit": 0.48,
    "pct": 54.29,
    "dollar": 57
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "MR. SWINGER",
+   "ticker": "PANW",
+   "win": true,
+   "entry": 5.73,
+   "exit": 26.01,
+   "pct": 354,
+   "dollar": 2028.42
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "MR. SWINGER",
+   "ticker": "SLV",
+   "win": false,
+   "entry": 1.19,
+   "exit": 0.24,
+   "pct": -80,
+   "dollar": -95.2
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "BULL",
+   "win": true,
+   "entry": 0.23,
+   "exit": 0.05,
+   "pct": 80,
+   "dollar": 18.4
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "GOOGL",
+   "win": true,
+   "entry": 1.03,
+   "exit": 1.44,
+   "pct": 40,
+   "dollar": 41.2
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "QQQ",
+   "win": false,
+   "entry": 0.96,
+   "exit": 0.48,
+   "pct": -50,
+   "dollar": -48
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "SCOTT",
+   "ticker": "CEG",
+   "win": false,
+   "entry": 11.3,
+   "exit": 5.08,
+   "pct": -55,
+   "dollar": -621.5
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "WAXUI",
+   "ticker": "MU",
+   "win": true,
+   "entry": 3.3,
+   "exit": 4.5,
+   "pct": 36.36,
+   "dollar": 120
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "WAXUI",
+   "ticker": "COIN",
+   "win": true,
+   "entry": 3.6,
+   "exit": 4.5,
+   "pct": 25,
+   "dollar": 90
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 1.2,
+   "exit": 0.6,
+   "pct": -50,
+   "dollar": -60
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "WAXUI",
+   "ticker": "SPX",
+   "win": false,
+   "entry": 3.8,
+   "exit": 1.9,
+   "pct": -50,
+   "dollar": -190
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 1.04,
+   "exit": 0.7,
+   "pct": -32.69,
+   "dollar": -34
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "MU",
+   "win": false,
+   "entry": 5.9,
+   "exit": 2.95,
+   "pct": -50,
+   "dollar": -295
+  },
+  {
+   "date": "2026-09-11",
+   "analyst": "COBAIN",
+   "ticker": "MU",
+   "win": false,
+   "entry": 0.98,
+   "exit": 0.34,
+   "pct": -65.31,
+   "dollar": -64
   }
  ],
  "dailySummaries": [
