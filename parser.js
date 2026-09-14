@@ -92,6 +92,7 @@
 
   function parseAnalystChunk(sub, dateIso, analyst, trades) {
     const consumed = new Array(sub.length).fill(false);
+    let parsedCount = 0;
 
     let m;
     const fullRe = new RegExp(TRADE_FULL_RE);
@@ -103,6 +104,7 @@
         entry: num(entry), exit: num(exitp),
         pct: num(pct), dollar: num(dollar)
       });
+      parsedCount += 1;
       markConsumed(consumed, m.index, m.index + m[0].length);
     }
 
@@ -116,6 +118,7 @@
         entry: num(entry), exit: num(exitp),
         pct: num(pct), dollar: null
       });
+      parsedCount += 1;
       markConsumed(consumed, m.index, m.index + m[0].length);
     }
 
@@ -129,7 +132,18 @@
         entry: null, exit: null,
         pct: num(pct), dollar: null
       });
+      parsedCount += 1;
+      markConsumed(consumed, m.index, m.index + m[0].length);
     }
+
+    // Integrity check independent of which tier matched: every real trade
+    // line starts with a win/loss marker, so if this chunk has more of those
+    // markers than we ended up pushing trades for, something didn't match
+    // any of the three patterns above and got silently dropped -- a format
+    // drift (typo, new emoji variant, unusual spacing) rather than a bug we
+    // can "fix" in advance. Surfacing the gap beats pretending it's not there.
+    const markerCount = (sub.match(/🟩|🟥/gu) || []).length;
+    return { markerCount, parsedCount };
   }
 
   function parseRecapText(rawInput) {
@@ -137,6 +151,7 @@
     const days = splitDays(text);
     const trades = [];
     const dailySummaries = [];
+    const unparsedWarnings = []; // {date, analyst, markerCount, parsedCount} where they differ
 
     for (const { dateLabel, chunk } of days) {
       const dateIso = parseDateLabel(dateLabel);
@@ -164,11 +179,72 @@
         const start = headerMatches[i].end;
         const end = i + 1 < headerMatches.length ? headerMatches[i + 1].index : chunk.length;
         const sub = truncateAt(chunk.slice(start, end));
-        parseAnalystChunk(sub, dateIso, headerMatches[i].analyst, trades);
+        const { markerCount, parsedCount } = parseAnalystChunk(sub, dateIso, headerMatches[i].analyst, trades);
+        if (markerCount !== parsedCount) {
+          unparsedWarnings.push({ date: dateIso, analyst: headerMatches[i].analyst, markerCount, parsedCount });
+        }
       }
     }
 
-    return { trades, dailySummaries };
+    return { trades, dailySummaries, unparsedWarnings };
+  }
+
+  // Cross-checks the parsed output against two things it did NOT derive
+  // its own numbers from, so a parsing mistake has a real chance of
+  // surfacing instead of just looking plausible:
+  //  1. unparsedWarnings (from parseRecapText) -- per analyst-per-day, did
+  //     every win/loss marker actually turn into a trade line?
+  //  2. the channel's OWN posted daily footer (dailySummaries) -- its
+  //     "Total Trades" / "Total Profits" for the day are typed by the
+  //     channel itself, completely independent of our regexes, so if our
+  //     parsed count/profit for that date doesn't match, either our parser
+  //     or the channel's own footer is off -- worth a human look either way.
+  // This is NOT a proof the data is correct (see: everything else about
+  // free-form text parsing) -- it's a second, independent signal that
+  // catches most real mistakes instead of trusting the parser blindly.
+  function validateParse(trades, dailySummaries, unparsedWarnings) {
+    const issues = [];
+
+    (unparsedWarnings || []).forEach((w) => {
+      const missing = w.markerCount - w.parsedCount;
+      issues.push({
+        severity: 'warn',
+        message: `${w.date} · ${w.analyst}: found ${w.markerCount} win/loss marker(s) but only parsed ${w.parsedCount} into trades` +
+          ` (${missing} line${missing === 1 ? '' : 's'} likely in a format the parser doesn't recognize -- check that section manually).`
+      });
+    });
+
+    (dailySummaries || []).forEach((d) => {
+      const dayTrades = trades.filter((t) => t.date === d.date);
+      const parsedCount = dayTrades.length;
+      const parsedProfit = dayTrades.reduce((s, t) => s + (typeof t.dollar === 'number' && !isNaN(t.dollar) ? t.dollar : 0), 0);
+
+      if (parsedCount !== d.totalTrades) {
+        issues.push({
+          severity: 'warn',
+          message: `${d.date}: parsed ${parsedCount} call(s) but the channel's own footer says ${d.totalTrades} -- ` +
+            `${parsedCount < d.totalTrades ? (d.totalTrades - parsedCount) + ' may be missing' : 'parsed more than the footer reports (possible duplicate or misread)'}.`
+        });
+      }
+      if (Math.abs(parsedProfit - d.totalProfit) > 0.05) {
+        issues.push({
+          severity: 'warn',
+          message: `${d.date}: parsed total profit ${parsedProfit.toFixed(2)} doesn't match the channel's reported ${d.totalProfit.toFixed(2)} ` +
+            `(off by ${Math.abs(parsedProfit - d.totalProfit).toFixed(2)}).`
+        });
+      }
+    });
+
+    const summaryDates = new Set((dailySummaries || []).map((d) => d.date));
+    const tradeDates = Array.from(new Set(trades.map((t) => t.date)));
+    tradeDates.filter((d) => !summaryDates.has(d)).forEach((d) => {
+      issues.push({
+        severity: 'info',
+        message: `${d}: no channel footer found for this day, so its parsed numbers couldn't be cross-checked against anything.`
+      });
+    });
+
+    return { ok: issues.every((i) => i.severity !== 'warn'), issues };
   }
 
   function dedupeKey(t) {
@@ -372,17 +448,6 @@
       const { currentStreak, worstLossStreak } = computeStreaks(sortedByDate);
       const dd = drawdowns[a.analyst] || { maxDrawdown: 0, maxDrawdownPct: 0 };
 
-      // Standard deviation of trade dollar returns and simple Sharpe estimate
-      let sharpeRatio = null;
-      if (pricedNets.length >= 3) {
-        const mean = a.totalProfit / pricedNets.length;
-        const variance = pricedNets.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / pricedNets.length;
-        const stdDev = Math.sqrt(variance);
-        if (stdDev > 0) {
-          sharpeRatio = (mean / stdDev) * Math.sqrt(Math.min(pricedNets.length, 252));
-        }
-      }
-
       return {
         analyst: a.analyst,
         trades: a.trades,
@@ -391,7 +456,6 @@
         winRate,
         totalProfit: a.totalProfit,
         profitFactor,
-        sharpeRatio,
         avgPerTrade,
         medianPerTrade,
         maxWin: a.maxWin === -Infinity ? null : a.maxWin,
@@ -412,38 +476,6 @@
       };
     });
     return out;
-  }
-
-  // Identifies dates and tickers where 2 or more analysts called the same ticker on the same day
-  function findConfluenceTrades(trades) {
-    const map = new Map();
-    trades.forEach(t => {
-      if (!t.ticker || !t.date) return;
-      const key = `${t.date}_${t.ticker.toUpperCase()}`;
-      if (!map.has(key)) map.set(key, []);
-      const list = map.get(key);
-      if (!list.some(x => x.analyst === t.analyst)) {
-        list.push(t);
-      }
-    });
-
-    const confluences = [];
-    map.forEach((analystCalls, key) => {
-      if (analystCalls.length >= 2) {
-        const [date, ticker] = key.split('_');
-        const wins = analystCalls.filter(c => c.win).length;
-        const totalProfit = analystCalls.reduce((s, c) => s + (c.dollar || 0), 0);
-        confluences.push({
-          date,
-          ticker,
-          analysts: analystCalls.map(c => c.analyst),
-          winRate: (wins / analystCalls.length) * 100,
-          totalProfit,
-          calls: analystCalls
-        });
-      }
-    });
-    return confluences.sort((a, b) => (b.date.localeCompare(a.date)));
   }
 
   // ---- copy-trade simulator --------------------------------------------
@@ -704,6 +736,6 @@
 
   global.MordyParser = {
     parseRecapText, computeStats, groupPositions, simulateCopyTrading, runMonteCarlo,
-    encodeScenario, decodeScenario, dedupeKey, toFlatText, findConfluenceTrades
+    encodeScenario, decodeScenario, dedupeKey, toFlatText, validateParse
   };
 })(typeof window !== 'undefined' ? window : globalThis);
