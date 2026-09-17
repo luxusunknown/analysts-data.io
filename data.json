@@ -5439,6 +5439,116 @@
    "exit": 4.43,
    "pct": -28,
    "dollar": -172.2
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "COBAIN",
+   "ticker": "TEM",
+   "win": true,
+   "entry": 0.75,
+   "exit": 4.3,
+   "pct": 473.33,
+   "dollar": 355
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "COBAIN",
+   "ticker": "TEM",
+   "win": true,
+   "entry": 0.65,
+   "exit": 2.6,
+   "pct": 300,
+   "dollar": 195
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "COBAIN",
+   "ticker": "INTC",
+   "win": true,
+   "entry": 0.8,
+   "exit": 2.4,
+   "pct": 200,
+   "dollar": 160
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "COBAIN",
+   "ticker": "BE",
+   "win": true,
+   "entry": 0.98,
+   "exit": 2.25,
+   "pct": 129.59,
+   "dollar": 127
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.89,
+   "exit": 1.7,
+   "pct": 91.01,
+   "dollar": 81
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "WAXUI",
+   "ticker": "SPCX",
+   "win": true,
+   "entry": 2.2,
+   "exit": 3.5,
+   "pct": 59.09,
+   "dollar": 130
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.17,
+   "exit": 1.7,
+   "pct": 45.3,
+   "dollar": 53
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "SHOWTIME",
+   "ticker": "CRDO",
+   "win": true,
+   "entry": 5.4,
+   "exit": 2.95,
+   "pct": 45.37,
+   "dollar": 245
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "LUXE",
+   "ticker": "DAIC",
+   "win": true,
+   "entry": 6,
+   "exit": 7.15,
+   "pct": 19.17,
+   "dollar": 1.15
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "BISHOP",
+   "ticker": "CRWV",
+   "win": false,
+   "entry": 4.7,
+   "exit": 2.96,
+   "pct": -37,
+   "dollar": -173.9
+  },
+  {
+   "date": "2026-09-17",
+   "analyst": "BISHOP",
+   "ticker": "TTD",
+   "win": false,
+   "entry": 0.5,
+   "exit": 0.29,
+   "pct": -42,
+   "dollar": -21
   }
  ],
  "dailySummaries": [
@@ -5769,6 +5879,14 @@
    "totalGainsPct": 520.82,
    "avgGainsPct": 47.35,
    "totalProfit": 540.5
+  },
+  {
+   "date": "2026-09-17",
+   "totalTrades": 11,
+   "winRate": 81.82,
+   "totalGainsPct": 1283.86,
+   "avgGainsPct": 116.71,
+   "totalProfit": 1152.25
   }
  ]
 }
