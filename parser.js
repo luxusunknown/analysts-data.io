@@ -20,12 +20,8 @@
   }
 
   function toFlatText(raw) {
-    // Discord custom emojis arrive as <:name:id> or <a:name:id> (animated).
-    // Preserve the :name: part BEFORE stripping all HTML tags so that
-    // truncation markers like :GIFCryptoRiseUp: still work after stripping.
-    let text = raw.replace(/<a?:([A-Za-z0-9_]+):\d+>/g, ':$1:');
-    // Strip remaining HTML tags, decode entities, collapse whitespace.
-    text = text.replace(/<[^>]+>/g, ' ');
+    // Strip HTML tags (if any), decode entities, collapse whitespace.
+    let text = raw.replace(/<[^>]+>/g, ' ');
     text = decodeEntities(text);
     text = text.replace(/\s+/g, ' ');
     return text;
@@ -53,11 +49,7 @@
   const TRADE_NODOLLAR_RE = /(🟩|🟥)\s*\$([A-Z]+)\s*-?\s*([^\-]*?)@\s*([\d.]+)\s*-->\s*([\d.]+)\s*\|\s*([+-]?[\d,]+\.\d+)%/gu;
   const TRADE_BARE_RE = /(🟩|🟥)\s*\$([A-Z]+)\s*[^|🟩🟥]*?\|\s*([+-]?[\d,]+\.\d+)%/gu;
   const FOOTER_RE = /Total Trades:\s*(\d+)\s*Today'?s Winrate:\s*([\d.]+)%\s*Total Gains:\s*([+-][\d,]+\.\d+)%\s*Average Gains Per Call:\s*([+-][\d,]+\.\d+)%\s*Total Profits:\s*\$([\d,]+\.\d+)/;
-  // Everything from these markers onward is channel meta (top play callout,
-  // daily footer) and must not be parsed as trade lines. 'TOP PLAY:' covers
-  // the current format; ':GIFCryptoRiseUp:' covers cases where the custom
-  // emoji survived toFlatText; 'PLAY OF THE DAY' covers the older format.
-  const TRUNCATE_MARKERS = ['TOP PLAY:', ':GIFCryptoRiseUp:', 'PLAY OF THE DAY', 'Total Trades:'];
+  const TRUNCATE_MARKERS = [':GIFCryptoRiseUp:', 'PLAY OF THE DAY', 'Total Trades:'];
 
   function num(str) {
     return parseFloat(String(str).replace(/\$/g, '').replace(/,/g, ''));
@@ -331,29 +323,6 @@
     return s.length % 2 ? s[mid] : (s[mid - 1] + s[mid]) / 2;
   }
 
-  // Best single calendar day per analyst: sum every trade's $ on each date,
-  // then pick the date with the highest total. Raw trades, not positions --
-  // this is "what did they bank on their best day", not position accounting.
-  function computeBestDays(trades) {
-    const byAnalyst = {};
-    trades.forEach((t) => {
-      if (typeof t.dollar !== 'number' || isNaN(t.dollar)) return;
-      if (!byAnalyst[t.analyst]) byAnalyst[t.analyst] = {};
-      const days = byAnalyst[t.analyst];
-      days[t.date] = (days[t.date] || 0) + t.dollar;
-    });
-    const out = {};
-    Object.keys(byAnalyst).forEach((a) => {
-      const days = byAnalyst[a];
-      let bestDate = null, bestProfit = -Infinity;
-      Object.keys(days).forEach((d) => {
-        if (days[d] > bestProfit) { bestProfit = days[d]; bestDate = d; }
-      });
-      out[a] = { bestDate, bestDayProfit: bestDate != null ? bestProfit : null };
-    });
-    return out;
-  }
-
   // Max number of positions open on the same calendar day, i.e. how much
   // capital would need to be tied up at once to never miss a call --
   // relevant for someone sizing a copy-trading account. Classic sweep-line
@@ -431,7 +400,6 @@
     const maxGapDays = (opts && opts.maxGapDays) != null ? opts.maxGapDays : 10;
     const positions = groupPositions(trades, maxGapDays);
     const drawdowns = computeDrawdowns(trades);
-    const bestDays = computeBestDays(trades);
     const byAnalyst = {};
     for (const p of positions) {
       if (!byAnalyst[p.analyst]) {
@@ -479,7 +447,6 @@
       const sortedByDate = a.positions.slice().sort((x, y) => (x.lastDate < y.lastDate ? -1 : x.lastDate > y.lastDate ? 1 : 0));
       const { currentStreak, worstLossStreak } = computeStreaks(sortedByDate);
       const dd = drawdowns[a.analyst] || { maxDrawdown: 0, maxDrawdownPct: 0 };
-      const bd = bestDays[a.analyst] || { bestDate: null, bestDayProfit: null };
 
       return {
         analyst: a.analyst,
@@ -505,9 +472,7 @@
         streakSortValue: currentStreak ? (currentStreak.type === 'win' ? currentStreak.count : -currentStreak.count) : 0,
         worstLossStreak,
         maxDrawdown: dd.maxDrawdown,
-        maxDrawdownPct: dd.maxDrawdownPct,
-        bestDayProfit: bd.bestDayProfit,
-        bestDate: bd.bestDate
+        maxDrawdownPct: dd.maxDrawdownPct
       };
     });
     return out;
@@ -540,13 +505,31 @@
 
     positions.forEach((p, i) => {
       if (balance <= 0.01) { skipped += 1; balances.push(balance); return; } // busted -- nothing left to risk
-      if (o.affordabilityCheck && balance < p.entry * 100) { skipped += 1; balances.push(balance); return; } // can't afford 1 contract
 
+      const contractCost = p.entry * 100;
       let riskAmount;
       if (o.sizing === 'fixed') riskAmount = o.fixedAmount;
       else if (o.sizing === 'startingPct') riskAmount = startingCapital * o.riskPct;
       else riskAmount = balance * o.riskPct; // 'balancePct', compounding
-      riskAmount = Math.min(riskAmount, balance);
+
+      // When affordability check is on, contracts must be whole contracts:
+      // You cannot buy a fraction of a contract, and trade is skipped if you can't afford at least 1 contract.
+      if (o.affordabilityCheck) {
+        if (contractCost <= 0 || balance < contractCost || riskAmount < contractCost) {
+          skipped += 1;
+          balances.push(balance);
+          return;
+        }
+        const maxAffordableContracts = Math.floor(Math.min(riskAmount, balance) / contractCost);
+        if (maxAffordableContracts < 1) {
+          skipped += 1;
+          balances.push(balance);
+          return;
+        }
+        riskAmount = maxAffordableContracts * contractCost;
+      } else {
+        riskAmount = Math.min(riskAmount, balance);
+      }
 
       let returnPct = (p.netDollar / (p.entry * 100)) * 100;
       returnPct = Math.max(returnPct, -100); // long options can't lose more than 100% of what's risked
