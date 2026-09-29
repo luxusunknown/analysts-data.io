@@ -6859,6 +6859,156 @@
    "exit": 0.35,
    "pct": -75,
    "dollar": -105
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "BISHOP",
+   "ticker": "LRCX",
+   "win": true,
+   "entry": 7.4,
+   "exit": 13.25,
+   "pct": 79.05,
+   "dollar": 585
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "BISHOP",
+   "ticker": "INTC",
+   "win": true,
+   "entry": 1.37,
+   "exit": 2.3,
+   "pct": 67.88,
+   "dollar": 93
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "BISHOP",
+   "ticker": "AMGN",
+   "win": true,
+   "entry": 6.15,
+   "exit": 9.45,
+   "pct": 53.66,
+   "dollar": 330
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "BISHOP",
+   "ticker": "TSLA",
+   "win": false,
+   "entry": 2.85,
+   "exit": 2.14,
+   "pct": -25,
+   "dollar": -71.25
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "BISHOP",
+   "ticker": "AAPL",
+   "win": false,
+   "entry": 5.35,
+   "exit": 2.67,
+   "pct": -50,
+   "dollar": -267.5
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "SHOWTIME",
+   "ticker": "META",
+   "win": true,
+   "entry": 2.36,
+   "exit": 1,
+   "pct": 57.63,
+   "dollar": 136
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "WAXUI",
+   "ticker": "PANW",
+   "win": true,
+   "entry": 4.9,
+   "exit": 7.7,
+   "pct": 57.14,
+   "dollar": 280
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "WAXUI",
+   "ticker": "QQQ",
+   "win": true,
+   "entry": 1.35,
+   "exit": 1.95,
+   "pct": 44.44,
+   "dollar": 60
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 3.1,
+   "exit": 1.55,
+   "pct": -50,
+   "dollar": -155
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "WAXUI",
+   "ticker": "QQQ",
+   "win": false,
+   "entry": 1.2,
+   "exit": 0.6,
+   "pct": -50,
+   "dollar": -60
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "COBAIN",
+   "ticker": "BE",
+   "win": true,
+   "entry": 4.7,
+   "exit": 7.35,
+   "pct": 56.38,
+   "dollar": 265
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "SCOTT",
+   "ticker": "AVGO",
+   "win": true,
+   "entry": 1.67,
+   "exit": 2.17,
+   "pct": 30,
+   "dollar": 50.1
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "SCOTT",
+   "ticker": "QQQ",
+   "win": true,
+   "entry": 1.2,
+   "exit": 1.5,
+   "pct": 25,
+   "dollar": 30
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "SCOTT",
+   "ticker": "JNJ",
+   "win": false,
+   "entry": 4.75,
+   "exit": 3.09,
+   "pct": -35,
+   "dollar": -166.25
+  },
+  {
+   "date": "2026-09-29",
+   "analyst": "SCOTT",
+   "ticker": "QQQ",
+   "win": false,
+   "entry": 1.05,
+   "exit": 0.42,
+   "pct": -60,
+   "dollar": -63
   }
  ],
  "dailySummaries": [
@@ -7237,6 +7387,14 @@
    "totalGainsPct": 626.06,
    "avgGainsPct": 56.91,
    "totalProfit": 714.55
+  },
+  {
+   "date": "2026-09-29",
+   "totalTrades": 15,
+   "winRate": 60,
+   "totalGainsPct": 201.19,
+   "avgGainsPct": 13.41,
+   "totalProfit": 1046.1
   }
  ]
 }
