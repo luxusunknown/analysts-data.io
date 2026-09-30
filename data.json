@@ -7009,6 +7009,136 @@
    "exit": 0.42,
    "pct": -60,
    "dollar": -63
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "WAXUI",
+   "ticker": "PANW",
+   "win": true,
+   "entry": 4.9,
+   "exit": 12,
+   "pct": 144.9,
+   "dollar": 710
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.2,
+   "exit": 2.8,
+   "pct": 133.33,
+   "dollar": 160
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.42,
+   "exit": 0.93,
+   "pct": 121.43,
+   "dollar": 51
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "BISHOP",
+   "ticker": "MSFT",
+   "win": true,
+   "entry": 1.74,
+   "exit": 3.6,
+   "pct": 106.9,
+   "dollar": 186
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "BISHOP",
+   "ticker": "AMGN",
+   "win": true,
+   "entry": 6.15,
+   "exit": 11.2,
+   "pct": 82.11,
+   "dollar": 505
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "BISHOP",
+   "ticker": "META",
+   "win": false,
+   "entry": 9.6,
+   "exit": 4.8,
+   "pct": -50,
+   "dollar": -480
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "BISHOP",
+   "ticker": "NBIS",
+   "win": false,
+   "entry": 7.55,
+   "exit": 3.77,
+   "pct": -50,
+   "dollar": -377.5
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "SCOTT",
+   "ticker": "MSFT",
+   "win": true,
+   "entry": 0.88,
+   "exit": 1.76,
+   "pct": 100,
+   "dollar": 88
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "SCOTT",
+   "ticker": "HPE",
+   "win": true,
+   "entry": 1.15,
+   "exit": 1.84,
+   "pct": 60,
+   "dollar": 69
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "SCOTT",
+   "ticker": "HOOD",
+   "win": false,
+   "entry": 4.35,
+   "exit": 2.17,
+   "pct": -50,
+   "dollar": -217.5
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "SCOTT",
+   "ticker": "IWM",
+   "win": false,
+   "entry": 0.26,
+   "exit": 0.13,
+   "pct": -50,
+   "dollar": -13
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "SHOWTIME",
+   "ticker": "AMD",
+   "win": true,
+   "entry": 1.95,
+   "exit": 1.09,
+   "pct": 44.1,
+   "dollar": 86
+  },
+  {
+   "date": "2026-09-30",
+   "analyst": "MR. SWINGER",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.4,
+   "exit": 1.75,
+   "pct": 25,
+   "dollar": 35
   }
  ],
  "dailySummaries": [
@@ -7395,6 +7525,14 @@
    "totalGainsPct": 201.19,
    "avgGainsPct": 13.41,
    "totalProfit": 1046.1
+  },
+  {
+   "date": "2026-09-30",
+   "totalTrades": 13,
+   "winRate": 69.23,
+   "totalGainsPct": 617.77,
+   "avgGainsPct": 47.52,
+   "totalProfit": 802
   }
  ]
 }
