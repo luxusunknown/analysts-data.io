@@ -7659,6 +7659,176 @@
    "exit": 8.63,
    "pct": 50,
    "dollar": 287.5
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.81,
+   "exit": 2.78,
+   "pct": 243.21,
+   "dollar": 197
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.14,
+   "exit": 1.96,
+   "pct": 71.93,
+   "dollar": 82
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "COBAIN",
+   "ticker": "TSLA",
+   "win": true,
+   "entry": 0.28,
+   "exit": 0.42,
+   "pct": 50,
+   "dollar": 14
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "MR. SWINGER",
+   "ticker": "VST",
+   "win": true,
+   "entry": 5.75,
+   "exit": 18.69,
+   "pct": 225,
+   "dollar": 1293.75
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "MR. SWINGER",
+   "ticker": "RKLB",
+   "win": true,
+   "entry": 2.25,
+   "exit": 4.5,
+   "pct": 100,
+   "dollar": 225
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "MR. SWINGER",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 2.33,
+   "exit": 1.28,
+   "pct": -45,
+   "dollar": -104.85
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "WAXUI",
+   "ticker": "SPX",
+   "win": true,
+   "entry": 5.1,
+   "exit": 12,
+   "pct": 135.29,
+   "dollar": 690
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "WAXUI",
+   "ticker": "SNOW",
+   "win": false,
+   "entry": 4,
+   "exit": 2,
+   "pct": -50,
+   "dollar": -200
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "SCOTT",
+   "ticker": "IGV",
+   "win": true,
+   "entry": 3.9,
+   "exit": 6.63,
+   "pct": 70,
+   "dollar": 273
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.66,
+   "exit": 0.99,
+   "pct": 50,
+   "dollar": 33
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 5.47,
+   "exit": 7.38,
+   "pct": 35,
+   "dollar": 191.45
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "SCOTT",
+   "ticker": "SKHY",
+   "win": false,
+   "entry": 2.3,
+   "exit": 0.34,
+   "pct": -85,
+   "dollar": -195.5
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "BISHOP",
+   "ticker": "AAOI",
+   "win": true,
+   "entry": 6.35,
+   "exit": 10.5,
+   "pct": 65.35,
+   "dollar": 415
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "BISHOP",
+   "ticker": "OUST",
+   "win": true,
+   "entry": 2.55,
+   "exit": 3.2,
+   "pct": 25.49,
+   "dollar": 65
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "SHOWTIME",
+   "ticker": "NBIS",
+   "win": true,
+   "entry": 10.39,
+   "exit": 3.98,
+   "pct": 61.69,
+   "dollar": 641
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "LUXE",
+   "ticker": "XHG",
+   "win": true,
+   "entry": 3.44,
+   "exit": 5.51,
+   "pct": 60.17,
+   "dollar": 2.07
+  },
+  {
+   "date": "2026-10-06",
+   "analyst": "LUXE",
+   "ticker": "MI",
+   "win": false,
+   "entry": 4.2,
+   "exit": 3.8,
+   "pct": -9.52,
+   "dollar": -0.4
   }
  ],
  "dailySummaries": [
@@ -8077,6 +8247,14 @@
    "totalGainsPct": 801.16,
    "avgGainsPct": 80.12,
    "totalProfit": 834.87
+  },
+  {
+   "date": "2026-10-06",
+   "totalTrades": 17,
+   "winRate": 76.47,
+   "totalGainsPct": 1003.62,
+   "avgGainsPct": 59.04,
+   "totalProfit": 3621.52
   }
  ]
 }
