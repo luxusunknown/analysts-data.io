@@ -7829,6 +7829,126 @@
    "exit": 3.8,
    "pct": -9.52,
    "dollar": -0.4
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.68,
+   "exit": 2.79,
+   "pct": 310,
+   "dollar": 210.8
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "SCOTT",
+   "ticker": "JNJ",
+   "win": true,
+   "entry": 1.6,
+   "exit": 2.88,
+   "pct": 80,
+   "dollar": 128
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "SCOTT",
+   "ticker": "HOOD",
+   "win": true,
+   "entry": 1.35,
+   "exit": 2.02,
+   "pct": 50,
+   "dollar": 67.5
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "SCOTT",
+   "ticker": "BITX",
+   "win": true,
+   "entry": 1,
+   "exit": 0.55,
+   "pct": 45,
+   "dollar": 45
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.15,
+   "exit": 2.75,
+   "pct": 139.13,
+   "dollar": 160
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 1,
+   "exit": 0.5,
+   "pct": -50,
+   "dollar": -50
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "SHOWTIME",
+   "ticker": "NBIS",
+   "win": true,
+   "entry": 2.15,
+   "exit": 0.72,
+   "pct": 66.51,
+   "dollar": 143
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "MR. SWINGER",
+   "ticker": "QQQ",
+   "win": true,
+   "entry": 1.15,
+   "exit": 1.67,
+   "pct": 45,
+   "dollar": 51.75
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "BISHOP",
+   "ticker": "SPX",
+   "win": true,
+   "entry": 6.6,
+   "exit": 9,
+   "pct": 36.36,
+   "dollar": 240
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "BISHOP",
+   "ticker": "SPX",
+   "win": false,
+   "entry": 6.7,
+   "exit": 5.56,
+   "pct": -17,
+   "dollar": -113.9
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "BISHOP",
+   "ticker": "FPS",
+   "win": false,
+   "entry": 2.5,
+   "exit": 2.05,
+   "pct": -18,
+   "dollar": -45
+  },
+  {
+   "date": "2026-10-07",
+   "analyst": "BISHOP",
+   "ticker": "NEE",
+   "win": false,
+   "entry": 1.15,
+   "exit": 0.83,
+   "pct": -28,
+   "dollar": -32.2
   }
  ],
  "dailySummaries": [
@@ -8255,6 +8375,14 @@
    "totalGainsPct": 1003.62,
    "avgGainsPct": 59.04,
    "totalProfit": 3621.52
+  },
+  {
+   "date": "2026-10-07",
+   "totalTrades": 12,
+   "winRate": 66.67,
+   "totalGainsPct": 659.01,
+   "avgGainsPct": 54.92,
+   "totalProfit": 804.95
   }
  ]
 }
