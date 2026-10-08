@@ -7949,6 +7949,106 @@
    "exit": 0.83,
    "pct": -28,
    "dollar": -32.2
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "BISHOP",
+   "ticker": "IREN",
+   "win": true,
+   "entry": 0.74,
+   "exit": 4.1,
+   "pct": 454.05,
+   "dollar": 336
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "BISHOP",
+   "ticker": "GOOGL",
+   "win": true,
+   "entry": 5.32,
+   "exit": 8,
+   "pct": 50.38,
+   "dollar": 268
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.8,
+   "exit": 3,
+   "pct": 275,
+   "dollar": 220
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.84,
+   "exit": 1.72,
+   "pct": 105,
+   "dollar": 88.2
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.84,
+   "exit": 0.97,
+   "pct": 15,
+   "dollar": 12.6
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "SHOWTIME",
+   "ticker": "MRVL",
+   "win": true,
+   "entry": 2.46,
+   "exit": 0.74,
+   "pct": 69.92,
+   "dollar": 172
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "SHOWTIME",
+   "ticker": "AMD",
+   "win": true,
+   "entry": 2.13,
+   "exit": 0.94,
+   "pct": 55.87,
+   "dollar": 119
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "SHOWTIME",
+   "ticker": "AAOI",
+   "win": true,
+   "entry": 5.75,
+   "exit": 3.4,
+   "pct": 40.87,
+   "dollar": 235
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.95,
+   "exit": 1.4,
+   "pct": 47.37,
+   "dollar": 45
+  },
+  {
+   "date": "2026-10-08",
+   "analyst": "LUXE",
+   "ticker": "AIXI",
+   "win": false,
+   "entry": 2.37,
+   "exit": 2.2,
+   "pct": -7.17,
+   "dollar": -0.17
   }
  ],
  "dailySummaries": [
@@ -8383,6 +8483,14 @@
    "totalGainsPct": 659.01,
    "avgGainsPct": 54.92,
    "totalProfit": 804.95
+  },
+  {
+   "date": "2026-10-08",
+   "totalTrades": 10,
+   "winRate": 90,
+   "totalGainsPct": 1106.28,
+   "avgGainsPct": 110.63,
+   "totalProfit": 1495.63
   }
  ]
 }
