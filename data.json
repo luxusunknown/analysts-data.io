@@ -8049,6 +8049,166 @@
    "exit": 2.2,
    "pct": -7.17,
    "dollar": -0.17
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.74,
+   "exit": 1.11,
+   "pct": 50,
+   "dollar": 37
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "SCOTT",
+   "ticker": "TSLA",
+   "win": true,
+   "entry": 0.7,
+   "exit": 0.91,
+   "pct": 30,
+   "dollar": 21
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "SCOTT",
+   "ticker": "AMZN",
+   "win": true,
+   "entry": 3.85,
+   "exit": 4.85,
+   "pct": 26,
+   "dollar": 100.1
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 4.42,
+   "exit": 5.3,
+   "pct": 20,
+   "dollar": 88.4
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "SCOTT",
+   "ticker": "TSLA",
+   "win": false,
+   "entry": 1.04,
+   "exit": 0.33,
+   "pct": -68,
+   "dollar": -70.72
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "BISHOP",
+   "ticker": "TSLA",
+   "win": true,
+   "entry": 2.21,
+   "exit": 3.2,
+   "pct": 44.8,
+   "dollar": 99
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "BISHOP",
+   "ticker": "AMZN",
+   "win": true,
+   "entry": 0.78,
+   "exit": 0.92,
+   "pct": 17.95,
+   "dollar": 14
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "BISHOP",
+   "ticker": "MU",
+   "win": false,
+   "entry": 6.3,
+   "exit": 5.36,
+   "pct": -15,
+   "dollar": -94.5
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "BISHOP",
+   "ticker": "CHWY",
+   "win": false,
+   "entry": 0.83,
+   "exit": 0.68,
+   "pct": -18,
+   "dollar": -14.94
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "BISHOP",
+   "ticker": "AAPL",
+   "win": false,
+   "entry": 0.73,
+   "exit": 0.47,
+   "pct": -35,
+   "dollar": -25.55
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.92,
+   "exit": 1.23,
+   "pct": 33.7,
+   "dollar": 31
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "COBAIN",
+   "ticker": "TSLA",
+   "win": false,
+   "entry": 1.24,
+   "exit": 0.62,
+   "pct": -50,
+   "dollar": -62
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "COBAIN",
+   "ticker": "TSLA",
+   "win": false,
+   "entry": 0.36,
+   "exit": 0.18,
+   "pct": -50,
+   "dollar": -18
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "COBAIN",
+   "ticker": "TSLA",
+   "win": false,
+   "entry": 0.69,
+   "exit": 0.34,
+   "pct": -50,
+   "dollar": -34.5
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "COBAIN",
+   "ticker": "BA",
+   "win": false,
+   "entry": 0.32,
+   "exit": 0,
+   "pct": -100,
+   "dollar": -32
+  },
+  {
+   "date": "2026-10-09",
+   "analyst": "COBAIN",
+   "ticker": "HOOD",
+   "win": false,
+   "entry": 0.04,
+   "exit": 0,
+   "pct": -100,
+   "dollar": -4
   }
  ],
  "dailySummaries": [
@@ -8491,6 +8651,14 @@
    "totalGainsPct": 1106.28,
    "avgGainsPct": 110.63,
    "totalProfit": 1495.63
+  },
+  {
+   "date": "2026-10-09",
+   "totalTrades": 16,
+   "winRate": 43.75,
+   "totalGainsPct": -263.56,
+   "avgGainsPct": -16.47,
+   "totalProfit": 34.29
   }
  ]
 }
