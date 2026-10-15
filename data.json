@@ -8489,6 +8489,106 @@
    "exit": 0,
    "pct": -100,
    "dollar": -106
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "WAXUI",
+   "ticker": "MU",
+   "win": true,
+   "entry": 10,
+   "exit": 45,
+   "pct": 350,
+   "dollar": 3500
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "COBAIN",
+   "ticker": "QQQ",
+   "win": true,
+   "entry": 0.64,
+   "exit": 2,
+   "pct": 212.5,
+   "dollar": 136
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.46,
+   "exit": 0.57,
+   "pct": 25,
+   "dollar": 11.5
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "COBAIN",
+   "ticker": "QQQ",
+   "win": false,
+   "entry": 0.77,
+   "exit": 0.39,
+   "pct": -50,
+   "dollar": -38.5
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.44,
+   "exit": 3.6,
+   "pct": 150,
+   "dollar": 216
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "SCOTT",
+   "ticker": "SMCI",
+   "win": false,
+   "entry": 39.9,
+   "exit": 33.12,
+   "pct": -17,
+   "dollar": -6.78
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "SCOTT",
+   "ticker": "AMZN",
+   "win": false,
+   "entry": 3.85,
+   "exit": 2.5,
+   "pct": -35,
+   "dollar": -134.75
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "BISHOP",
+   "ticker": "BJ",
+   "win": true,
+   "entry": 4.35,
+   "exit": 7.6,
+   "pct": 74.71,
+   "dollar": 325
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "BISHOP",
+   "ticker": "ADBE",
+   "win": true,
+   "entry": 5.9,
+   "exit": 9.2,
+   "pct": 55.93,
+   "dollar": 330
+  },
+  {
+   "date": "2026-10-15",
+   "analyst": "LUXE",
+   "ticker": "WETO",
+   "win": true,
+   "entry": 1.2,
+   "exit": 1.46,
+   "pct": 21.67,
+   "dollar": 0.26
   }
  ],
  "dailySummaries": [
@@ -8947,6 +9047,14 @@
    "totalGainsPct": 333.75,
    "avgGainsPct": 55.62,
    "totalProfit": 168.4
+  },
+  {
+   "date": "2026-10-15",
+   "totalTrades": 10,
+   "winRate": 70,
+   "totalGainsPct": 787.81,
+   "avgGainsPct": 78.78,
+   "totalProfit": 4338.73
   }
  ]
 }
