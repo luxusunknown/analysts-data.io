@@ -8779,6 +8779,66 @@
    "exit": 3.77,
    "pct": 7.71,
    "dollar": 0.27
+  },
+  {
+   "date": "2026-10-19",
+   "analyst": "MR. SWINGER",
+   "ticker": "QQQ",
+   "win": true,
+   "entry": 1.45,
+   "exit": 3.26,
+   "pct": 125,
+   "dollar": 181.25
+  },
+  {
+   "date": "2026-10-19",
+   "analyst": "COBAIN",
+   "ticker": "NAUT",
+   "win": true,
+   "entry": 0.2,
+   "exit": 0.4,
+   "pct": 100,
+   "dollar": 20
+  },
+  {
+   "date": "2026-10-19",
+   "analyst": "SCOTT",
+   "ticker": "AMD",
+   "win": true,
+   "entry": 2.3,
+   "exit": 3.22,
+   "pct": 40,
+   "dollar": 92
+  },
+  {
+   "date": "2026-10-19",
+   "analyst": "LUXE",
+   "ticker": "SHOW",
+   "win": true,
+   "entry": 1,
+   "exit": 1.25,
+   "pct": 25,
+   "dollar": 0.25
+  },
+  {
+   "date": "2026-10-19",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": false,
+   "entry": 1.2,
+   "exit": 0.6,
+   "pct": -50,
+   "dollar": -60
+  },
+  {
+   "date": "2026-10-19",
+   "analyst": "WAXUI",
+   "ticker": "SPX",
+   "win": false,
+   "entry": 4.5,
+   "exit": 2.25,
+   "pct": -50,
+   "dollar": -225
   }
  ],
  "dailySummaries": [
@@ -9245,6 +9305,14 @@
    "totalGainsPct": 787.81,
    "avgGainsPct": 78.78,
    "totalProfit": 4338.73
+  },
+  {
+   "date": "2026-10-19",
+   "totalTrades": 6,
+   "winRate": 66.67,
+   "totalGainsPct": 190,
+   "avgGainsPct": 31.67,
+   "totalProfit": 8.5
   }
  ]
 }
