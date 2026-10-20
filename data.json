@@ -8839,6 +8839,46 @@
    "exit": 2.25,
    "pct": -50,
    "dollar": -225
+  },
+  {
+   "date": "2026-10-20",
+   "analyst": "WAXUI",
+   "ticker": "SPX",
+   "win": true,
+   "entry": 6.5,
+   "exit": 25,
+   "pct": 284.62,
+   "dollar": 1850
+  },
+  {
+   "date": "2026-10-20",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1,
+   "exit": 1.1,
+   "pct": 10,
+   "dollar": 10
+  },
+  {
+   "date": "2026-10-20",
+   "analyst": "COBAIN",
+   "ticker": "UNH",
+   "win": true,
+   "entry": 1.85,
+   "exit": 4.44,
+   "pct": 140,
+   "dollar": 259
+  },
+  {
+   "date": "2026-10-20",
+   "analyst": "MR. SWINGER",
+   "ticker": "MSTR",
+   "win": true,
+   "entry": 2.92,
+   "exit": 6.28,
+   "pct": 115,
+   "dollar": 335.8
   }
  ],
  "dailySummaries": [
@@ -9313,6 +9353,14 @@
    "totalGainsPct": 190,
    "avgGainsPct": 31.67,
    "totalProfit": 8.5
+  },
+  {
+   "date": "2026-10-20",
+   "totalTrades": 4,
+   "winRate": 100,
+   "totalGainsPct": 549.62,
+   "avgGainsPct": 137.4,
+   "totalProfit": 2454.8
   }
  ]
 }
