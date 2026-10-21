@@ -8879,6 +8879,96 @@
    "exit": 6.28,
    "pct": 115,
    "dollar": 335.8
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "MR. SWINGER",
+   "ticker": "MSTR",
+   "win": true,
+   "entry": 2.92,
+   "exit": 15.04,
+   "pct": 415,
+   "dollar": 1211.8
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.88,
+   "exit": 2.24,
+   "pct": 155,
+   "dollar": 136.4
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "SCOTT",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.1,
+   "exit": 1.45,
+   "pct": 32,
+   "dollar": 35.2
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "SCOTT",
+   "ticker": "UBER",
+   "win": false,
+   "entry": 1.22,
+   "exit": 0.49,
+   "pct": -60,
+   "dollar": -73.2
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "SHOWTIME",
+   "ticker": "NBIS",
+   "win": true,
+   "entry": 0.95,
+   "exit": 0.26,
+   "pct": 72.63,
+   "dollar": 69
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "COBAIN",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 0.37,
+   "exit": 0.56,
+   "pct": 51.35,
+   "dollar": 19
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "WAXUI",
+   "ticker": "SPY",
+   "win": true,
+   "entry": 1.2,
+   "exit": 1.45,
+   "pct": 20.83,
+   "dollar": 25
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "WAXUI",
+   "ticker": "SPX",
+   "win": false,
+   "entry": 2.7,
+   "exit": 1.35,
+   "pct": -50,
+   "dollar": -135
+  },
+  {
+   "date": "2026-10-21",
+   "analyst": "BISHOP",
+   "ticker": "LULU",
+   "win": false,
+   "entry": 3.75,
+   "exit": 2.63,
+   "pct": -30,
+   "dollar": -112.5
   }
  ],
  "dailySummaries": [
@@ -9361,6 +9451,14 @@
    "totalGainsPct": 549.62,
    "avgGainsPct": 137.4,
    "totalProfit": 2454.8
+  },
+  {
+   "date": "2026-10-21",
+   "totalTrades": 9,
+   "winRate": 66.67,
+   "totalGainsPct": 606.82,
+   "avgGainsPct": 67.42,
+   "totalProfit": 1175.7
   }
  ]
 }
